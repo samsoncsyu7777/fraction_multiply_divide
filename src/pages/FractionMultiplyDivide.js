@@ -3,6 +3,7 @@ import {
   Grid,
   Typography,
   Button,
+  Box
 } from "@material-ui/core";
 import { AlertSnackbar } from "../components/AlertComponents";
 import { MyFrame } from "../components/HeadingComponents";
@@ -254,7 +255,7 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
 
   const resetClick = (e) => {
     if (completed) {
-      resetDefault();      
+      resetDefault();
     } else if (okButtonStage > 0) {
       if (calculationStage == 2) {
         checkSimplifyValue(formulaFocusedIndex, false);
@@ -374,7 +375,7 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
             }, timeDelay);
             return false;
           }
-        }     
+        }
       }
       if (calculationStage == 4) {
         setErrorMessage("👍🏻" + wellDone[languageIndex]);
@@ -807,6 +808,12 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
   }
 
   const classes = pagesStyles();
+  /*
+                    style={{
+                      borderColor: (index == formulaFocusedIndex) ? myTheme.color.myMagenta : myTheme.color.blue,
+                      borderWidth: (index == formulaFocusedIndex) ? 3 : 1                    
+                    }}
+  */
 
   return (
     <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool}>
@@ -814,17 +821,16 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         <Grid className={classes.formulaColumn}>
           {
             fractionLinesArray.map((formula, index) => {
-              return <Grid className={`${classes.verticalCenterRow} ${classes.commonPadding}`}>
+              return <Grid key={index} className={`${classes.verticalCenterRow} ${classes.commonPadding}`}>
                 <Typography
                   className={classes.formulaLine}
                   style={{ opacity: index == 0 ? 0 : 1 }}
                 >=</Typography>
-
-                <Button
+                <Box
                   className={`${classes.formulaLine} ${classes.formulaBox}`}
-                  variant="outlined"
+                  border={1}
+                  borderColor={(index == formulaFocusedIndex) ? myTheme.color.myMagenta : myTheme.color.blue}
                   style={{
-                    borderColor: (index == formulaFocusedIndex) ? myTheme.color.myMagenta : myTheme.color.blue,
                     borderWidth: (index == formulaFocusedIndex) ? 3 : 1
                   }}
                 >
@@ -839,8 +845,7 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
                     calculationStage={calculationStage}
                     lineIndex={index}
                   />
-
-                </Button>
+                </Box>
                 <Grid>
                   {
                     index == formulaFocusedIndex &&
@@ -852,7 +857,7 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
                     >{okButtonText[languageIndex * 3 + okButtonStage]}</Button>
                   }
                   {
-                    index == fractionLinesArray.length - 1 
+                    index == fractionLinesArray.length - 1
                     && (okButtonStage == 1 || completed)
                     &&
                     <Button

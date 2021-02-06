@@ -115,7 +115,7 @@ export const FractionFormula = ({ handlePartClick, formula, learningToolIndex, p
 
       {
         formula.map((fraction, index) => {
-          return <>
+          return <Grid key={index} className={classes.leftRow}>
             {
               index != 0 && <Button
                 variant="outlined"
@@ -178,7 +178,7 @@ export const FractionFormula = ({ handlePartClick, formula, learningToolIndex, p
                 </Button>
               }
             </Grid>
-          </>
+          </Grid>
         })
       }
 

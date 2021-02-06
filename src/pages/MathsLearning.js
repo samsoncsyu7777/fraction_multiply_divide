@@ -196,7 +196,7 @@ function MathsLearning(props) {
   const { classes } = props;
 
   return (
-    <Grid className={classes.mathsLearningContainer} spacing={0}>
+    <Grid className={classes.mathsLearningContainer} >
       <Grid container className={classes.headingContainer}>
         <HeadingSelect
           selectLabel="Language"
