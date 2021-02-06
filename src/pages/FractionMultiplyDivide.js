@@ -808,12 +808,6 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
   }
 
   const classes = pagesStyles();
-  /*
-                    style={{
-                      borderColor: (index == formulaFocusedIndex) ? myTheme.color.myMagenta : myTheme.color.blue,
-                      borderWidth: (index == formulaFocusedIndex) ? 3 : 1                    
-                    }}
-  */
 
   return (
     <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool}>

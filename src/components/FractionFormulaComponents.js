@@ -26,11 +26,13 @@ const fractionFormulaStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
   },
+  overflow: {
+    overflow: "auto",
+    maxWidth: "70vw",
+  },
   leftRow: {
     display: "flex",
-    direction: "row",
     alignItems: "center",
-    overflow: 'auto',
   },
   fractionColumn: {
     alignItems: 'center',
@@ -111,7 +113,7 @@ export const FractionFormula = ({ handlePartClick, formula, learningToolIndex, p
   const classes = fractionFormulaStyles();
   
   return (
-    <Grid className={classes.leftRow}>
+    <Grid className={`${classes.leftRow} ${classes.overflow}`}>
 
       {
         formula.map((fraction, index) => {
