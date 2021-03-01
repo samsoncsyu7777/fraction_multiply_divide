@@ -68,7 +68,6 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     noDivisionBeforeReduction,
   } = constants;
 
-
   useEffect(() => {
     if (questions[topicIndex][learningToolIndex].length === 0) {
       if (stageOrder === { stage: -1, order: 0 }) {
