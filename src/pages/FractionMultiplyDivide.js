@@ -9,13 +9,16 @@ import { AlertSnackbar } from "../components/AlertComponents";
 import { MyFrame } from "../components/HeadingComponents";
 import { MyKeypad } from "../components/KeypadComponents";
 import { FractionFormula } from "../components/FractionFormulaComponents";
+import { StageButtons } from "../components/StageComponents";
+import questions from "../questions/Questions";
 import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";
+import constants from "../constants/FractionMultiplyDivideConstants";
 import ForwardRoundedIcon from '@material-ui/icons/ForwardRounded';
 import { pagesStyles } from "../themes/styles";
 import { theme as myTheme } from "../themes/theme";
 
 //×÷👍👍🏻
-export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, topicIndex, learningToolIndex }) => {
+export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, topicToolIndex }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [severity, setSeverity] = useState("error");
@@ -26,219 +29,91 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
   const [fractionPartIndex, setFractionPartIndex] = useState(3);
   const [okButtonStage, setOkButtonStage] = useState(0);
   const [calculationStage, setCalculationStage] = useState(0);//0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
+  const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });
+  const { topicIndex, learningToolIndex } = topicToolIndex;
   const timeDelay = 200;
   const primeNumbers = getPrimeNumbers();
 
-  const okButtonText = [
-    "輸入", "約簡", "完成",
-    "输入", "约简", "完成",
-    "Enter", "Reduce?", "Completed",
-    "Entrer", "Réduire?", "Terminé"
-  ];
+  const {
+    stageText,
+    manual,
+    okButtonText,
+    topics,
+    wellDone,
+    noOperator,
+    noNumber,
+    fractionHasBoth,
+    noImproper,
+    oneFractionOnly,
+    incorrectWhole,
+    wholeNoFraction,
+    sameDenominator,
+    numeratorFromImproper,
+    noMixed,
+    sameNumberOfFractions,
+    sameOperators,
+    wholeToNumerator,
+    mixedToNumerator,
+    noDivision,
+    sameMultipliers,
+    divisorsUpDown,
+    simplifyIt,
+    productOfFractions,
+    beAFactorOfNumerator,
+    beAFactorOfDenominator,
+    sameFactorInReduction,
+    furtherReduceFactorLeft,
+    furtherReduceFactorRight,
+    noMixedBeforeReduction,
+    noDivisionBeforeReduction,
+  } = constants;
 
-  const topics = [
-    "",
-    "",
-    "",
-    ""
-  ];
 
-  const wellDone = [
-    "你做得到﹗你完成了這題分數計算﹗",
-    "你做得到﹗你完成了这题分数计算﹗",
-    "You can do it! You have completed this fraction calculation!",
-    "Tu peux le faire! Vous avez terminé ce calcul de fraction!"
-  ];
-
-  const noOperator = [
-    "這兒少了運算符號。",
-    "这儿少了运算符号。",
-    "Operators are missing here.",
-    "Les opérateurs manquent ici."
-  ];
-
-  const noNumber = [
-    "運算符號的前後需輸入分數或整數。",
-    "运算符号的前后需输入分数或整数。",
-    "There should be a whole number or an integer before and after an operator.",
-    "Il doit y avoir un nombre entier ou un entier avant et après un opérateur."
-  ];
-
-  const fractionHasBoth = [
-    "一個分數需同時有分子和分母。",
-    "一个分数需同时有分子和分母。",
-    "A fraction should both a numerator and a denominator.",
-    "Une fraction doit à la fois un numérateur et un dénominateur."
-  ];
-
-  const noImproper = [
-    "這兒有假分數，請輸入帶分數。",
-    "这儿有假分数，请输入带分数。",
-    "There are improper fractions, please enter a mixed number instead.",
-    "Il y a des fractions incorrectes, veuillez saisir un nombre mixte à la place."
-  ];
-
-  const oneFractionOnly = [
-    "相乘後，應只得一個分數。",
-    "相乘后，应只得一个分数。",
-    "You should only get one fraction after multiplication.",
-    "Vous ne devriez obtenir qu'une fraction après la multiplication."
-  ];
-
-  const incorrectWhole = [
-    "整數不正確，這應是分子除以分母得到的整數商。",
-    "整数不正确，这应是分子除以分母得到的整数商。",
-    "The whole number is incorrect. This should be the integer quotient obtained by dividing the numerator by the denominator.",
-    "Le nombre entier est incorrect. Cela devrait être le quotient entier obtenu en divisant le numérateur par le dénominateur."
-  ];
-
-  const wholeNoFraction = [
-    "這是整數，沒有分數部份。",
-    "这是整数，没有分数部份。",
-    "This is a whole number, it has no fractional part.",
-    "C'est un nombre entier, il n'a pas de partie fractionnaire."
-  ];
-
-  const sameDenominator = [
-    "分母應保持不變。",
-    "分母应保持不变。",
-    "The denominator should remain unchanged.",
-    "Le dénominateur doit rester inchangé."
-  ];
-
-  const numeratorFromImproper = [
-    "分子不正確，這應是分子除以分母得到的餘數。",
-    "分子不正确，这应是分子除以分母得到的余数。",
-    "The numerator is incorrect. This should be the remainder obtained by dividing the numerator by the denominator.",
-    "Le numérateur est incorrect. Il doit s'agir du reste obtenu en divisant le numérateur par le dénominateur."
-  ];
-
-  const noMixed = [
-    "在計算乘法或除法前，先將所有帶分數轉為假分數。",
-    "在计算乘法或除法前，先将所有带分数转为假分数。",
-    "All mixed fractions should be changed to improper fractions before multiplication or division.",
-    "Toutes les fractions mélangées doivent être changées en fractions impropres avant la multiplication ou la division."
-  ];
-
-  const sameNumberOfFractions = [
-    "這算式應與上一行算式有相同數量的分數。",
-    "这算式应与上一行算式有相同数量的分数。",
-    "This calculation should have the same number of fractions as the previous calculation.",
-    "Ce calcul doit avoir le même nombre de fractions que le calcul précédent."
-  ];
-
-  const sameOperators = [
-    "運算符號需保持不變。",
-    "运算符号需保持不变。",
-    "All operators should remain unchanged here.",
-    "Tous les opérateurs devraient rester inchangés ici."
-  ];
-
-  const wholeToNumerator = [
-    "整數部份應轉為 分子=整數，分母=1。",
-    "整数部份应转为 分子=整数，分母=1。",
-    "A whole number should be changed to a fraction with numerator=whole number and denominator=1.",
-    "Un nombre entier doit être changé en une fraction avec numérateur=nombre entier et dénominateur=1."
-  ];
-
-  const mixedToNumerator = [
-    "新分子應是 ( 整數×分母 + 分子 )。",
-    "新分子应是 ( 整数×分母 + 分子 )。",
-    "A new numerator should be ( whole number×denominator + numerator ).",
-    "Un nouveau numérateur doit être (nombre entier × dénominateur + numérateur)."
-  ];
-
-  const noDivision = [
-    "所有除法需轉為乘法。",
-    "所有除法需转为乘法。",
-    "All divisions should be changed to multiplications.",
-    "Toutes les divisions devraient être changées en multiplications."
-  ];
-
-  const sameMultipliers = [
-    "乘數和第一個分數需保持不變。",
-    "乘数和第一个分数需保持不变。",
-    "The multipliers and the first fraction should remain unchanged.",
-    "Les multiplicateurs et la première fraction devraient rester inchangés."
-  ];
-
-  const divisorsUpDown = [
-    "需把所有除數上下倒轉。",
-    "需把所有除数上下倒转。",
-    "All divisors should be turned upside down.",
-    "Tous les diviseurs doivent être inversés."
-  ];
-
-  const simplifyIt = [
-    "這不是最簡分數，請把它約簡。",
-    "这不是最简分数，请把它约简。",
-    "It is not an irreducible fraction. Please reduce it.",
-    "Ce n'est pas une fraction irréductible. Veuillez la réduire."
-  ];
-
-  const productOfFractions = [
-    "這分子應是上一行分子相乘的積，而分母也是上一行分母相乘的積。",
-    "这分子应是上一行分子相乘的积，而分母也是上一行分母相乘的积。",
-    "This numerator should be the product of the above numerators and this denominator should be the product of the above denominators too.",
-    "Ce numérateur doit être le produit des numérateurs ci-dessus et ce dénominateur doit également être le produit des dénominateurs ci-dessus."
-  ];
-
-  const beAFactorOfNumerator = [
-    "在約簡的過程中，新分子應是原本分子的因數。",
-    "在约简的过程中，新分子应是原本分子的因数。",
-    "The new numerator should be a factor of the original numerator in the process of reduction.",
-    "Le nouveau numérateur doit être un facteur du numérateur d'origine dans le processus de réduction."
-  ];
-
-  const beAFactorOfDenominator = [
-    "在約簡的過程中，新分母應是原本分母的因數。",
-    "在约简的过程中，新分母应是原本分母的因数。",
-    "The new denominator should be a factor of the original denominator in the process of reduction.",
-    "Le nouveau dénominateur devrait être un facteur du dénominateur d'origine dans le processus de réduction."
-  ];
-
-  const sameFactorInReduction = [
-    "約簡不正確，分子和分母需以相同的因數進行約簡。",
-    "约简不正确，分子和分母需以相同的因数进行约简。",
-    "The reduction is incorrect. The numerator and denominator must be reduced by the same factor.",
-    "La réduction est incorrecte. Le numérateur et le dénominateur doivent être réduits du même facteur."
-  ];
-
-  const furtherReduceFactorLeft = [
-    "這算式還能以",
-    "这算式还能以",
-    "This calculation can be further reduced by ",
-    "Ce calcul peut être encore réduit par "
-  ];
-
-  const furtherReduceFactorRight = [
-    "進行約簡",
-    "进行约简",
-    ".",
-    "."
-  ];
-
-  const noMixedBeforeReduction = [
-    "在進行約簡前，先把所有帶分數轉為假分數。",
-    "在进行约简前，先把所有带分数转为假分数。",
-    "All mixed fractions should be changed to improper fractions before reduction.",
-    "Toutes les fractions mélangées doivent être remplacées par des fractions impropres avant réduction."
-  ];
-
-  const noDivisionBeforeReduction = [
-    "在進行約簡前，先把所有除法轉為乘法。",
-    "在进行约简前，先把所有除法转为乘法。",
-    "All divisions should be changed to multiplications before reduction.",
-    "Toutes les divisions devraient être changées en multiplications avant réduction."
-  ];
+  useEffect(() => {
+    if (questions[topicIndex][learningToolIndex].length === 0) {
+      if (stageOrder === { stage: -1, order: 0 }) {
+        resetDefault();
+      } else {
+        setStageOrder({ stage: -1, order: 0 });
+      }
+    } else {
+      if (stageOrder === { stage: 0, order: 0 }) {
+        resetDefault();
+      } else {
+        setStageOrder({ stage: 0, order: 0 });
+      }
+    }
+  }, [topicToolIndex]);
 
   useEffect(() => {
     resetDefault();
-  }, [learningToolIndex]);
+  }, [stageOrder]);
 
   useEffect(() => {
-    resetDefault();
-  }, [topicIndex])
+    if (
+      stageOrder.stage > -1 &&
+      formulaFocusedIndex === 0 &&
+      fractionLinesArray[0][1][0] != "" &&
+      calculationStage < 2
+    ) {
+      okClick();
+    }
+  }, [fractionLinesArray]);
+
+  const handleStageClick = (stage) => {
+    setStageOrder({ stage: stage, order: 0 });
+  };
+
+  const setQuestion = (
+    stage,
+    order
+  ) => {
+    let tmpArray = [...questions[topicIndex][learningToolIndex][stage][order]];
+    tmpArray.push(["", 0, 0, 0, 0, 0]);
+    setFractionLinesArray([
+      tmpArray
+    ]);
+  };
 
   const closeAlert = (e) => {
     setOpenAlert(false);
@@ -246,16 +121,36 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
 
   function resetDefault() {
     setSeverity("error");
-    setFractionLinesArray([[["", 0, 0, 0, 0, 0], ["", 0, 0, 0, 0, 0]]]);
     setFormulaFocusedIndex(0);
     setCompleted(false);
     setOkButtonStage(0);
     setCalculationStage(0);
+    if (stageOrder.stage > -1) {
+      setQuestion(stageOrder.stage, stageOrder.order);
+    } else {
+      setFractionLinesArray([[["", 0, 0, 0, 0, 0], ["", 0, 0, 0, 0, 0]]]);
+    }
   }
 
   const resetClick = (e) => {
     if (completed) {
-      resetDefault();
+      if (stageOrder.stage > -1) {
+        if (
+          stageOrder.order <
+          questions[topicIndex][learningToolIndex][stageOrder.stage].length - 1
+        ) {
+          setStageOrder({ stage: stageOrder.stage, order: stageOrder.order + 1 });
+        } else if (
+          stageOrder.stage <
+          questions[topicIndex][learningToolIndex].length - 1
+        ) {
+          setStageOrder({ stage: stageOrder.stage + 1, order: 0 });
+        } else {
+          setStageOrder({ stage: -1, order: 0 });
+        }
+      } else {
+        resetDefault();
+      }
     } else if (okButtonStage > 0) {
       if (calculationStage == 2) {
         checkSimplifyValue(formulaFocusedIndex, false);
@@ -406,7 +301,15 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
       if (fractionLinesArray[index][i][1] != "") {
         if (index != 0 && calculationStage == 0) {
-          setErrorMessage(noMixed[languageIndex]);
+
+          if (!(fractionLinesArray[index - 1][i][3] > 0) && !(fractionLinesArray[index - 1][i][4] > 0)) {
+            if (fractionLinesArray[index][i][3] != fractionLinesArray[index - 1][i][1] || fractionLinesArray[index][i][4] != 1) {
+              setErrorMessage(wholeToNumerator[languageIndex]);
+            }
+          } else {
+
+            setErrorMessage(noMixed[languageIndex]);
+          }
           setTimeout(() => {
             setOpenAlert(true);
           }, timeDelay);
@@ -811,6 +714,17 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
 
   return (
     <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool}>
+      <Grid className={classes.spaceGrid} />
+      {questions[topicIndex][learningToolIndex].length > 0 && (
+        <StageButtons
+          stageText={stageText[languageIndex] + "："}
+          stages={Object.keys(questions[topicIndex][learningToolIndex])}
+          handleStageClick={handleStageClick}
+          stageState={stageOrder.stage}
+          manual={manual[languageIndex]}
+        />
+      )}
+      <Grid className={classes.spaceGrid} />
       <Grid className={classes.centerRow}>
         <Grid className={classes.formulaColumn}>
           {

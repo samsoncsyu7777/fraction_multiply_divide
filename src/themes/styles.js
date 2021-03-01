@@ -29,6 +29,9 @@ export const pagesStyles = makeStyles((theme) => ({
       width: "90vw",
     }
   },
+  spaceGrid: {
+    height: "2vw",
+  },
   verticalCenterRow: {
     display: "flex",
     alignItems: "center",
