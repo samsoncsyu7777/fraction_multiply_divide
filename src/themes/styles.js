@@ -1,5 +1,4 @@
 import { makeStyles} from "@material-ui/core/styles";
-import { theme as myTheme } from "../themes/theme";
 
 export const pagesStyles = makeStyles((theme) => ({
   centerRow: {
