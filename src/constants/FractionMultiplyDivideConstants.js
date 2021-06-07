@@ -1,6 +1,7 @@
 const constants = {
   stageText: ["階段", "阶段", "Stage", "Étape"],
   manual: ["自擬題目", "自拟题目", "Personal Task", "Tâche personnelle"],
+  exam: ["應用題及模擬試卷", "应用题及模拟试卷", "Text Questions and Mock Exam", "Questions textuelles et examen simulé"],
   okButtonText: [
     "輸入", "約簡", "完成",
     "输入", "约简", "完成",

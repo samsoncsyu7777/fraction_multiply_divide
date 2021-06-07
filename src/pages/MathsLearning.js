@@ -179,6 +179,7 @@ function MathsLearning(props) {
       </Grid>
       <FractionMultiplyDivide
         languageIndex={languageIndex}
+        bibleVersionIndex={bibleVersionIndex}
         topic={topics[languageIndex * numberOfTopics + topicIndex]}
         learningTool={learningTools[(languageIndex * numberOfTopics + topicIndex) * numberOfLearningTools + learningToolIndex]}
         topicToolIndex={{topicIndex: topicIndex, learningToolIndex: learningToolIndex}}

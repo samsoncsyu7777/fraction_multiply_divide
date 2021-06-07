@@ -1,35 +1,67 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Typography,
-  Button,
-  Box
-} from "@material-ui/core";
+import { Grid, Typography, Button, Box } from "@material-ui/core";
 import { AlertSnackbar } from "../components/AlertComponents";
 import { MyFrame } from "../components/HeadingComponents";
 import { MyKeypad } from "../components/KeypadComponents";
 import { FractionFormula } from "../components/FractionFormulaComponents";
 import { StageButtons } from "../components/StageComponents";
+import { Login } from "../components/LoginComponents";
 import questions from "../questions/Questions";
 import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";
 import constants from "../constants/FractionMultiplyDivideConstants";
-import ForwardRoundedIcon from '@material-ui/icons/ForwardRounded';
+import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";
 import { pagesStyles } from "../themes/styles";
 import { theme as myTheme } from "../themes/theme";
+import "katex/dist/katex.min.css"; //
+import { InlineMath, BlockMath } from "react-katex"; //
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  FacebookShareCount,
+  InstapaperShareButton,
+  InstapaperIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+  TwitterShareButton,
+  TwitterIcon
+} from "react-share"; //
+import publicIp from "react-public-ip";//
+import axios from 'axios';//
+
+const style = {
+  background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+  borderRadius: 3,
+  border: 0,
+  color: "white",
+  padding: "0 30px",
+  boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)"
+};
 
 //×÷👍👍🏻
-export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, topicToolIndex }) => {
+export const FractionMultiplyDivide = ({
+  languageIndex,
+  bibleVersionIndex,
+  topic,
+  learningTool,
+  topicToolIndex
+}) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [severity, setSeverity] = useState("error");
   const [formulaFocusedIndex, setFormulaFocusedIndex] = useState(0);
   const [completed, setCompleted] = useState(false);
-  const [fractionLinesArray, setFractionLinesArray] = useState([[["", 0, 0, 0, 0, 0], ["", 0, 0, 0, 0, 0]]]);
+  const [fractionLinesArray, setFractionLinesArray] = useState([
+    [
+      ["", 0, 0, 0, 0, 0],
+      ["", 0, 0, 0, 0, 0]
+    ]
+  ]);
   const [fractionPositionIndex, setFractionPositionIndex] = useState(0);
   const [fractionPartIndex, setFractionPartIndex] = useState(3);
   const [okButtonStage, setOkButtonStage] = useState(0);
-  const [calculationStage, setCalculationStage] = useState(0);//0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
+  const [calculationStage, setCalculationStage] = useState(0); //0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
   const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });
+  const [isLogined, setIsLogined] = useState(false);
   const { topicIndex, learningToolIndex } = topicToolIndex;
   const timeDelay = 200;
   const primeNumbers = getPrimeNumbers();
@@ -37,6 +69,7 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
   const {
     stageText,
     manual,
+    exam,
     okButtonText,
     topics,
     wellDone,
@@ -65,8 +98,22 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     furtherReduceFactorLeft,
     furtherReduceFactorRight,
     noMixedBeforeReduction,
-    noDivisionBeforeReduction,
+    noDivisionBeforeReduction
   } = constants;
+
+  useEffect( () => {
+    async function fetchData() {
+      await axios.get("https://u5xz7.sse.codesandbox.io/todos/test")
+        .then(response => {
+        console.log(response.data);
+       });
+
+      //console.log(await publicIp.v4());
+  
+      //console.log(await publicIp.v6());
+    };
+    fetchData();
+  }, []);//
 
   useEffect(() => {
     if (questions[topicIndex][learningToolIndex].length === 0) {
@@ -103,15 +150,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     setStageOrder({ stage: stage, order: 0 });
   };
 
-  const setQuestion = (
-    stage,
-    order
-  ) => {
+  const setQuestion = (stage, order) => {
     let tmpArray = [...questions[topicIndex][learningToolIndex][stage][order]];
     tmpArray.push(["", 0, 0, 0, 0, 0]);
-    setFractionLinesArray([
-      tmpArray
-    ]);
+    setFractionLinesArray([tmpArray]);
   };
 
   const closeAlert = (e) => {
@@ -127,7 +169,12 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     if (stageOrder.stage > -1) {
       setQuestion(stageOrder.stage, stageOrder.order);
     } else {
-      setFractionLinesArray([[["", 0, 0, 0, 0, 0], ["", 0, 0, 0, 0, 0]]]);
+      setFractionLinesArray([
+        [
+          ["", 0, 0, 0, 0, 0],
+          ["", 0, 0, 0, 0, 0]
+        ]
+      ]);
     }
   }
 
@@ -138,7 +185,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
           stageOrder.order <
           questions[topicIndex][learningToolIndex][stageOrder.stage].length - 1
         ) {
-          setStageOrder({ stage: stageOrder.stage, order: stageOrder.order + 1 });
+          setStageOrder({
+            stage: stageOrder.stage,
+            order: stageOrder.order + 1
+          });
         } else if (
           stageOrder.stage <
           questions[topicIndex][learningToolIndex].length - 1
@@ -175,15 +225,23 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         }, timeDelay);
         return false;
       }
-      if (fractionLinesArray[index][i][1] == "" && fractionLinesArray[index][i][3] == "" & fractionLinesArray[index][i][4] == "") {
+      if (
+        fractionLinesArray[index][i][1] == "" &&
+        (fractionLinesArray[index][i][3] == "") &
+          (fractionLinesArray[index][i][4] == "")
+      ) {
         setErrorMessage(noNumber[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
         return false;
       }
-      if ((fractionLinesArray[index][i][3] == "" && fractionLinesArray[index][i][4] != "")
-        || (fractionLinesArray[index][i][3] != "" && fractionLinesArray[index][i][4] == "")) {
+      if (
+        (fractionLinesArray[index][i][3] == "" &&
+          fractionLinesArray[index][i][4] != "") ||
+        (fractionLinesArray[index][i][3] != "" &&
+          fractionLinesArray[index][i][4] == "")
+      ) {
         setErrorMessage(fractionHasBoth[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
@@ -210,7 +268,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
   function noImproperFractionCheck(index, checkValueNeeded) {
     var i;
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
-      if (fractionLinesArray[index][i][3] >= fractionLinesArray[index][i][4] && fractionLinesArray[index][i][4] > 0) {
+      if (
+        fractionLinesArray[index][i][3] >= fractionLinesArray[index][i][4] &&
+        fractionLinesArray[index][i][4] > 0
+      ) {
         if (!checkValueNeeded && index > 0) {
           addLine();
           return false;
@@ -238,7 +299,13 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         if (integerPart == "") {
           integerPart = 0;
         }
-        if (fractionLinesArray[index][i][1] != parseInt(fractionLinesArray[index - 1][i][3] / fractionLinesArray[index - 1][i][4])) {
+        if (
+          fractionLinesArray[index][i][1] !=
+          parseInt(
+            fractionLinesArray[index - 1][i][3] /
+              fractionLinesArray[index - 1][i][4]
+          )
+        ) {
           setErrorMessage(incorrectWhole[languageIndex]);
           setTimeout(() => {
             setOpenAlert(true);
@@ -247,7 +314,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         }
 
         if (fractionLinesArray[index - 1][i][4] == 1) {
-          if (fractionLinesArray[index][i][3] > 0 || fractionLinesArray[index][i][4] > 0) {
+          if (
+            fractionLinesArray[index][i][3] > 0 ||
+            fractionLinesArray[index][i][4] > 0
+          ) {
             setErrorMessage(wholeNoFraction[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
@@ -255,14 +325,21 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
             return false;
           }
         } else {
-          if (fractionLinesArray[index][i][4] != fractionLinesArray[index - 1][i][4]) {
+          if (
+            fractionLinesArray[index][i][4] !=
+            fractionLinesArray[index - 1][i][4]
+          ) {
             setErrorMessage(sameDenominator[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
             }, timeDelay);
             return false;
           }
-          if (fractionLinesArray[index][i][3] != fractionLinesArray[index - 1][i][3] % fractionLinesArray[index - 1][i][4]) {
+          if (
+            fractionLinesArray[index][i][3] !=
+            fractionLinesArray[index - 1][i][3] %
+              fractionLinesArray[index - 1][i][4]
+          ) {
             setErrorMessage(numeratorFromImproper[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
@@ -300,13 +377,18 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
       if (fractionLinesArray[index][i][1] != "") {
         if (index != 0 && calculationStage == 0) {
-
-          if (!(fractionLinesArray[index - 1][i][3] > 0) && !(fractionLinesArray[index - 1][i][4] > 0)) {
-            if (fractionLinesArray[index][i][3] != fractionLinesArray[index - 1][i][1] || fractionLinesArray[index][i][4] != 1) {
+          if (
+            !(fractionLinesArray[index - 1][i][3] > 0) &&
+            !(fractionLinesArray[index - 1][i][4] > 0)
+          ) {
+            if (
+              fractionLinesArray[index][i][3] !=
+                fractionLinesArray[index - 1][i][1] ||
+              fractionLinesArray[index][i][4] != 1
+            ) {
               setErrorMessage(wholeToNumerator[languageIndex]);
             }
           } else {
-
             setErrorMessage(noMixed[languageIndex]);
           }
           setTimeout(() => {
@@ -323,7 +405,9 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
       noDivisionCheck(index, false);
       return true;
     } else if (checkValueNeeded) {
-      if (fractionLinesArray[index].length != fractionLinesArray[index - 1].length) {
+      if (
+        fractionLinesArray[index].length != fractionLinesArray[index - 1].length
+      ) {
         setErrorMessage(sameNumberOfFractions[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
@@ -331,17 +415,29 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         return false;
       }
       for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
-        if (fractionLinesArray[index][i][0] != fractionLinesArray[index - 1][i][0]) {
+        if (
+          fractionLinesArray[index][i][0] != fractionLinesArray[index - 1][i][0]
+        ) {
           setErrorMessage(sameOperators[languageIndex]);
           setTimeout(() => {
             setOpenAlert(true);
           }, timeDelay);
           return false;
         }
-        var calculatedNumerator = fractionLinesArray[index - 1][i][3] + fractionLinesArray[index - 1][i][1] * fractionLinesArray[index - 1][i][4];
+        var calculatedNumerator =
+          fractionLinesArray[index - 1][i][3] +
+          fractionLinesArray[index - 1][i][1] *
+            fractionLinesArray[index - 1][i][4];
         //whole number management
-        if (!(fractionLinesArray[index - 1][i][3] > 0) && !(fractionLinesArray[index - 1][i][4] > 0)) {
-          if (fractionLinesArray[index][i][3] != fractionLinesArray[index - 1][i][1] || fractionLinesArray[index][i][4] != 1) {
+        if (
+          !(fractionLinesArray[index - 1][i][3] > 0) &&
+          !(fractionLinesArray[index - 1][i][4] > 0)
+        ) {
+          if (
+            fractionLinesArray[index][i][3] !=
+              fractionLinesArray[index - 1][i][1] ||
+            fractionLinesArray[index][i][4] != 1
+          ) {
             setErrorMessage(wholeToNumerator[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
@@ -356,7 +452,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
             }, timeDelay);
             return false;
           }
-          if (fractionLinesArray[index][i][4] != fractionLinesArray[index - 1][i][4]) {
+          if (
+            fractionLinesArray[index][i][4] !=
+            fractionLinesArray[index - 1][i][4]
+          ) {
             setErrorMessage(sameDenominator[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
@@ -395,7 +494,9 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
       //simplifiedCheck(index, false);
       return true;
     } else if (checkValueNeeded) {
-      if (fractionLinesArray[index].length != fractionLinesArray[index - 1].length) {
+      if (
+        fractionLinesArray[index].length != fractionLinesArray[index - 1].length
+      ) {
         setErrorMessage(sameNumberOfFractions[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
@@ -411,8 +512,12 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
           return false;
         }
         if (i == 0 || fractionLinesArray[index - 1][i][0] == "×") {
-          if (fractionLinesArray[index][i][3] != fractionLinesArray[index - 1][i][3]
-            || fractionLinesArray[index][i][4] != fractionLinesArray[index - 1][i][4]) {
+          if (
+            fractionLinesArray[index][i][3] !=
+              fractionLinesArray[index - 1][i][3] ||
+            fractionLinesArray[index][i][4] !=
+              fractionLinesArray[index - 1][i][4]
+          ) {
             setErrorMessage(sameMultipliers[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
@@ -420,8 +525,12 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
             return false;
           }
         } else if (fractionLinesArray[index - 1][i][0] == "÷") {
-          if (fractionLinesArray[index][i][3] != fractionLinesArray[index - 1][i][4]
-            || fractionLinesArray[index][i][4] != fractionLinesArray[index - 1][i][3]) {
+          if (
+            fractionLinesArray[index][i][3] !=
+              fractionLinesArray[index - 1][i][4] ||
+            fractionLinesArray[index][i][4] !=
+              fractionLinesArray[index - 1][i][3]
+          ) {
             setErrorMessage(divisorsUpDown[languageIndex]);
             setTimeout(() => {
               setOpenAlert(true);
@@ -440,7 +549,6 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
 
   function noMultiplicationCheck(index, checkValueNeeded) {
     if (checkValueNeeded) {
-
       if (fractionLinesArray[index].length != 2) {
         setErrorMessage(oneFractionOnly[languageIndex]);
         setTimeout(() => {
@@ -455,7 +563,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         numerator *= fractionLinesArray[index - 1][i][3];
         denominator *= fractionLinesArray[index - 1][i][4];
       }
-      if (fractionLinesArray[index][0][3] != numerator || fractionLinesArray[index][0][4] != denominator) {
+      if (
+        fractionLinesArray[index][0][3] != numerator ||
+        fractionLinesArray[index][0][4] != denominator
+      ) {
         setErrorMessage(productOfFractions[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
@@ -463,7 +574,10 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         return false;
       }
       for (i = 0; i < primeNumbers.length; i++) {
-        if (fractionLinesArray[index][0][3] % primeNumbers[i] == 0 && fractionLinesArray[index][0][4] % primeNumbers[i] == 0) {
+        if (
+          fractionLinesArray[index][0][3] % primeNumbers[i] == 0 &&
+          fractionLinesArray[index][0][4] % primeNumbers[i] == 0
+        ) {
           setErrorMessage(simplifyIt[languageIndex]);
           setTimeout(() => {
             setOpenAlert(true);
@@ -484,10 +598,16 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
   }
 
   function enterCheck() {
-    if (!fractionOrIntegerCheck(formulaFocusedIndex)) { return };
+    if (!fractionOrIntegerCheck(formulaFocusedIndex)) {
+      return;
+    }
     if (formulaFocusedIndex == 0) {
-      if (!singleNumberCheck(formulaFocusedIndex)) { return };
-      if (!noImproperFractionCheck(formulaFocusedIndex, false)) { return };
+      if (!singleNumberCheck(formulaFocusedIndex)) {
+        return;
+      }
+      if (!noImproperFractionCheck(formulaFocusedIndex, false)) {
+        return;
+      }
       noMixedFractionCheck(formulaFocusedIndex, false);
       //setOkButtonStage(1);
     } else {
@@ -531,9 +651,13 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     var i;
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
       if (fractionLinesArray[index][i][2] > 0) {
-        if (fractionLinesArray[index][i][3] % fractionLinesArray[index][i][2] == 0) {
+        if (
+          fractionLinesArray[index][i][3] % fractionLinesArray[index][i][2] ==
+          0
+        ) {
           newNumerator *= fractionLinesArray[index][i][2];
-          numeratorDeduceFactor *= fractionLinesArray[index][i][3] / fractionLinesArray[index][i][2];
+          numeratorDeduceFactor *=
+            fractionLinesArray[index][i][3] / fractionLinesArray[index][i][2];
         } else {
           setErrorMessage(beAFactorOfNumerator[languageIndex]);
           setTimeout(() => {
@@ -545,9 +669,13 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         newNumerator *= fractionLinesArray[index][i][3];
       }
       if (fractionLinesArray[index][i][5] > 0) {
-        if (fractionLinesArray[index][i][4] % fractionLinesArray[index][i][5] == 0) {
+        if (
+          fractionLinesArray[index][i][4] % fractionLinesArray[index][i][5] ==
+          0
+        ) {
           newDenominator *= fractionLinesArray[index][i][5];
-          denominatorDeduceFactor *= fractionLinesArray[index][i][4] / fractionLinesArray[index][i][5];
+          denominatorDeduceFactor *=
+            fractionLinesArray[index][i][4] / fractionLinesArray[index][i][5];
         } else {
           setErrorMessage(beAFactorOfDenominator[languageIndex]);
           setTimeout(() => {
@@ -567,24 +695,48 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
       return false;
     }
     for (i = 0; i < primeNumbers.length; i++) {
-      if (newNumerator % primeNumbers[i] == 0 && newDenominator % primeNumbers[i] == 0) {
-        setErrorMessage(furtherReduceFactorLeft[languageIndex] + primeNumbers[i] + furtherReduceFactorRight[languageIndex]);
+      if (
+        newNumerator % primeNumbers[i] == 0 &&
+        newDenominator % primeNumbers[i] == 0
+      ) {
+        setErrorMessage(
+          furtherReduceFactorLeft[languageIndex] +
+            primeNumbers[i] +
+            furtherReduceFactorRight[languageIndex]
+        );
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
         return false;
       } else {
-        if (primeNumbers[i] ** 2 > newNumerator && primeNumbers[i] ** 2 > newDenominator) {
+        if (
+          primeNumbers[i] ** 2 > newNumerator &&
+          primeNumbers[i] ** 2 > newDenominator
+        ) {
           i = primeNumbers.length;
         }
       }
     }
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
       if (fractionLinesArray[index][i][2] > 0) {
-        setPartValue(fractionLinesArray[index][i][2], i, 3, false, false, false);
+        setPartValue(
+          fractionLinesArray[index][i][2],
+          i,
+          3,
+          false,
+          false,
+          false
+        );
       }
       if (fractionLinesArray[index][i][5] > 0) {
-        setPartValue(fractionLinesArray[index][i][5], i, 4, false, false, false);
+        setPartValue(
+          fractionLinesArray[index][i][5],
+          i,
+          4,
+          false,
+          false,
+          false
+        );
       }
     }
     setCalculationStage(3);
@@ -594,7 +746,6 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     }
     addLine();
     return true;
-
   }
 
   const okClick = (e) => {
@@ -627,14 +778,32 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
     var pushLine = false;
     var pushPosition = false;
     if (formulaFocusedIndex == fractionLinesArray.length - 1) {
-      if ((["×", "÷"].includes(key) && fractionPartIndex == 0 && fractionLinesArray[formulaFocusedIndex][fractionPositionIndex][fractionPartIndex] == "")
-        || (!["×", "÷"].includes(key) && fractionPartIndex != 0 && (fractionLinesArray[formulaFocusedIndex][fractionPositionIndex][fractionPartIndex] != "" || key != "0"))
-        || key == "<-") {
-        if (["×", "÷"].includes(key) && fractionPositionIndex == fractionLinesArray[formulaFocusedIndex].length - 1) {
+      if (
+        (["×", "÷"].includes(key) &&
+          fractionPartIndex == 0 &&
+          fractionLinesArray[formulaFocusedIndex][fractionPositionIndex][
+            fractionPartIndex
+          ] == "") ||
+        (!["×", "÷"].includes(key) &&
+          fractionPartIndex != 0 &&
+          (fractionLinesArray[formulaFocusedIndex][fractionPositionIndex][
+            fractionPartIndex
+          ] != "" ||
+            key != "0")) ||
+        key == "<-"
+      ) {
+        if (
+          ["×", "÷"].includes(key) &&
+          fractionPositionIndex ==
+            fractionLinesArray[formulaFocusedIndex].length - 1
+        ) {
           pushPosition = true;
         }
         var tmpFractionLinesArray = [...fractionLinesArray];
-        var prevValue = tmpFractionLinesArray[formulaFocusedIndex][fractionPositionIndex][fractionPartIndex];
+        var prevValue =
+          tmpFractionLinesArray[formulaFocusedIndex][fractionPositionIndex][
+            fractionPartIndex
+          ];
         if (key == "<-") {
           if (fractionPartIndex == 0) {
             prevValue = "";
@@ -650,17 +819,32 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
         } else {
           prevValue += key;
         }
-        if (fractionPartIndex != 0) {//
-          prevValue = parseInt(prevValue);//
+        if (fractionPartIndex != 0) {
+          //
+          prevValue = parseInt(prevValue); //
         }
-        setPartValue(prevValue, fractionPositionIndex, fractionPartIndex, pushLine, pushPosition, false);
+        setPartValue(
+          prevValue,
+          fractionPositionIndex,
+          fractionPartIndex,
+          pushLine,
+          pushPosition,
+          false
+        );
       }
     }
-  }
+  };
 
-  function setPartValue(value, positionIndex, partIndex, pushLine, pushPosition, popPosition) {
+  function setPartValue(
+    value,
+    positionIndex,
+    partIndex,
+    pushLine,
+    pushPosition,
+    popPosition
+  ) {
     var nullPosition = false;
-    setFractionLinesArray(prevLines => {
+    setFractionLinesArray((prevLines) => {
       var tmpPrevLines = prevLines.map((line, lIndex) => {
         if (lIndex == formulaFocusedIndex) {
           var tmpLine = line.map((position, pIndex) => {
@@ -671,17 +855,25 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
                 } else {
                   return part;
                 }
-              })
-              if (pIndex == fractionLinesArray[formulaFocusedIndex].length - 2 && pIndex > 0) {
-                if (changedPosition[0] == "" && !(changedPosition[1] > 0) && !(changedPosition[3] > 0) && !(changedPosition[4] > 0)) {
+              });
+              if (
+                pIndex == fractionLinesArray[formulaFocusedIndex].length - 2 &&
+                pIndex > 0
+              ) {
+                if (
+                  changedPosition[0] == "" &&
+                  !(changedPosition[1] > 0) &&
+                  !(changedPosition[3] > 0) &&
+                  !(changedPosition[4] > 0)
+                ) {
                   nullPosition = true;
                 }
               }
-              return changedPosition
+              return changedPosition;
             } else {
               return position;
             }
-          })
+          });
           if (pushPosition) {
             tmpLine.push(["", 0, 0, 0, 0, 0]);
           }
@@ -689,27 +881,36 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
             tmpLine.pop();
           }
           return tmpLine;
-
         } else {
           return line;
         }
-      })
+      });
       if (pushLine) {
-        tmpPrevLines.push([["", 0, 0, 0, 0, 0], ["", 0, 0, 0, 0, 0]]);
+        tmpPrevLines.push([
+          ["", 0, 0, 0, 0, 0],
+          ["", 0, 0, 0, 0, 0]
+        ]);
       }
-      return tmpPrevLines
+      return tmpPrevLines;
     });
   }
 
   const handlePartClick = (e, positionIndex, partIndex) => {
     //in simplification, only small boxes can be focused
-    if ((okButtonStage == 2 && (partIndex == 2 || partIndex == 5)) || okButtonStage != 2) {
+    if (
+      (okButtonStage == 2 && (partIndex == 2 || partIndex == 5)) ||
+      okButtonStage != 2
+    ) {
       setFractionPositionIndex(positionIndex);
       setFractionPartIndex(partIndex);
     }
-  }
+  };
 
-  const classes = pagesStyles();
+  const classes = pagesStyles(); //
+  const testText = "aaa ^\\frac{2}{3}^ bbb ^2\\frac{4}{5}^ ccc"; //
+  const testArray = testText.split("^"); //
+  const shareUrl =
+    "https://u2snfukih9dkcrgrzex8iq-on.drv.tw/MathsFractionMultiplyDivide/?lang=0&ver=0";
 
   return (
     <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool}>
@@ -721,64 +922,107 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
           handleStageClick={handleStageClick}
           stageState={stageOrder.stage}
           manual={manual[languageIndex]}
+          exam={exam[languageIndex]}
         />
       )}
       <Grid className={classes.spaceGrid} />
+
+      <FacebookShareButton
+        children={<FacebookIcon />}
+        url={shareUrl}
+        quote="samson's fraction M & D"
+        onClick={() => console.log("click")}
+      />
+
+      <Typography>
+        {testArray.map((text, index) => {
+          return index % 2 == 0 ? (
+            <a>{text}</a>
+          ) : (
+            <InlineMath>{text}</InlineMath>
+          );
+        })}
+      </Typography>
+
       <Grid className={classes.centerRow}>
-        <Grid className={classes.formulaColumn}>
-          {
-            fractionLinesArray.map((formula, index) => {
-              return <Grid key={index} className={`${classes.verticalCenterRow} ${classes.commonPadding}`}>
+        {stageOrder.stage == -2 && !isLogined ? 
+          <Grid className={classes.formulaColumn}>
+            <Login
+                languageIndex={languageIndex}
+                bibleVersionIndex={bibleVersionIndex}
+                isLogined={isLogined}
+                setIsLogined={setIsLogined}
+            />
+          </Grid>
+          :
+          <Grid className={classes.formulaColumn}>
+          {fractionLinesArray.map((formula, index) => {
+            return (
+              <Grid
+                key={index}
+                className={`${classes.verticalCenterRow} ${classes.commonPadding}`}
+              >
                 <Typography
                   className={classes.formulaLine}
                   style={{ opacity: index == 0 ? 0 : 1 }}
-                >=</Typography>
+                >
+                  =
+                </Typography>
                 <Box
                   className={`${classes.formulaLine} ${classes.formulaBox}`}
                   border={1}
-                  borderColor={(index == formulaFocusedIndex) ? myTheme.color.myMagenta : myTheme.color.blue}
+                  borderColor={
+                    index == formulaFocusedIndex
+                      ? myTheme.color.myMagenta
+                      : myTheme.color.blue
+                  }
                   style={{
-                    borderWidth: (index == formulaFocusedIndex) ? 3 : 1
+                    borderWidth: index == formulaFocusedIndex ? 3 : 1
                   }}
                 >
                   <FractionFormula
                     formula={formula}
                     handlePartClick={handlePartClick}
-                    isFocusedLine={(formulaFocusedIndex == index)}
+                    isFocusedLine={formulaFocusedIndex == index}
                     positionIndex={fractionPositionIndex}
                     partIndex={fractionPartIndex}
                     learningToolIndex={learningToolIndex}
-                    showSmallInput={(okButtonStage == 2) && (index == formulaFocusedIndex)}
+                    showSmallInput={
+                      okButtonStage == 2 && index == formulaFocusedIndex
+                    }
                     calculationStage={calculationStage}
                     lineIndex={index}
                   />
                 </Box>
                 <Grid>
-                  {
-                    index == formulaFocusedIndex &&
+                  {index == formulaFocusedIndex && (
                     <Button
                       className={classes.okButton}
                       variant="contained"
                       onClick={okClick}
                       color="primary"
-                    >{okButtonText[languageIndex * 3 + okButtonStage]}</Button>
-                  }
-                  {
-                    index == fractionLinesArray.length - 1
-                    && (okButtonStage == 1 || completed)
-                    &&
-                    <Button
-                      className={classes.okButton}
-                      variant="contained"
-                      onClick={resetClick}
-                      color="primary"
-                    ><ForwardRoundedIcon className={classes.resetArrow} /></Button>
-                  }
+                    >
+                      {okButtonText[languageIndex * 3 + okButtonStage]}
+                    </Button>
+                  )}
+                  {index == fractionLinesArray.length - 1 &&
+                    (okButtonStage == 1 || completed) && (
+                      <Button
+                        className={classes.okButton}
+                        variant="contained"
+                        onClick={resetClick}
+                        color="primary"
+                      >
+                        <ForwardRoundedIcon className={classes.resetArrow} />
+                      </Button>
+                    )}
                 </Grid>
               </Grid>
-            })
-          }
+            );
+          })}
         </Grid>
+        }
+        
       </Grid>
       <MyKeypad
         handleClick={handleKeypadClick}
@@ -793,4 +1037,4 @@ export const FractionMultiplyDivide = ({ languageIndex, topic, learningTool, top
       />
     </MyFrame>
   );
-}
+};

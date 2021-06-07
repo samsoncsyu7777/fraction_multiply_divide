@@ -16,6 +16,9 @@ const stageButtonsStyles = makeStyles(() =>
       fontSize: 20,
       color: myTheme.color.myBlue,
     },
+    buttonText: {
+      fontSize: 20,
+    },
   })
 );
 
@@ -25,6 +28,7 @@ export const StageButtons = ({
   handleStageClick,
   stageState,
   manual,
+  exam
 }) => {
   const classes = stageButtonsStyles();
   const buttonsInLine = 7;
@@ -50,7 +54,7 @@ export const StageButtons = ({
               index >= line * buttonsInLine && index < (line + 1) * buttonsInLine && <Button
                 key={parseInt(stage)}
                 color={color}
-                style={{ backgroundColor: bgColor }}
+                style={{ backgroundColor: bgColor, height: 45 }}
                 onClick={() => handleStageClick(parseInt(stage))}
               >
                 {parseInt(stage) + 1}
@@ -62,13 +66,28 @@ export const StageButtons = ({
         <Button
           size="small"
           variant="outlined"
+          className={classes.buttonText}
           color={stageState === -1 ? "secondary" : "primary"}
           style={{
             backgroundColor: stageState === -1 ? myTheme.color.myYellow : "",
+            height: 45
           }}
           onClick={() => handleStageClick(-1)}
         >
           {manual}
+        </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          className={classes.buttonText}
+          color={stageState === -2 ? "secondary" : "primary"}
+          style={{
+            backgroundColor: stageState === -2 ? myTheme.color.myYellow : "",
+            height: 45
+          }}
+          onClick={() => handleStageClick(-2)}
+        >
+          {exam}
         </Button>
       </Grid>
     </Grid>
