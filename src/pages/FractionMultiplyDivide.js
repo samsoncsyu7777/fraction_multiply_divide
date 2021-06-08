@@ -6,27 +6,13 @@ import { MyKeypad } from "../components/KeypadComponents";
 import { FractionFormula } from "../components/FractionFormulaComponents";
 import { StageButtons } from "../components/StageComponents";
 import { Login } from "../components/LoginComponents";
+import { TextQuestion } from "../components/TextQuestionComponents";
 import questions from "../questions/Questions";
 import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";
 import constants from "../constants/FractionMultiplyDivideConstants";
 import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";
 import { pagesStyles } from "../themes/styles";
 import { theme as myTheme } from "../themes/theme";
-import "katex/dist/katex.min.css"; //
-import { InlineMath, BlockMath } from "react-katex"; //
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  FacebookShareCount,
-  InstapaperShareButton,
-  InstapaperIcon,
-  LinkedinShareButton,
-  LinkedinIcon,
-  TwitterShareButton,
-  TwitterIcon
-} from "react-share"; //
-import publicIp from "react-public-ip";//
-import axios from 'axios';//
 
 const style = {
   background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
@@ -43,7 +29,9 @@ export const FractionMultiplyDivide = ({
   bibleVersionIndex,
   topic,
   learningTool,
-  topicToolIndex
+  topicToolIndex,
+  //isLogined,
+  //setIsLogined
 }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -101,32 +89,22 @@ export const FractionMultiplyDivide = ({
     noDivisionBeforeReduction
   } = constants;
 
-  useEffect( () => {
-    async function fetchData() {
-      await axios.get("https://u5xz7.sse.codesandbox.io/todos/test")
-        .then(response => {
-        console.log(response.data);
-       });
-
-      //console.log(await publicIp.v4());
-  
-      //console.log(await publicIp.v6());
-    };
-    fetchData();
-  }, []);//
-
   useEffect(() => {
-    if (questions[topicIndex][learningToolIndex].length === 0) {
-      if (stageOrder === { stage: -1, order: 0 }) {
-        resetDefault();
-      } else {
-        setStageOrder({ stage: -1, order: 0 });
-      }
+    if (isLogined) {
+      setStageOrder({ stage: -2, order: 0 });
     } else {
-      if (stageOrder === { stage: 0, order: 0 }) {
-        resetDefault();
+      if (questions[topicIndex][learningToolIndex].length === 0) {
+        if (stageOrder === { stage: -1, order: 0 }) {
+          resetDefault();
+        } else {
+          setStageOrder({ stage: -1, order: 0 });
+        }
       } else {
-        setStageOrder({ stage: 0, order: 0 });
+        if (stageOrder === { stage: 0, order: 0 }) {
+          resetDefault();
+        } else {
+          setStageOrder({ stage: 0, order: 0 });
+        }
       }
     }
   }, [topicToolIndex]);
@@ -147,7 +125,9 @@ export const FractionMultiplyDivide = ({
   }, [fractionLinesArray]);
 
   const handleStageClick = (stage) => {
-    setStageOrder({ stage: stage, order: 0 });
+    if (!isLogined) {
+      setStageOrder({ stage: stage, order: 0 });
+    }
   };
 
   const setQuestion = (stage, order) => {
@@ -907,10 +887,7 @@ export const FractionMultiplyDivide = ({
   };
 
   const classes = pagesStyles(); //
-  const testText = "aaa ^\\frac{2}{3}^ bbb ^2\\frac{4}{5}^ ccc"; //
-  const testArray = testText.split("^"); //
-  const shareUrl =
-    "https://u2snfukih9dkcrgrzex8iq-on.drv.tw/MathsFractionMultiplyDivide/?lang=0&ver=0";
+  const textQuestion = "多少個 ^\\frac{13}{7}^ 相加後的總和是50?相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是相加後的總和是";//
 
   return (
     <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool}>
@@ -927,25 +904,12 @@ export const FractionMultiplyDivide = ({
       )}
       <Grid className={classes.spaceGrid} />
 
-      <FacebookShareButton
-        children={<FacebookIcon />}
-        url={shareUrl}
-        quote="samson's fraction M & D"
-        onClick={() => console.log("click")}
-      />
-
-      <Typography>
-        {testArray.map((text, index) => {
-          return index % 2 == 0 ? (
-            <a>{text}</a>
-          ) : (
-            <InlineMath>{text}</InlineMath>
-          );
-        })}
-      </Typography>
-
+      { 
+        isLogined && 
+        <TextQuestion textQuestion={textQuestion}/>
+      }
       <Grid className={classes.centerRow}>
-        {stageOrder.stage == -2 && !isLogined ? 
+        {stageOrder.stage === -2 && !isLogined ? 
           <Grid className={classes.formulaColumn}>
             <Login
                 languageIndex={languageIndex}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ButtonGroup, Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { theme as myTheme, theme } from "../themes/theme";
+import { theme as myTheme } from "../themes/theme";
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import axios from "axios";
 
 const loginStyles = makeStyles(() =>
   createStyles({
@@ -14,6 +15,11 @@ const loginStyles = makeStyles(() =>
     verticalCenterRow: {
       display: "flex",
       alignItems: "center"
+    },
+    feature: {
+      fontSize: 28,
+      color: myTheme.color.myBrown,
+      margin: "1vh"
     },
     introduction: {
       fontSize: 20,
@@ -37,12 +43,21 @@ const loginStyles = makeStyles(() =>
       borderWidth: 3,
       margin: 10
     },
+    remainTime: {
+      fontSize: 20,
+      color: myTheme.color.myBlue
+    },
     margin: {
+      marginTop: "2vh",
       marginBottom: "2vh"
+    },
+    marginTop: {
+      marginTop: "2vh"
     },
     research: {
       fontSize: 24,
-      marginTop: "2vh"
+      marginTop: "2vh",
+      color: myTheme.color.myGreen
     },
     researchLink: {
       fontSize: 20,
@@ -54,7 +69,19 @@ const loginStyles = makeStyles(() =>
     },
     waitingText: {
       fontSize: 20,
-      color: myTheme.color.myMagenta
+      color: myTheme.color.myBrown
+    },
+    login: {
+      fontSize: 24
+    },
+    input: {
+      width: 300,
+      height: 28
+    },
+    loginButton: {
+      fontSize: 20,
+      color: myTheme.color.myWhite,
+      backgroundColor: myTheme.color.myBlue
     }
   })
 );
@@ -67,7 +94,12 @@ export const Login = ({
 }) => {
   const [isShared, setIsShared] = useState(false);
   const [isClickFacebook, setIsClickFacebook] = useState(false);
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginState, setLoginState] = useState("unclick");
 
+  const unit = "501";
+  const feature = ["特點", "特点", "Features", "Caractéristiques"];
   const introduction = [
     "針對學習盲點，對同學的列式、步驟和答案進行分析，即時作出回饋和概念解釋，同學完成試卷後，末頁將列出同學需注意的所有學習盲點和完成所需時間。",
     "针对学习盲点，对同学的列式、步骤和答案进行分析，即时作出回馈和概念解释，同学完成试卷后，末页将列出同学需注意的所有学习盲点和完成所需时间。",
@@ -128,6 +160,12 @@ export const Login = ({
     "https://buy.stripe.com/bIY8zq3XY6BHgi48wO",
     "https://buy.stripe.com/7sI9Du8ee9NT7Ly3cv"
   ];
+  const remainTime = [
+    "(半年內登入不同單元的模擬試卷3次)",
+    "(半年内登入不同单元的模拟试卷3次)",
+    "(Login mock exam papers of different units 3 times within half a year)",
+    "(Connectez-vous aux copies d'examen simulé de différentes unités 3 fois en six mois)"
+  ];
   const facebookShare = [
     "在Facebook分享我們的網頁，即可享六折優惠",
     "在Facebook分享我们的网页，即可享六折优惠",
@@ -146,6 +184,18 @@ export const Login = ({
     "Now waiting for your share to Facebook and confirmation from Facebook.",
     "En attendant votre partage sur Facebook et la confirmation de Facebook."
   ];
+  const email = [
+    "您付款時使用的電郵",
+    "您付款时使用的电邮",
+    "The email you used for payment",
+    "L'email que vous avez utilisé pour le paiement"
+  ];
+  const passwordHint = [
+    "您付款時使用的信用卡最後4個數字",
+    "您付款时使用的信用卡最后4个数字",
+    "The last 4 digits of the credit card you used for payment",
+    "Les 4 derniers chiffres de la carte de crédit que vous avez utilisée pour le paiement"
+  ];
   const shareUrl =
     "https://u2snfukih9dkcrgrzex8iq-on.drv.tw/MathsFractionMultiplyDivide/?lang=" +
     languageIndex +
@@ -156,12 +206,52 @@ export const Login = ({
     setIsClickFacebook(true);
   };
 
+  const userChange = (e) => {
+    setUser(e.target.value);
+  };
+
+  const passwordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const submit = () => {
+    if (loginState === "unclick") {
+      setLoginState("click");
+      async function fetchData() {
+        await axios
+          .post("https://u5xz7.sse.codesandbox.io/todos/login", {
+            user: user,
+            password: password,
+            unit: unit
+          })
+          .then((response) => {
+            console.log(response.data.isValid);
+            if (response.data.isValid) {
+              setLoginState("logined");
+              setIsLogined(true);
+            } else {
+              const timer = setTimeout(() => {
+                setLoginState("failed");
+              }, 7000);
+              return () => clearTimeout(timer);
+            }
+          });
+      }
+      fetchData();
+    } else if (loginState === "failed") {
+      const timer = setTimeout(() => {
+        setLoginState("unclick");
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  };
+
   useEffect(() => {
     if (isClickFacebook) {
       const timer = setTimeout(() => {
         setIsShared(true);
         setIsClickFacebook(false);
-      }, 60000);
+      }, 54321);
       return () => clearTimeout(timer);
     }
   }, [isClickFacebook]);
@@ -175,6 +265,9 @@ export const Login = ({
         className={`${classes.centerRow} ${classes.verticalCenterRow}`}
       >
         <Grid className={classes.centerColumn}>
+          <Typography className={classes.feature}>
+            {feature[languageIndex]}:
+          </Typography>
           <Typography className={classes.introduction}>
             {introduction[languageIndex]}
           </Typography>
@@ -217,6 +310,7 @@ export const Login = ({
             {price1.map((price, index) => {
               return (
                 <Button
+                  key={index}
                   className={classes.currency}
                   variant="outlined"
                   onClick={() =>
@@ -227,10 +321,18 @@ export const Login = ({
                     )
                   }
                 >
-                  {isShared ? price2[index]: price}
+                  {isShared ? price2[index] : price}
                 </Button>
               );
             })}
+          </Grid>
+          <Grid
+            container
+            className={`${classes.centerRow} ${classes.verticalCenterRow}`}
+          >
+            <Typography className={classes.remainTime}>
+              {remainTime[languageIndex]}
+            </Typography>
           </Grid>
           <Grid
             container
@@ -255,6 +357,72 @@ export const Login = ({
             >
               <Typography className={classes.waitingText}>
                 {waitingText[languageIndex]}
+              </Typography>
+              <CircularProgress className={classes.waitingText} />
+            </Grid>
+          )}
+          <Grid
+            container
+            className={`${classes.centerRow} ${classes.verticalCenterRow} ${classes.marginTop}`}
+          >
+            <Typography className={classes.login}>Username：</Typography>
+            <input
+              className={classes.input}
+              style={{
+                fontSize: user === "" ? (languageIndex < 2 ? 14 : 10) : 20
+              }}
+              placeholder={email[languageIndex]}
+              value={user}
+              type="email"
+              id="email"
+              name="email"
+              onChange={(e) => {
+                userChange(e);
+              }}
+            />
+          </Grid>
+          <Grid
+            container
+            className={`${classes.centerRow} ${classes.verticalCenterRow} ${classes.marginTop}`}
+          >
+            <Typography className={classes.login}>Password：</Typography>
+            <input
+              className={classes.input}
+              style={{
+                fontSize: password === "" ? (languageIndex < 2 ? 14 : 10) : 20
+              }}
+              placeholder={passwordHint[languageIndex]}
+              value={password}
+              max="9999"
+              min="1000"
+              type="number"
+              onChange={(e) => {
+                passwordChange(e);
+              }}
+            />
+          </Grid>
+          <Grid
+            className={`${classes.centerRow} ${classes.verticalCenterRow} ${classes.margin}`}
+          >
+            <Button
+              variant="contained"
+              className={classes.loginButton}
+              onClick={() => {
+                submit();
+              }}
+            >
+              {loginState === "failed" ? "Try Again" : "Login"}
+            </Button>
+          </Grid>
+          {loginState !== "unclick" && (
+            <Grid
+              container
+              className={`${classes.centerRow} ${classes.verticalCenterRow} ${classes.margin}`}
+            >
+              <Typography className={classes.waitingText}>
+                {loginState === "failed"
+                  ? "Incorrect username or password"
+                  : "Loading"}
               </Typography>
               <CircularProgress className={classes.waitingText} />
             </Grid>

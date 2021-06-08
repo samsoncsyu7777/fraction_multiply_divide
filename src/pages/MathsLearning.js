@@ -108,6 +108,7 @@ function MathsLearning(props) {
   const [topicIndex, setTopicIndex] = useState(0);
   const [learningToolIndex, setLearningToolIndex] = useState(0);
   const [scriptureVerseIndex, setScriptureVerseIndex] = useState(0);
+  const [isLogined, setIsLogined] = useState(false);
 
   const numberOfBibleVersions = 2;
   const numberOfTopics = 3;
@@ -173,7 +174,7 @@ function MathsLearning(props) {
       </Grid>
       <Grid className={classes.scriptureVerseRow} >
         <Grid className={classes.scriptureVerseBorder} border={1}>
-          <img className={classes.scriptureImage} src={scriptureImages[scriptureVerseIndex]} />
+          <img className={classes.scriptureImage} alt="scripture" src={scriptureImages[scriptureVerseIndex]} />
           <Typography className={classes.scriptureVerse}>{scriptureVerses[(languageIndex * numberOfBibleVersions + bibleVersionIndex) * numberOfScriptureVerses + scriptureVerseIndex]}</Typography>
         </Grid>
       </Grid>
@@ -183,6 +184,8 @@ function MathsLearning(props) {
         topic={topics[languageIndex * numberOfTopics + topicIndex]}
         learningTool={learningTools[(languageIndex * numberOfTopics + topicIndex) * numberOfLearningTools + learningToolIndex]}
         topicToolIndex={{topicIndex: topicIndex, learningToolIndex: learningToolIndex}}
+        isLogined={isLogined}
+        setIsLogined={setIsLogined}
       />
       <Grid className={classes.prayerRow}>
         <img className={classes.prayerImage} src={prayerImage} />
