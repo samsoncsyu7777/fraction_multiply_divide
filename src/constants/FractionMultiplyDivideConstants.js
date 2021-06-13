@@ -204,6 +204,133 @@ const constants = {
     "All divisions should be changed to multiplications before reduction.",
     "Toutes les divisions devraient être changées en multiplications avant réduction."
   ],
+
+  atLeastOneFraction: [
+    "這兒需有最少一個分數。",
+    "这儿需有最少一个分数。",
+    "At least one fraction is required here.",
+    "Au moins une fraction est requise ici."
+  ],
+
+  negativeResult: [
+    "這算式的答案是負數。",
+    "这算式的答案是负数。",
+    "The answer to this formula is negative.",
+    "La réponse à cette formule est négative."
+  ],
+
+  sameWholeNumbers: [
+    "這兒整數部份應保持不變。",
+    "这儿整数部份应保持不变。",
+    "The integer part should remain unchanged here.",
+    "La partie entière doit rester inchangée ici."
+  ],
+
+  newDenominatorBeCM: [
+    "新分母應是上一行分母的公倍數。",
+    "新分母应是上一行分母的公倍数。",
+    "The new denominators should be the common multiple of the denominators of previous line.",
+    "Les nouveaux dénominateurs devraient être le multiple commun des dénominateurs de la ligne précédente."
+  ],
+
+  sameDenominatorHint: [
+    "這兒所有分數需有相同的分母。",
+    "这儿所有分数需有相同的分母。",
+    "All the fractions here should have the same denominators.",
+    "Toutes les fractions ici devraient avoir les mêmes dénominateurs."
+  ],
+
+  multiplyWithSameInteger: [
+    "擴分時，分子和分母應乘以相同的整數。",
+    "扩分时，分子和分母应乘以相同的整数。",
+    "When expanding, the numerator and denominator should be multiplied by the same integer.",
+    "Lors de l'expansion, le numérateur et le dénominateur doivent être multipliés par le même entier."
+  ],
+
+  CMToLCMHint: [
+    "這個新分母是上一行分母的公倍數，但這不是最小公倍數。",
+    "这个新分母是上一行分母的公倍数，但这不是最小公倍数。",
+    "This new denominator is the common multiple of the denominators of the previous line, but not the Least Common Multiple.",
+    "Ce nouveau dénominateur est le multiple commun des dénominateurs de la ligne précédente, mais pas le multiple le moins commun."
+  ],
+
+  denominatorInvolvedBeLCM: [
+    "從整數退位的數的分母應是所有分母的L.C.M.。",
+    "从整数退位的数的分母应是所有分母的L.C.M.。",
+    "The denominator of the number abdicated from an integer should be the L.C.M. of all denominators.",
+    "Le dénominateur du nombre abdiqué d'un entier doit être le L.C.M. de tous les dénominateurs."
+  ],
+
+  wholeNotInvolvedKeepSame: [
+    "不進行退位的整數應保持不變。",
+    "不进行退位的整数应保持不变。",
+    "The integer without abdication should remain unchanged.",
+    "L'entier sans abdication doit rester inchangé."
+  ],
+
+  fractionNotInvolvedKeepSame: [
+    "不進行退位的分數應保持不變。",
+    "不进行退位的分数应保持不变。",
+    "The fraction without abdication should remain unchanged.",
+    "La fraction sans abdication devrait rester inchangée."
+  ],
+
+  abdicatedNumerator: [
+    "新分子應是  原來分子+(整數退位×分母)。",
+    "新分子应是原来分子+（整体退位×分母）。",
+    "The new numerator should be the original numerator + (whole number abdicated × denominator).",
+    "Le nouveau numérateur doit être le numérateur d'origine + (nombre entier abdiqué × dénominateur)."
+  ],
+
+  abdicateTooMuch: [
+    "不需要從整數退位這麼多。",
+    "不需要从整数退位这么多。",
+    "There is no need to abdicate so much from the integer.",
+    "Il n'est pas nécessaire d'abdiquer autant de l'entier."
+  ],
+
+  abdicateTooLittle: [
+    "這兒需要從整數退位更多。",
+    "这儿需要从整数退位更多。",
+    "There needs to be more abdicated from the whole number.",
+    "Il doit y avoir plus d'abdication du nombre entier."
+  ],
+
+  wholeWithoutFraction: [
+    "這計算結果是一個整數，没有小數部份。",
+    "这计算结果是一个整数，没有小数部份。",
+    "This result is a whole number without a fraction part.",
+    "Ce résultat est un nombre entier sans partie fractionnaire."
+  ],
+
+  numeratorAvoidNegative: [
+    "重新排列分子的計算，以避免在計算過程中得到負數。",
+    "重新排列分子的计算，以避免在计算过程中得到负数。",
+    "Rearrange the calculation of the numerators to avoid getting negative numbers during the calculation.",
+    "Réorganisez le calcul des numérateurs pour éviter d'obtenir des nombres négatifs pendant le calcul."
+  ],
+
+  incorrectNumerator: [
+    "分子不正確，請按照運算符來計算新分子。",
+    "分子不正确，请按照运算符来计算新分子。",
+    "Incorrect numerator. Please follow the operators to calculate the new numerator.",
+    "Numérateur incorrect. Veuillez suivre les opérateurs pour calculer le nouveau numérateur."
+  ],
+
+  wholeAvoidNegative: [
+    "重新排列整數的計算，以避免在計算過程中得到負數。",
+    "重新排列整数的计算，以避免在计算过程中得到负数。",
+    "Rearrange the calculation of the whole numbers to avoid getting negative numbers during the calculation.",
+    "Réorganisez le calcul des nombres entiers pour éviter d'obtenir des nombres négatifs pendant le calcul."
+  ],
+
+  incorrectCalculatedWhole: [
+    "整數不正確，請按照運算符來計算新整數。",
+    "整数不正确，请按照运算符来计算新整数。",
+    "Incorrect whole number. Please follow the operators to calculate the new whole number.",
+    "Nombre entier incorrect. Veuillez suivre les opérateurs pour calculer le nouveau nombre entier."
+  ],
+
 };
 
 export default constants;

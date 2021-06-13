@@ -27,7 +27,7 @@ const loginStyles = makeStyles(() =>
       margin: "1vh"
     },
     explanation: {
-      fontSize: 16,
+      fontSize: 18,
       color: myTheme.color.myBlack,
       margin: "1vh"
     },
@@ -61,7 +61,8 @@ const loginStyles = makeStyles(() =>
     },
     researchLink: {
       fontSize: 20,
-      color: myTheme.color.myGreen
+      color: myTheme.color.myGreen,
+      textAlign: "left",
     },
     facebookShare: {
       fontSize: 24,
@@ -98,7 +99,7 @@ export const Login = ({
   const [password, setPassword] = useState("");
   const [loginState, setLoginState] = useState("unclick");
 
-  const unit = "501";
+  const unit = "fractionDivision";
   const feature = ["特點", "特点", "Features", "Caractéristiques"];
   const introduction = [
     "針對學習盲點，對同學的列式、步驟和答案進行分析，即時作出回饋和概念解釋，同學完成試卷後，末頁將列出同學需注意的所有學習盲點和完成所需時間。",
@@ -131,7 +132,8 @@ export const Login = ({
     "£4.50",
     "A$8.25",
     "¥40.80",
-    "NT$176.00"
+    "NT$176.00",
+    "€5.25"
   ];
   const price2 = [
     "HK$29.70",
@@ -140,7 +142,8 @@ export const Login = ({
     "£2.70",
     "A$4.95",
     "¥24.50",
-    "NT$106.00"
+    "NT$106.00",
+    "€3.15"
   ];
   const urlsArray1 = [
     "https://buy.stripe.com/5kAaHybqq7FL6HubIO",
@@ -149,7 +152,8 @@ export const Login = ({
     "https://buy.stripe.com/aEU16Y666e49aXKdQZ",
     "https://buy.stripe.com/8wM3f6dyy5xD3vifZ8",
     "https://buy.stripe.com/28o8zq7aaaRXe9W8wH",
-    "https://buy.stripe.com/bIY02U1PQ9NT7Ly5kw"
+    "https://buy.stripe.com/bIY02U1PQ9NT7Ly5kw",
+    "https://buy.stripe.com/eVa16Ydyy0dj2re14p"
   ];
   const urlsArray2 = [
     "https://buy.stripe.com/3cs5ne6661hn9TG9AN",
@@ -158,7 +162,8 @@ export const Login = ({
     "https://buy.stripe.com/28o9Du2TUaRXfe03cs",
     "https://buy.stripe.com/6oEg1S3XYe497LyaEV",
     "https://buy.stripe.com/bIY8zq3XY6BHgi48wO",
-    "https://buy.stripe.com/7sI9Du8ee9NT7Ly3cv"
+    "https://buy.stripe.com/7sI9Du8ee9NT7Ly3cv",
+    "https://buy.stripe.com/6oE2b2dyy8JPe9WdRc"
   ];
   const remainTime = [
     "(半年內登入不同單元的模擬試卷3次)",
@@ -225,14 +230,14 @@ export const Login = ({
             unit: unit
           })
           .then((response) => {
-            console.log(response.data.isValid);
+            console.log(response.data);
             if (response.data.isValid) {
               setLoginState("logined");
               setIsLogined(true);
             } else {
               const timer = setTimeout(() => {
                 setLoginState("failed");
-              }, 7000);
+              }, 5000);
               return () => clearTimeout(timer);
             }
           });
@@ -241,7 +246,7 @@ export const Login = ({
     } else if (loginState === "failed") {
       const timer = setTimeout(() => {
         setLoginState("unclick");
-      }, 10000);
+      }, 7000);
       return () => clearTimeout(timer);
     }
   };
@@ -277,7 +282,7 @@ export const Login = ({
           <Typography className={classes.research}>
             {research[languageIndex]}:
           </Typography>
-          <Typography
+          <Button
             className={classes.researchLink}
             onClick={() =>
               window.open(
@@ -289,8 +294,8 @@ export const Login = ({
           >
             1. Effect of Immediate Feedback on Math Achievement at the High
             School Level
-          </Typography>
-          <Typography
+          </Button>
+          <Button
             className={classes.researchLink}
             onClick={() =>
               window.open(
@@ -301,7 +306,7 @@ export const Login = ({
             }
           >
             2. Using online assessment to provide instant feedback
-          </Typography>
+          </Button>
           <Typography className={classes.buy}>{buy[languageIndex]}:</Typography>
           <Grid
             container

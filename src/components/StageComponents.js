@@ -2,7 +2,7 @@ import React from "react";
 import { ButtonGroup, Button, Grid, Typography } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { theme as myTheme } from "../themes/theme";
-const stageButtonsStyles = makeStyles(() =>
+const stageButtonsStyles = makeStyles((theme) =>
   createStyles({
     centerRow: {
       display: "flex",
@@ -18,6 +18,9 @@ const stageButtonsStyles = makeStyles(() =>
     },
     buttonText: {
       fontSize: 20,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: 14,
+      },
     },
   })
 );

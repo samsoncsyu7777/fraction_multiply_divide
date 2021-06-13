@@ -41,12 +41,16 @@ export const MyKeypad = ({ handleClick, topicIndex, formulaFocusedIndex }) => {
   const keypadTexts = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   const keypadColors = [myTheme.color.red, myTheme.color.orange, myTheme.color.yellow, myTheme.color.lime, myTheme.color.green, myTheme.color.cyan, myTheme.color.blue, myTheme.color.purple];
   var randomIndex = Math.floor(Math.random() * keypadColors.length);
-  if (topicIndex != 1 || (topicIndex == 1 && formulaFocusedIndex > 0)) {
+  /*if (topicIndex != 1 || (topicIndex == 1 && formulaFocusedIndex > 0)) {
     keypadTexts.push("×");    
   }
   if (topicIndex != 0) {
     keypadTexts.push("÷");    
-  }
+  }*/
+  keypadTexts.push("+");
+  keypadTexts.push("-");
+  keypadTexts.push("×");    
+  keypadTexts.push("÷");    
   keypadTexts.push("<-");
 
   const classes = myKeypadStyles();
@@ -56,7 +60,7 @@ export const MyKeypad = ({ handleClick, topicIndex, formulaFocusedIndex }) => {
       <Grid className={classes.centerRow}>
         {
           keypadTexts.map((key, index) => {
-            if (index < 6) {
+            if (index < 7) {
               return <Button
                 key={index}
                 className={classes.keypadKey}
@@ -75,7 +79,7 @@ export const MyKeypad = ({ handleClick, topicIndex, formulaFocusedIndex }) => {
       <Grid className={classes.centerRow}>
       {
           keypadTexts.map((key, index) => {
-            if (index > 5) {
+            if (index > 6) {
               return <Button
                 key={index}
                 className={classes.keypadKey}

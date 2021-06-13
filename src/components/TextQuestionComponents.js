@@ -21,11 +21,40 @@ const textQuestionStyles = makeStyles((theme) => ({
   centerRow: {
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  logoutButton: {
+    color: myTheme.color.myWhite,
+    backgroundColor: myTheme.color.myBlue,
+    height: "3.5vw",
+    fontSize: "2.5vw",
+    [theme.breakpoints.down("sm")]: {
+      height: "4.9vw",
+      fontSize: "3.5vw",
+    },
   },
 }));
 
-export const TextQuestion = ({ textQuestion }) => {
+export const TextQuestion = ({ textQuestion, setIsLogined }) => {
+  const [ logoutButtonStage, setLogoutButtonStage ] = useState("unclick");
   const textQestionArray = textQuestion.split("^"); //
+
+  const clickLogoutButton = () => {
+    if (logoutButtonStage === "unclick") {
+      setLogoutButtonStage("clicked");
+    } else if (logoutButtonStage === "clicked") {
+      setIsLogined(false);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (logoutButtonStage === "clicked") {
+        setLogoutButtonStage("unclick");
+      }
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [logoutButtonStage]);
 
   const classes = textQuestionStyles();
 
@@ -40,6 +69,13 @@ export const TextQuestion = ({ textQuestion }) => {
           );
         })}
       </Typography>
+      <Button 
+        variant="contained"
+        className={classes.logoutButton}
+        onClick={() => {clickLogoutButton()}}
+      >
+        { logoutButtonStage === "unclick" ? "Logout" : "Sure?"}
+      </Button>
     </Grid>
     
   );
