@@ -133,10 +133,11 @@ export const FractionFormula = ({
   setBracketArray,
   fractionIndexInProcess,
   fractionLength,
-  formulaFocusedIndex
+  formulaFocusedIndex,
+  okButtonStage
 }) => {
   const handleBracketClick = (index, bracketOrder) => {
-    if (isFocusedLine) {
+    if (isFocusedLine && okButtonStage === 0) {
       if (bracketArray[lineIndex].includes(index)) {
         //remove all the brackets in this formula
         let bracketFormula = [...bracketArray];
