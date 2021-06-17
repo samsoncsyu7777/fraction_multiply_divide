@@ -109,11 +109,15 @@ function MathsLearning(props) {
   const [learningToolIndex, setLearningToolIndex] = useState(0);
   const [scriptureVerseIndex, setScriptureVerseIndex] = useState(0);
   const [isLogined, setIsLogined] = useState(false);
+  const [unitIndex, setUnitIndex] = useState(0);//(0:M&D, 1:A&S, 2:MixWithBrackets)
+  const [examIndex, setExamIndex] = useState(0);//(0: no, 1: yes)
+
 
   const numberOfBibleVersions = 2;
-  const numberOfTopics = 3;
+  const numberOfTopics = [3, 3, 2];
   const numberOfLearningTools = 2;
   const numberOfScriptureVerses = 3;
+  const numberOfUnits = 3;
   const scriptureImages = [pic1, pic2, pic3];
 
   const {
@@ -139,6 +143,12 @@ function MathsLearning(props) {
     if (urlParams.get("ver") != null && urlParams.get("ver") != "" && urlParams.get("ver") >= 0 && urlParams.get("ver") < numberOfBibleVersions) {
       setBibleVersionIndex(parseInt(urlParams.get("ver")));
     }
+    if (urlParams.get("unit") != null && urlParams.get("unit") != "" && urlParams.get("unit") >= 0 && urlParams.get("unit") < numberOfUnits) {
+      setUnitIndex(parseInt(urlParams.get("unit")));
+    } 
+    if (urlParams.get("exam") != null && urlParams.get("exam") != "" && urlParams.get("exam") >= 0 && urlParams.get("exam") < 2) {
+      setExamIndex(parseInt(urlParams.get("exam")));
+    }
     setScriptureVerseIndex(Math.floor(Math.random() * numberOfScriptureVerses));
   }, []);
 
@@ -163,13 +173,13 @@ function MathsLearning(props) {
           selectLabel={topicsQuestion[languageIndex]}
           selectIndex={topicIndex}
           setItemIndex={setTopicIndex}
-          itemsArray={topics.slice(languageIndex * numberOfTopics, languageIndex * numberOfTopics + numberOfTopics)}
+          itemsArray={topics[unitIndex].slice(languageIndex * numberOfTopics[unitIndex], languageIndex * numberOfTopics[unitIndex] + numberOfTopics[unitIndex])}
         />
         <HeadingSelect
           selectLabel={learningToolsQuestion[languageIndex]}
           selectIndex={learningToolIndex}
           setItemIndex={setLearningToolIndex}
-          itemsArray={learningTools.slice((languageIndex * numberOfTopics + topicIndex) * numberOfLearningTools, (languageIndex * numberOfTopics + topicIndex + 1) * numberOfLearningTools)}
+          itemsArray={learningTools.slice((languageIndex * numberOfTopics[unitIndex] + topicIndex) * numberOfLearningTools, (languageIndex * numberOfTopics[unitIndex] + topicIndex + 1) * numberOfLearningTools)}
         />
       </Grid>
       <Grid className={classes.scriptureVerseRow} >
@@ -181,11 +191,13 @@ function MathsLearning(props) {
       <FractionMultiplyDivide
         languageIndex={languageIndex}
         bibleVersionIndex={bibleVersionIndex}
-        topic={topics[languageIndex * numberOfTopics + topicIndex]}
-        learningTool={learningTools[(languageIndex * numberOfTopics + topicIndex) * numberOfLearningTools + learningToolIndex]}
+        topic={topics[unitIndex][languageIndex * numberOfTopics[unitIndex] + topicIndex]}
+        learningTool={learningTools[(languageIndex * numberOfTopics[unitIndex] + topicIndex) * numberOfLearningTools + learningToolIndex]}
         topicToolIndex={{topicIndex: topicIndex, learningToolIndex: learningToolIndex}}
         isLogined={isLogined}
         setIsLogined={setIsLogined}
+        unitIndex={unitIndex}
+        examIndex={examIndex}
       />
       <Grid className={classes.prayerRow}>
         <img className={classes.prayerImage} src={prayerImage} />

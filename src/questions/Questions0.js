@@ -1,4 +1,4 @@
-const questions = [
+const questions0 = [
   //topicIndex 0: multiple ×÷
   [
     //learningToolIndex 0: proper
@@ -256,4 +256,4 @@ const questions = [
   ],
 ];
 
-export default questions;
+export default questions0;
