@@ -195,7 +195,7 @@ export const FractionFormula = ({
             </Typography>
 
             {(learningToolIndex == 1 ||
-              (calculationStage > 1 && lineIndex > 0)) && (
+              (/*calculationStage > 0 &&*/ lineIndex > 0)) && (
               <Button
                 variant="outlined"
                 style={

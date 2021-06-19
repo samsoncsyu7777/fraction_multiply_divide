@@ -26,7 +26,7 @@ export const AlertSnackbar = ({ open, closeAlert, errorMessage, severity }) => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={4000}
+      autoHideDuration={10000}
       onClose={closeAlert}
     >
       <Alert

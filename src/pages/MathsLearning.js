@@ -16,6 +16,7 @@ import pic1 from "../assets/cross5.jpg";
 import pic2 from "../assets/cross6.jpg";
 import pic3 from "../assets/neighbor1.jpg";
 import prayerImage from "../assets/prayer4.jpg";
+import { FreeBreakfast } from "@material-ui/icons";
 
 const mathsLearningStyle = (theme) => ({
   mathsLearningContainer: {
@@ -135,6 +136,7 @@ function MathsLearning(props) {
   } = constants;
 
   useEffect(() => {
+
     const queryString = props.location.search;
     const urlParams = new URLSearchParams(queryString);
     if (urlParams.get("lang") != null && urlParams.get("lang") != "" && urlParams.get("lang") >= 0 && urlParams.get("lang") < 4) {

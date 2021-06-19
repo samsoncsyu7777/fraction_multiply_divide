@@ -60,7 +60,7 @@ export const TextQuestion = ({ textQuestion, setIsLogined }) => {
 
   return (
     <Grid className={classes.centerRow}>
-      <Typography className={classes.questionText}>
+      <Typography className={classes.questionText} style={{whiteSpace: 'pre-line'}}>
         {textQestionArray.map((text, index) => {
           return index % 2 === 0 ? (
             <span key={index}>{text}</span>

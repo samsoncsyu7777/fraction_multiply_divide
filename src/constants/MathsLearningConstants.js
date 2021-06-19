@@ -3,10 +3,24 @@ const constants = {
    bibleVersions: ["天主教", "基督教", "天主教", "基督教", "Catholic", "Christian", "Catholique", "Chrétienne"],
    bibleVersionsQuestion: ["經文版本", "经文版本", "Scripture version", "Version biblique"],
    topics: [
+     [
     "分數乘法", "分數除法", "分數乘除混合",
     "分数乘法", "分数除法", "分数乘除混合",
     "Fractional Multiplication", "Fractional Division", "Fractional Multiplication and Division Mixed",
     "Multiplication fractionnaire", "Division fractionnaire", "Multiplication fractionnaire et division mixte"
+     ],
+     [
+      "分數加法", "分數減法", "分數加減混合",
+      "分数加法", "分数减法", "分数加减混合",
+      "Addition of Fractions", "Subtraction of Fractions", "Mixed Addition and Subtraction of Fractions",
+      "Addition de fractions", "Soustraction de fractions", "Addition et soustraction mixtes de fractions"
+    ],
+    [
+      "分數四則混合計算", "帶括號的分數四則號混合計算",
+      "分数四则混合计算", "带括号的分数四则号混合计算",
+      "Four mixed calculations for fractions", "Four mixed calculations for fractions with parentheses",
+      "Quatre calculs mixtes pour les fractions", "Quatre calculs mixtes pour les fractions avec parenthèses"
+    ]
   ],
   topicsQuestion: ["主題", "主题", "Topic", "Sujet"],
   learningTools: [

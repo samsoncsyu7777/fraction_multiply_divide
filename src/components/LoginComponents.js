@@ -351,7 +351,7 @@ export const Login = ({
               url={shareUrl}
               quote={
                 shareTopic[languageIndex] + ": " + introduction[languageIndex]
-              }
+              }              
               onClick={() => clickFacebook()}
             />
           </Grid>
