@@ -58,18 +58,25 @@ const constants = {
     "N'entrez pas de fractions impropres dans la question, veuillez plutôt saisir des fractions mixtes."
   ],
 
+  noImproperAfterA_S: [
+    "計算上一步得到的是一個假分數，請把它化成帶分數。",
+    "计算上一步得到的是一个假分数，请把它化成带分数。",
+    "The calculation obtained in the previous step is an improper fraction, please turn it into a mixed fraction.",
+    "Le calcul obtenu à l'étape précédente est une fraction impropre, veuillez le transformer en fraction mixte."
+  ],
+
   oneFractionOnly: [
-    "這個乘法步驟，應只得到一個分數。未計算的分數則保持不變。",
-    "这个乘法步骤，应只得到一个分数。未计算的分数则保持不变。",
-    "In this multiplication step, only one fraction should be obtained. Uncalculated fractions should remain unchanged.",
-    "Dans cette étape de multiplication, une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées."
+    "這個乘法步驟，應只得到一個分數。未計算的分數則保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    "这个乘法步骤，应只得到一个分数。未计算的分数则保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    "In this multiplication step, only one fraction should be obtained. Uncalculated fractions should remain unchanged. If this is the last calculation step, there is only one fraction.",
+    "Dans cette étape de multiplication, une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
 
   incorrectWhole: [
-    "整數不正確，這應是分子除以分母得到的整數商。若果這數原是一個整數或帶分數，則保持不變。",
-    "整数不正确，这应是分子除以分母得到的整数商。若果这数原是一个整数或带分数，则保持不变。",
-    "The whole number is incorrect. This should be the integer quotient obtained by dividing the numerator by the denominator. If the number was originally an integer or a mixed number, there is no need to change it.",
-    "Le nombre entier est incorrect. Cela devrait être le quotient entier obtenu en divisant le numérateur par le dénominateur. Si le nombre était à l'origine un nombre entier ou un nombre mixte, il n'est pas nécessaire de le modifier."
+    "整數不正確，這應是分子除以分母得到的整數商+原有整數(如果有)。若果這數原是一個整數或帶分數，則保持不變。",
+    "整数不正确，这应是分子除以分母得到的整数商+原有整数(如果有)。若果这数原是一个整数或带分数，则保持不变。",
+    "The whole number is incorrect. This should be the integer quotient obtained by dividing the numerator by the denominator + the original whole number (if any). If the number was originally an integer or a mixed fraction, there is no need to change it.",
+    "Le nombre entier est incorrect. Cela devrait être le quotient entier obtenu en divisant le numérateur par le dénominateur + le nombre entier d'origine (le cas échéant). Si le nombre était à l'origine un nombre entier ou une fraction mixte, il n'est pas nécessaire de le modifier."
   ],
 
   wholeNoFraction: [
@@ -130,10 +137,10 @@ const constants = {
   ],
 
   sameNumberOfFractions3: [
-    "，其他分數和運算符號需保持不變，所以這算式應與上一行算式有相同數量的分數。",
-    "，其他分数和运算符号需保持不变，所以这算式应与上一行算式有相同数量的分数。",
-    ", other fractions and operators need to remain unchanged, so this calculation should have the same number of fractions as the previous calculation.",
-    ", les autres fractions et opérateurs doivent rester inchangés, donc ce calcul doit avoir le même nombre de fractions que le calcul précédent."
+    "，其他分數和運算符號需保持不變，所以這算式應與上一行算式有相同數量的分數。如果這是最後一個計算步驟，則沒有其他分數。",
+    "，其他分数和运算符号需保持不变，所以这算式应与上一行算式有相同数量的分数。如果这是最后一个计算步骤，则没有其他分数。",
+    ", other fractions and operators need to remain unchanged, so this calculation should have the same number of fractions as the previous calculation. If this is the last calculation step, there is no other fraction.",
+    ", les autres fractions et opérateurs doivent rester inchangés, donc ce calcul doit avoir le même nombre de fractions que le calcul précédent. S'il s'agit de la dernière étape de calcul, il n'y a pas d'autre fraction."
   ],
 
   sameOperators: [
@@ -408,10 +415,10 @@ const constants = {
     "Attention au nombre et à la position des parenthèses. Règle d'utilisation des parenthèses : lorsque le premier groupe de parenthèses est calculé pour obtenir un nombre, ce groupe de parenthèses est supprimé et les autres parenthèses restent inchangées."
   ],
   decreaseMessage: [
-    "上一步的計算得到一個分數，這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。",
-    "上一步的计算得到一个分数，这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。",
-    "The calculation in the previous step obtains a fraction, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged.",
-    "Le calcul de l'étape précédente obtient une fraction, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés."
+    "上一步的計算得到一個分數，這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    "上一步的计算得到一个分数，这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    "The calculation in the previous step obtains a fraction, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged. If this is the last calculation step, there is only one fraction.",
+    "Le calcul de l'étape précédente obtient une fraction, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
   operatorBeforeStep: [
     "這一步計算範圍的左方有一個運算符號，並不包含在這步計算中，所以需保持不變。",
@@ -432,10 +439,10 @@ const constants = {
     " à la fraction "
   ],
   keepOthers3: [
-    "。這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。",
-    "。这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。",
-    ". In this step, all the fractions and operators on the left and right of the calculation area must remain unchanged.",
-    ". Dans cette étape, toutes les fractions et opérateurs à gauche et à droite de la zone de calcul doivent rester inchangés."
+    "。這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則沒有其他分數。",
+    "。这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。如果这是最后一个计算步骤，则没有其他分数。",
+    ". In this step, all the fractions and operators on the left and right of the calculation area must remain unchanged. If this is the last calculation step, there is no other fraction.",
+    ". Dans cette étape, toutes les fractions et opérateurs à gauche et à droite de la zone de calcul doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a pas d'autre fraction."
   ],
   noIntegerAfterMulti: [
     "這一步要得到分數相乘的結果，即分子是上一步相關分子相乘的積，分母也是上一步相關分母相乘的積，所以這個分數沒有整數部份。",

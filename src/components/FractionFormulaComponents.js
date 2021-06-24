@@ -191,7 +191,7 @@ export const FractionFormula = ({
                 handleBracketClick(index, 0);
               }}
             >
-              { bracketArray[lineIndex].indexOf(index) % 2 === 0 ? "(" : ""}
+              { bracketArray.length > lineIndex && bracketArray[lineIndex].indexOf(index) % 2 === 0 ? "(" : ""}
             </Typography>
 
             {(learningToolIndex == 1 ||
@@ -317,7 +317,7 @@ export const FractionFormula = ({
                 handleBracketClick(index, 1);
               }}
             >
-              { bracketArray[lineIndex].indexOf(index) % 2 === 1 ? ")" : ""}
+              { bracketArray.length > lineIndex && bracketArray[lineIndex].indexOf(index) % 2 === 1 ? ")" : ""}
             </Typography>
 
           </Grid>
