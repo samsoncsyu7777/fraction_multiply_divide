@@ -65,6 +65,13 @@ const constants = {
     "Le calcul obtenu à l'étape précédente est une fraction impropre, veuillez le transformer en fraction mixte."
   ],
 
+  improperToMix: [
+    "化假分數為帶分數或整數",
+    "化假分数为带分数或整数",
+    "the conversion of the improper fraction to a mixed fraction or an integer ",
+    "la conversion de la fraction impropre en une fraction mixte ou un entier"
+  ],
+
   oneFractionOnly: [
     "這個乘法步驟，應只得到一個分數。未計算的分數則保持不變。如果這是最後一個計算步驟，則只得這個分數。",
     "这个乘法步骤，应只得到一个分数。未计算的分数则保持不变。如果这是最后一个计算步骤，则只得这个分数。",
@@ -100,6 +107,13 @@ const constants = {
     "Lors de la transformation de fractions mixtes en fractions impropres, le dénominateur doit rester inchangé."
   ],
 
+  noMixedIssue: [
+    "化帶分數或整數為假分數",
+    "化带分数或整数为假分数",
+    "the conversion of mixed fractions or integers into improper fractions",
+    "la conversion de fractions mixtes ou d'entiers en fractions impropres"
+  ],
+
   sameDenominatorInNoImproper: [
     "把假分數化為帶分數時，分母應保持不變。",
     "把假分数化为带分数时，分母应保持不变。",
@@ -112,6 +126,13 @@ const constants = {
     "在计算同分母分数加减中，分母应保持不变。",
     "In calculating the addition and subtraction of fractions with the same denominator, the denominator should remain unchanged.",
     "En calculant l'addition et la soustraction de fractions ayant le même dénominateur, le dénominateur doit rester inchangé."
+  ],
+
+  addToOne: [
+    "同分母分數加減",
+    "同分母分数加减",
+    "the addition and subtraction of fractions with the same denominator ",
+    "l'addition et la soustraction de fractions ayant le même dénominateur "
   ],
 
   numeratorFromImproper: [
@@ -163,12 +184,26 @@ const constants = {
     "In the step of expansion of fractions to a common denominator, the operators should remain unchanged.",
     "Dans l'étape d'expansion des fractions à un dénominateur commun, les opérateurs doivent rester inchangés."
   ],
+
+  noVarDenom: [
+    "通分母",
+    "通分母",
+    "the expansion of fractions to a common denominator ",
+    "l'expansion des fractions à un dénominateur commun "
+  ],
   
   sameOperatorsInNoNegNum: [
     "在這退位的步驟中，運算符號需保持不變。",
     "在这退位的步骤中，运算符号需保持不变。",
     "In the step of abdication, the operators should remain unchanged.",
     "Dans la démarche d'abdication, les opérateurs devraient rester inchangés."
+  ],
+
+  noNegNum: [
+    "從整數退位至分數",
+    "从整数退位至分数",
+    "the abdication from whole number to fraction ",
+    "l'abdication du nombre entier à la fraction "
   ],
 
   wholeToNumerator: [
@@ -190,6 +225,20 @@ const constants = {
     "在计算分数乘除的部份前，要先把所有相关的除法转为乘法。",
     "Before calculating the fraction multiplication and division, all relevant divisions must be converted to multiplications.",
     "Avant de calculer la multiplication et la division des fractions, toutes les divisions pertinentes doivent être converties en multiplications."
+  ],
+
+  noDivisionIssue: [
+    "把除法轉為乘法",
+    "把除法转为乘法",
+    "the conversion of division to multiplication ",
+    "la conversion de la division en multiplication "
+  ],
+
+  noMultipleIssue: [
+    "分數乘法",
+    "分数乘法",
+    "the multiplication of fractions",
+    "la multiplication des fractions"
   ],
 
   sameMultipliers: [
@@ -409,10 +458,28 @@ const constants = {
     "L'entier calculé à cette étape est incorrect. Veuillez calculer le nouvel entier en fonction du ou des opérateurs."
   ],
   parentheses: [
-    "小心括號的數量和位置。括號使用法則：當第一組括號的計算得到一個數時，這組括號即被移除，而其他括號則保持不變。",
-    "小心括号的数量和位置。括号使用法则：当第一组括号的计算得到一个数时，这组括号即被移除，而其他括号则保持不变。",
-    "Be careful with the number and position of parentheses. Parentheses usage rule: when the first group of parentheses are calculated to get a number, this group of parentheses are removed, and the other parentheses remain unchanged.",
-    "Attention au nombre et à la position des parenthèses. Règle d'utilisation des parenthèses : lorsque le premier groupe de parenthèses est calculé pour obtenir un nombre, ce groupe de parenthèses est supprimé et les autres parenthèses restent inchangées."
+    /*"小心括號的數量和位置。*/"括號使用法則：當第一組括號的計算得到一個數時，這組括號即被移除，而其他括號則保持不變。",
+    /*"小心括号的数量和位置。*/"括号使用法则：当第一组括号的计算得到一个数时，这组括号即被移除，而其他括号则保持不变。",
+    /*"Be careful with the number and position of parentheses. */"Parentheses usage rule: when the first group of parentheses are calculated to get a number, this group of parentheses are removed, and the other parentheses remain unchanged.",
+    /*"Attention au nombre et à la position des parenthèses. */"Règle d'utilisation des parenthèses : lorsque le premier groupe de parenthèses est calculé pour obtenir un nombre, ce groupe de parenthèses est supprimé et les autres parenthèses restent inchangées."
+  ],
+  parenthesesExtra: [
+    "有多餘括號。",
+    "有多余括号。",
+    "There are extra parentheses. ",
+    "Il y a des parenthèses supplémentaires. "
+  ],
+  parenthesesLack: [
+    "有括號欠缺。",
+    "有括号欠缺。",
+    "There are missing parentheses. ",
+    "Il manque des parenthèses. "
+  ],
+  parenthesesPosition: [
+    "有括號位置不正確。",
+    "有括号位置不正确。",
+    "There are incorrect positions in parentheses. ",
+    "Il y a des positions incorrectes entre parenthèses. "
   ],
   decreaseMessage: [
     "上一步的計算得到一個分數，這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則只得這個分數。",

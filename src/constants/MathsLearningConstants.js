@@ -24,10 +24,24 @@ const constants = {
   ],
   topicsQuestion: ["主題", "主题", "Topic", "Sujet"],
   learningTools: [
-    "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
-    "真分数计算", "带分数计算", "真分数计算", "带分数计算", "真分数计算", "带分数计算",
-    "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
-    "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
+    [//unit 0
+      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
+      "真分数计算", "带分数计算", "真分数计算", "带分数计算", "真分数计算", "带分数计算",
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
+    ],
+    [//unit 1
+      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
+      "真分数计算", "带分数计算", "真分数计算", "带分数计算", "真分数计算", "带分数计算",
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
+    ],
+    [//unit 2
+      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
+      "真分数计算", "带分数计算", "真分数计算", "带分数计算",
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
+    ],
   ],
   learningToolsQuestion: [
     "分數類型", "分数类型", "Fraction Type", "Type de Fraction"

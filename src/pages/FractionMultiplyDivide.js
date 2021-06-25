@@ -37,7 +37,8 @@ export const FractionMultiplyDivide = ({
   learningTool,
   topicToolIndex,
   unitIndex,
-  examIndex
+  examIndex,
+  indexArray
   //isLogined,
   //setIsLogined
 }) => {
@@ -178,13 +179,24 @@ export const FractionMultiplyDivide = ({
     wholeAvoidNegative,
     incorrectCalculatedWhole,
     parentheses,
+    parenthesesExtra,
+    parenthesesLack,
+    parenthesesPosition,
     operatorBeforeStep,
     decreaseMessage,
     keepOthers1,
     keepOthers2,
     keepOthers3,
     noIntegerAfterMulti,
-    oddBrackets
+    oddBrackets,
+    noVarDenom,
+    noNegNum,
+    addToOne,
+    improperToMix,
+    noMixedIssue,
+    noDivisionIssue,
+    noMultipleIssue,
+    
   } = constants;
 
   useEffect(() => {
@@ -196,6 +208,7 @@ export const FractionMultiplyDivide = ({
 
   //both versions equal
   useEffect(() => {
+    console.log("change topicToolIndex")
     if (isLogined) {
       setStageOrder({ stage: -2, order: 0 });
     } else {
@@ -213,7 +226,7 @@ export const FractionMultiplyDivide = ({
         }
       }
     }
-  }, [topicToolIndex]);
+  }, [indexArray]); //[topicToolIndex]);
 
   useEffect(() => {
     //console.log("unitIndex:"+unitIndex)
@@ -514,6 +527,18 @@ export const FractionMultiplyDivide = ({
     }
   }
 
+  const parenthesesMessage = (newLength, lastLength) => {
+    let parenthesesHint = "";
+    if(newLength > lastLength) {
+       parenthesesHint = parenthesesExtra[languageIndex]; 
+    } else if (newLength === lastLength) {
+      parenthesesHint = parenthesesPosition[languageIndex]; 
+    } else {
+      parenthesesHint = parenthesesLack[languageIndex]; 
+    }
+    return parenthesesHint;
+  }
+
   //A&S only
   function noVariousDenominatorCheck(
     index,
@@ -551,15 +576,15 @@ export const FractionMultiplyDivide = ({
       return true;
     } else {
       //check other fractions
-      if (!otherFractionsCheck(index, startIndex, endIndex, 0)) {
+      if (!otherFractionsCheck(index, startIndex, endIndex, 0, noVarDenom[languageIndex])) {
         return false;
       }
       //check brackets equal to last formula
       if (
         JSON.stringify(bracketArray[index]) !==
         JSON.stringify(bracketArray[index - 1])
-      ) {
-        setErrorMessage(parentheses[languageIndex]);
+      ) {        
+        setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -713,7 +738,7 @@ export const FractionMultiplyDivide = ({
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     if (checkValueNeeded) {
       //check other fractions
-      if (!otherFractionsCheck(index, startIndex, endIndex, 0)) {
+      if (!otherFractionsCheck(index, startIndex, endIndex, 0, noNegNum[languageIndex])) {
         return false;
       }
     }
@@ -753,7 +778,7 @@ export const FractionMultiplyDivide = ({
         JSON.stringify(bracketArray[index]) !==
         JSON.stringify(bracketArray[index - 1])
       ) {
-        setErrorMessage(parentheses[languageIndex]);
+        setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -881,7 +906,8 @@ export const FractionMultiplyDivide = ({
         index,
         startIndex,
         startIndex,
-        indexDecreasedByLastStage
+        indexDecreasedByLastStage,
+        addToOne[languageIndex]
       )
     ) {
       return false;
@@ -924,7 +950,7 @@ export const FractionMultiplyDivide = ({
     if (
       JSON.stringify(bracketArray[index]) !== JSON.stringify(tmpBracketArray)
     ) {
-      setErrorMessage(parentheses[languageIndex]);
+      setErrorMessage(parenthesesMessage(bracketArray[index].length, tmpBracketArray.length) + parentheses[languageIndex]);
       setTimeout(() => {
         setOpenAlert(true);
       }, timeDelay);
@@ -1083,7 +1109,7 @@ export const FractionMultiplyDivide = ({
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     if (checkValueNeeded) {
       //check other fractions
-      if (!otherFractionsCheck(index, startIndex, startIndex, 0)) {
+      if (!otherFractionsCheck(index, startIndex, startIndex, 0, improperToMix[languageIndex])) {
         return false;
       }
     }
@@ -1125,7 +1151,7 @@ export const FractionMultiplyDivide = ({
         JSON.stringify(bracketArray[index]) !==
         JSON.stringify(bracketArray[index - 1])
       ) {
-        setErrorMessage(parentheses[languageIndex]);
+        setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1311,7 +1337,7 @@ export const FractionMultiplyDivide = ({
     console.log("isNewStepTmp:" + isNewStepTmp);
     if (checkValueNeeded) {
       //check other fractions
-      if (!otherFractionsCheck(index, startIndex, endIndex, 0)) {
+      if (!otherFractionsCheck(index, startIndex, endIndex, 0, noMixedIssue[languageIndex])) {
         return false;
       }
     }
@@ -1369,7 +1395,7 @@ export const FractionMultiplyDivide = ({
         JSON.stringify(bracketArray[index]) !==
         JSON.stringify(bracketArray[index - 1])
       ) {
-        setErrorMessage(parentheses[languageIndex]);
+        setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1473,7 +1499,7 @@ export const FractionMultiplyDivide = ({
     console.log("isNewStepTmp:" + isNewStepTmp);
     if (checkValueNeeded) {
       //check other fractions
-      if (!otherFractionsCheck(index, startIndex, endIndex, 0)) {
+      if (!otherFractionsCheck(index, startIndex, endIndex, 0, noDivisionIssue[languageIndex])) {
         return false;
       }
     }
@@ -1522,7 +1548,7 @@ export const FractionMultiplyDivide = ({
         JSON.stringify(bracketArray[index]) !==
         JSON.stringify(bracketArray[index - 1])
       ) {
-        setErrorMessage(parentheses[languageIndex]);
+        setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1614,7 +1640,8 @@ export const FractionMultiplyDivide = ({
           index,
           startIndex,
           startIndex,
-          indexDecreasedByLastStage
+          indexDecreasedByLastStage,
+          noMultipleIssue[languageIndex]
         )
       ) {
         return false;
@@ -1657,7 +1684,7 @@ export const FractionMultiplyDivide = ({
       if (
         JSON.stringify(bracketArray[index]) !== JSON.stringify(tmpBracketArray)
       ) {
-        setErrorMessage(parentheses[languageIndex]);
+        setErrorMessage(parenthesesMessage(bracketArray[index].length, tmpBracketArray.length) + parentheses[languageIndex]);
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1750,7 +1777,7 @@ export const FractionMultiplyDivide = ({
     return true;
   }
 
-  function otherFractionsCheck(index, startIndex, endIndex, decrease) {
+  function otherFractionsCheck(index, startIndex, endIndex, decrease, issue) {
     console.log("otherFractionsCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1787,7 +1814,10 @@ export const FractionMultiplyDivide = ({
         index,
         endIndex + 1,
         fractionLinesArray[index].length - 1,
-        decrease
+        decrease,
+        false,//with left fractions?
+        endIndex + 1 === fractionLinesArray[index].length - 1,//with right fractions?
+        issue
       );
     } else if (startIndex > 0) {
       if (
@@ -1801,18 +1831,21 @@ export const FractionMultiplyDivide = ({
         return false;
       }
       return (
-        oneSectionFractionCheck(index, 0, startIndex - 1, 0) &&
+        oneSectionFractionCheck(index, 0, startIndex - 1, 0, true, endIndex + 1 === fractionLinesArray[index].length - 1, issue) &&
         oneSectionFractionCheck(
           index,
           endIndex + 1,
           fractionLinesArray[index].length - 1,
-          decrease
+          decrease,
+          true,
+          endIndex + 1 === fractionLinesArray[index].length - 1,
+          issue
         )
       );
     }
   }
 
-  function oneSectionFractionCheck(index, startIndex, endIndex, decrease) {
+  function oneSectionFractionCheck(index, startIndex, endIndex, decrease, withLeft, withRight, issue) {
     console.log("oneSectionFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);

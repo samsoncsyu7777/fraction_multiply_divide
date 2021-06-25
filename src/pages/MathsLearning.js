@@ -211,17 +211,17 @@ function MathsLearning(props) {
               numberOfTopics[indexArray[4]]
           )}
         />
-        <HeadingSelect
+        {indexArray[5] > -1 && <HeadingSelect
           selectLabel={learningToolsQuestion[indexArray[0]]}//*** */languageIndex]}
           selectIndex={learningToolIndex}
           setItemIndex={setLearningToolIndex}
-          itemsArray={learningTools.slice(
+          itemsArray={learningTools[indexArray[4]].slice(
             (/*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]] + topicIndex) *
               numberOfLearningTools,
             (/*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]] + topicIndex + 1) *
               numberOfLearningTools
           )}
-        />
+        />}
       </Grid>
       <Grid className={classes.scriptureVerseRow}>
         <Grid className={classes.scriptureVerseBorder} border={1}>
@@ -251,7 +251,7 @@ function MathsLearning(props) {
             ]
           }
           learningTool={
-            learningTools[
+            learningTools[indexArray[4]][
               (indexArray[0] * numberOfTopics[indexArray[4]] + indexArray[2]) * //*** */(languageIndex * numberOfTopics[unitIndex] + topicIndex) *
                 numberOfLearningTools +
                 indexArray[3] //*** */learningToolIndex
@@ -265,6 +265,7 @@ function MathsLearning(props) {
           setIsLogined={setIsLogined}
           unitIndex={indexArray[4]} //*** */unitIndex}
           examIndex={indexArray[5]} //*** */examIndex}
+          indexArray={indexArray}
         />
       )}
       <Grid className={classes.prayerRow}>
