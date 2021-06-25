@@ -139,6 +139,12 @@ export const FractionMultiplyDivide = ({
     sameNumberOfFractions1,
     sameNumberOfFractions2,
     sameNumberOfFractions3,
+    sameNumberOfFractions4,
+    sameNumberOfFractions5,
+    sameNumberOfFractions6Left,
+    sameNumberOfFractions6Right,
+    sameNumberOfFractions6LeftRight,
+    sameNumberOfFractions6None,
     sameOperators,
     sameOperatorsInNoMixFract,
     sameOperatorsInNoVarDenom,
@@ -539,6 +545,30 @@ export const FractionMultiplyDivide = ({
     return parenthesesHint;
   }
 
+  const stepMessage = (startIndex, endIndex, issue, decrease) => {
+    console.log("decrease in stepMessage:" + decrease)
+    let stepHint = "";
+    let middleMessage =
+          startIndex === endIndex + decrease
+            ? ""
+            : sameNumberOfFractions2[languageIndex] + (endIndex + decrease + 1);
+    let sameNumberOfFractions6 = "";
+    if (startIndex === 0) {//no left fractions
+      if (fractionLinesArray[formulaFocusedIndex - 1].length - 1 > endIndex + decrease + 1) {//with right fractions
+        sameNumberOfFractions6 = sameNumberOfFractions6Right[languageIndex];
+      } else {//no right fractions
+        sameNumberOfFractions6 = sameNumberOfFractions6None[languageIndex];
+      }
+      //with left fractions
+    } else if (fractionLinesArray[formulaFocusedIndex - 1].length - 1 > endIndex + decrease + 1) {//with right fractions
+      sameNumberOfFractions6 = sameNumberOfFractions6LeftRight[languageIndex];
+    } else {//no right fractions
+      sameNumberOfFractions6 = sameNumberOfFractions6Left[languageIndex];
+    }
+    stepHint = sameNumberOfFractions1[languageIndex] + (startIndex + 1) + middleMessage + sameNumberOfFractions3[languageIndex] + issue + sameNumberOfFractions4[languageIndex] + sameNumberOfFractions5[languageIndex] + sameNumberOfFractions6;
+    return stepHint;
+  }
+
   //A&S only
   function noVariousDenominatorCheck(
     index,
@@ -597,7 +627,7 @@ export const FractionMultiplyDivide = ({
       if (
         fractionLinesArray[index].length != fractionLinesArray[index - 1].length
       ) {
-        let middleMessage =
+        /*** let middleMessage =
           startIndex === endIndex
             ? ""
             : sameNumberOfFractions2[languageIndex] + (endIndex + 1);
@@ -606,7 +636,8 @@ export const FractionMultiplyDivide = ({
             (startIndex + 1) +
             middleMessage +
             sameNumberOfFractions3[languageIndex]
-        );
+        );*/
+        setErrorMessage(stepMessage(startIndex, endIndex, noVarDenom[languageIndex], 0));
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -787,7 +818,7 @@ export const FractionMultiplyDivide = ({
       if (
         fractionLinesArray[index].length != fractionLinesArray[index - 1].length
       ) {
-        let middleMessage =
+        /***let middleMessage =
           startIndex === endIndex
             ? ""
             : sameNumberOfFractions2[languageIndex] + (endIndex + 1);
@@ -796,7 +827,8 @@ export const FractionMultiplyDivide = ({
             (startIndex + 1) +
             middleMessage +
             sameNumberOfFractions3[languageIndex]
-        );
+        );*/
+        setErrorMessage(stepMessage(startIndex, endIndex, noNegNum[languageIndex], 0));
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1404,7 +1436,7 @@ export const FractionMultiplyDivide = ({
       if (
         fractionLinesArray[index].length != fractionLinesArray[index - 1].length
       ) {
-        let middleMessage =
+        /***let middleMessage =
           startIndex === endIndex
             ? ""
             : sameNumberOfFractions2[languageIndex] + (endIndex + 1);
@@ -1413,7 +1445,8 @@ export const FractionMultiplyDivide = ({
             (startIndex + 1) +
             middleMessage +
             sameNumberOfFractions3[languageIndex]
-        );
+        );*/
+        setErrorMessage(stepMessage(startIndex, endIndex, noMixedIssue[languageIndex], 0));
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1557,7 +1590,7 @@ export const FractionMultiplyDivide = ({
       if (
         fractionLinesArray[index].length != fractionLinesArray[index - 1].length
       ) {
-        let middleMessage =
+        /***let middleMessage =
           startIndex === endIndex
             ? ""
             : sameNumberOfFractions2[languageIndex] + (endIndex + 1);
@@ -1566,7 +1599,8 @@ export const FractionMultiplyDivide = ({
             (startIndex + 1) +
             middleMessage +
             sameNumberOfFractions3[languageIndex]
-        );
+        );*/
+        setErrorMessage(stepMessage(startIndex, endIndex, noDivisionIssue[languageIndex], 0));
         setTimeout(() => {
           setOpenAlert(true);
         }, timeDelay);
@@ -1790,7 +1824,7 @@ export const FractionMultiplyDivide = ({
     ) {
       //setErrorMessage("number of fractions is not correct");
       if (decrease === 0) {
-        let middleMessage =
+        /*let middleMessage =
           fractionIndexInProcess[0] === fractionIndexInProcess[1]
             ? ""
             : sameNumberOfFractions2[languageIndex] +
@@ -1800,9 +1834,10 @@ export const FractionMultiplyDivide = ({
             (fractionIndexInProcess[0] + 1) +
             middleMessage +
             sameNumberOfFractions3[languageIndex]
-        );
+        );*/
+        setErrorMessage(stepMessage(startIndex, endIndex, issue, 0));
       } else {
-        setErrorMessage(decreaseMessage[languageIndex]);
+        setErrorMessage(decreaseMessage[languageIndex] + stepMessage(startIndex, endIndex, issue, decrease));
       }
       setTimeout(() => {
         setOpenAlert(true);
@@ -1872,9 +1907,9 @@ export const FractionMultiplyDivide = ({
         //*** */if (JSON.stringify(fractionLinesArray[index][i]) !== JSON.stringify(fractionLinesArray[index - 1][i + decrease])) {
         //setErrorMessage("keep other fractions and operators the same");
         if (decrease > 0) {
-          setErrorMessage(decreaseMessage[languageIndex]);
+          setErrorMessage(decreaseMessage[languageIndex] + stepMessage(startIndex, endIndex, issue, decrease));
         } else {
-          let middleMessage =
+         /*let middleMessage =
             fractionIndexInProcess[0] === fractionIndexInProcess[1]
               ? ""
               : keepOthers2[languageIndex] + (fractionIndexInProcess[1] + 1);
@@ -1883,7 +1918,8 @@ export const FractionMultiplyDivide = ({
               (fractionIndexInProcess[0] + 1) +
               middleMessage +
               keepOthers3[languageIndex]
-          );
+          );*/
+          setErrorMessage(keepOthers1[languageIndex] + stepMessage(startIndex, endIndex, issue, 0));
         }
         setTimeout(() => {
           setOpenAlert(true);

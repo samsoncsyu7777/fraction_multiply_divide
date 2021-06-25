@@ -110,8 +110,8 @@ const constants = {
   noMixedIssue: [
     "化帶分數或整數為假分數",
     "化带分数或整数为假分数",
-    "the conversion of mixed fractions or integers into improper fractions",
-    "la conversion de fractions mixtes ou d'entiers en fractions impropres"
+    "the conversion of mixed fractions or integers into improper fractions ",
+    "la conversion de fractions mixtes ou d'entiers en fractions impropres "
   ],
 
   sameDenominatorInNoImproper: [
@@ -150,7 +150,7 @@ const constants = {
   ],
 
   sameNumberOfFractions1: [
-    "現在正計算分數", "现在正计算分数", "Now we are calculating fraction ", "Maintenant, nous calculons la fraction "
+    "現正在分數", "现正在分数", "For fraction ", "Pour la fraction "
   ],
 
   sameNumberOfFractions2: [
@@ -158,10 +158,46 @@ const constants = {
   ],
 
   sameNumberOfFractions3: [
-    "，其他分數和運算符號需保持不變，所以這算式應與上一行算式有相同數量的分數。如果這是最後一個計算步驟，則沒有其他分數。",
-    "，其他分数和运算符号需保持不变，所以这算式应与上一行算式有相同数量的分数。如果这是最后一个计算步骤，则没有其他分数。",
-    ", other fractions and operators need to remain unchanged, so this calculation should have the same number of fractions as the previous calculation. If this is the last calculation step, there is no other fraction.",
-    ", les autres fractions et opérateurs doivent rester inchangés, donc ce calcul doit avoir le même nombre de fractions que le calcul précédent. S'il s'agit de la dernière étape de calcul, il n'y a pas d'autre fraction."
+    "進行", "进行", ", ", ", "
+  ],
+
+  sameNumberOfFractions4: [
+    "，", "，", "is in progress. ", "sont en cours. "
+  ],
+
+  sameNumberOfFractions5: [
+    "其他分數和運算符號需保持不變，",//所以這算式應與上一行算式有相同數量的分數。如果這是最後一個計算步驟，則沒有其他分數。",
+    "其他分数和运算符号需保持不变，",//所以这算式应与上一行算式有相同数量的分数。如果这是最后一个计算步骤，则没有其他分数。",
+    "Other fractions and operators need to remain unchanged, ",//so this calculation should have the same number of fractions as the previous calculation. If this is the last calculation step, there is no other fraction.",
+    "Les autres fractions et opérateurs doivent rester inchangés, ",//donc ce calcul doit avoir le même nombre de fractions que le calcul précédent. S'il s'agit de la dernière étape de calcul, il n'y a pas d'autre fraction."
+  ],
+
+  sameNumberOfFractions6Left: [
+    "所以左方的分數和運算符號需保持不變。",
+    "所以左方的分数和运算符号需保持不变。",
+    "so the fractions and operators on the left should remain unchanged. ",
+    "donc les fractions et les opérateurs sur la gauche doivent rester inchangés. "
+  ],
+
+  sameNumberOfFractions6Right: [
+    "所以右方的分數和運算符號需保持不變。",
+    "所以右方的分数和运算符号需保持不变。",
+    "so the fractions and operators on the right should remain unchanged. ",
+    "donc les fractions et les opérateurs à droite doivent rester inchangés. "
+  ],
+
+  sameNumberOfFractions6LeftRight: [
+    "所以左右兩邊的分數和運算符號需保持不變。",
+    "所以左右两边的分数和运算符号需保持不变。",
+    "so the fractions and operators on the left and right should remain unchanged. ",
+    "donc les fractions et les opérateurs à gauche et à droite doivent rester inchangés. "
+  ],
+
+  sameNumberOfFractions6None: [
+    "而上一步並沒有其他分數或運算符號。",
+    "而上一步并没有其他分数或运算符号。",
+    "however, there are no other fractions or operators in the previous step. ",
+    "cependant, il n'y a pas d'autres fractions ou opérateurs dans l'étape précédente. "
   ],
 
   sameOperators: [
@@ -237,8 +273,8 @@ const constants = {
   noMultipleIssue: [
     "分數乘法",
     "分数乘法",
-    "the multiplication of fractions",
-    "la multiplication des fractions"
+    "the multiplication of fractions ",
+    "la multiplication des fractions "
   ],
 
   sameMultipliers: [
@@ -482,10 +518,10 @@ const constants = {
     "Il y a des positions incorrectes entre parenthèses. "
   ],
   decreaseMessage: [
-    "上一步的計算得到一個分數，這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則只得這個分數。",
-    "上一步的计算得到一个分数，这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。如果这是最后一个计算步骤，则只得这个分数。",
-    "The calculation in the previous step obtains a fraction, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged. If this is the last calculation step, there is only one fraction.",
-    "Le calcul de l'étape précédente obtient une fraction, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
+    "上一步的計算得到一個分數。",//，這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    "上一步的计算得到一个分数。",//，这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    "The calculation in the previous step obtains a fraction. ",//, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged. If this is the last calculation step, there is only one fraction.",
+    "Le calcul de l'étape précédente obtient une fraction. "//, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
   operatorBeforeStep: [
     "這一步計算範圍的左方有一個運算符號，並不包含在這步計算中，所以需保持不變。",
@@ -494,10 +530,10 @@ const constants = {
     "Il y a un opérateur sur le côté gauche de la zone de calcul de cette étape, qui n'est pas inclus dans le calcul de cette étape, il doit donc rester inchangé."
   ],
   keepOthers1: [
-    "計算法則是有括號的範圍比沒有括號的範圍先計算，然後先計算乘除法，再計算加減法，所以現在正計算分數",
-    "计算法则是有括号的范围比没有括号的范围先计算，然后先计算乘除法，再计算加减法，所以现在正计算分数",
-    "The calculation rule is that the range with parentheses is calculated prior to the range without parentheses, and then the multiplication and division are calculated first before the addition and subtraction. So now it is calculating the fraction ",
-    "La règle de calcul est que la plage avec parenthèses est calculée avant la plage sans parenthèses, puis la multiplication et la division sont calculées d'abord avant l'addition et la soustraction. Alors maintenant, il calcule la fraction "
+    "計算法則是有括號的範圍比沒有括號的範圍先計算，然後先計算乘除法，再計算加減法。",//，所以現在正計算分數",
+    "计算法则是有括号的范围比没有括号的范围先计算，然后先计算乘除法，再计算加减法。",//，所以现在正计算分数",
+    "The calculation rule is that the range with parentheses is calculated prior to the range without parentheses, and then the multiplication and division are calculated first before the addition and subtraction. ",//So now it is calculating the fraction ",
+    "La règle de calcul est que la plage avec parenthèses est calculée avant la plage sans parenthèses, puis la multiplication et la division sont calculées d'abord avant l'addition et la soustraction. "//Alors maintenant, il calcule la fraction "
   ],
   keepOthers2: [
     "至分數",
