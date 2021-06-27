@@ -10,7 +10,7 @@ import { theme as myTheme } from "../themes/theme";
 const alertSnackbarStyles = makeStyles((theme) => ({
   alert: {
     fontSize: "2vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "4vw",
     },
   },
@@ -26,7 +26,7 @@ export const AlertSnackbar = ({ open, closeAlert, errorMessage, severity }) => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={10000}
+      autoHideDuration={16000}
       onClose={closeAlert}
     >
       <Alert

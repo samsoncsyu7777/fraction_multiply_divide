@@ -13,13 +13,24 @@ const stageButtonsStyles = makeStyles((theme) =>
       alignItems: "center",
     },
     stageText: {
-      fontSize: 20,
+      fontSize: "1.6vw",
       color: myTheme.color.myBlue,
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "3.2vw",
+      },
     },
     buttonText: {
-      fontSize: 20,
-      [theme.breakpoints.down("sm")]: {
-        fontSize: 14,
+      fontSize: "1.6vw",
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "3.2vw",
+      },
+    },
+    stageButton: {
+      width: "4.5vw",
+      minWidth: "4.5vw",
+      [theme.breakpoints.down("xs")]: {
+        width: "8vw",
+        minWidth: "8vw",
       },
     },
   })
@@ -31,7 +42,9 @@ export const StageButtons = ({
   handleStageClick,
   stageState,
   manual,
-  exam
+  exam,
+  leaderboard,
+  examIndex
 }) => {
   const classes = stageButtonsStyles();
   const buttonsInLine = 7;
@@ -56,8 +69,9 @@ export const StageButtons = ({
             return (
               index >= line * buttonsInLine && index < (line + 1) * buttonsInLine && <Button
                 key={parseInt(stage)}
+                className={`${classes.buttonText} ${classes.stageButton}`}
                 color={color}
-                style={{ backgroundColor: bgColor, height: 45 }}
+                style={{ backgroundColor: bgColor/*, height: 45*/ }}
                 onClick={() => handleStageClick(parseInt(stage))}
               >
                 {parseInt(stage) + 1}
@@ -66,32 +80,45 @@ export const StageButtons = ({
           })}
         </ButtonGroup>
         })}
-        <Button
+        {examIndex === 0 && <Button
           size="small"
           variant="outlined"
           className={classes.buttonText}
           color={stageState === -1 ? "secondary" : "primary"}
           style={{
             backgroundColor: stageState === -1 ? myTheme.color.myYellow : "",
-            height: 45
+            //height: 45
           }}
           onClick={() => handleStageClick(-1)}
         >
           {manual}
-        </Button>
-        <Button
+        </Button>}
+        {examIndex === 1 && <Button
           size="small"
           variant="outlined"
           className={classes.buttonText}
           color={stageState === -2 ? "secondary" : "primary"}
           style={{
             backgroundColor: stageState === -2 ? myTheme.color.myYellow : "",
-            height: 45
+            //height: 45
           }}
           onClick={() => handleStageClick(-2)}
         >
           {exam}
-        </Button>
+        </Button>}
+        {examIndex === 1 && <Button
+          size="small"
+          variant="outlined"
+          className={classes.buttonText}
+          color={stageState === -3 ? "secondary" : "primary"}
+          style={{
+            backgroundColor: stageState === -3 ? myTheme.color.myYellow : "",
+            //height: 45
+          }}
+          onClick={() => handleStageClick(-3)}
+        >
+          {leaderboard}
+        </Button>}
       </Grid>
     </Grid>
   );

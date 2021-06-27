@@ -2,6 +2,7 @@ const constants = {
   stageText: ["階段", "阶段", "Stage", "Étape"],
   manual: ["自擬題目", "自拟题目", "Personal Task", "Tâche personnelle"],
   exam: ["應用題及模擬試卷", "应用题及模拟试卷", "Text Questions and Mock Exam", "Questions textuelles et examen simulé"],
+  leaderboard: ["龍虎榜", "龙虎榜", "Leaderboard", "Classement"],
   okButtonText: [
     "輸入", "約簡", "完成",
     "输入", "约简", "完成",
@@ -518,10 +519,10 @@ const constants = {
     "Il y a des positions incorrectes entre parenthèses. "
   ],
   decreaseMessage: [
-    "上一步的計算得到一個分數。",//，這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則只得這個分數。",
-    "上一步的计算得到一个分数。",//，这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。如果这是最后一个计算步骤，则只得这个分数。",
-    "The calculation in the previous step obtains a fraction. ",//, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged. If this is the last calculation step, there is only one fraction.",
-    "Le calcul de l'étape précédente obtient une fraction. "//, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
+    "這個步驟應算出一個分數。",//"上一步的計算得到一個分數。這一步計算範圍的左方和右方的所有分數和運算符號都需保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    "这个步骤应算出一个分数。",//"上一步的计算得到一个分数。这一步计算范围的左方和右方的所有分数和运算符号都需保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    "This calculation step should obtain a fraction. ",//, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged. If this is the last calculation step, there is only one fraction.",
+    "Cette étape de calcul doit obtenir une fraction. "//, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
   operatorBeforeStep: [
     "這一步計算範圍的左方有一個運算符號，並不包含在這步計算中，所以需保持不變。",

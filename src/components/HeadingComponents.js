@@ -18,14 +18,14 @@ const myFrameStyles = makeStyles((theme) => ({
   topic: {
     fontSize: "2.4vw",
     color: myTheme.color.myOrange,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "4.8vw",
       textAlign: "center",
     },
   },
   learningTool: {
     fontSize: "1.6vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "3.2vw",
     },
   },

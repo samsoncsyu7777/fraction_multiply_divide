@@ -14,7 +14,7 @@ const myKeypadStyles = makeStyles((theme) => ({
     fontSize: "2vw",
     margin: "0.5vw",
     textAlign: "right",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "12vw",
       height: "4.8vw",
       fontSize: "4vw",
@@ -29,7 +29,7 @@ const myKeypadStyles = makeStyles((theme) => ({
     height: "4vw",
     fontSize: "2vw",
     minWidth: "1vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "8vw",
       height: "8vw",
       fontSize: "4vw",

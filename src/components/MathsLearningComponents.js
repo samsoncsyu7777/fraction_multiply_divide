@@ -19,7 +19,7 @@ const headingSelectStyles = makeStyles((theme) => ({
   selectLabel: {
     fontSize: "1.8vw",
     color: myTheme.color.myBlack,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "3.6vw",
     },
   },
@@ -27,20 +27,20 @@ const headingSelectStyles = makeStyles((theme) => ({
     fontSize: "1.4vw",
     color: myTheme.color.myBlue,
     height: "2vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "2.8vw",
       height: "4vw",
     },
   },
   selectWidth: {
     width: "12vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "24vw",
     },
   },
   selectIcon: {
     fontSize: "2vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "4vw",
     },
   },

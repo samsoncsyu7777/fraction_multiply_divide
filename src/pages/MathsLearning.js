@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Link } from "@material-ui/core";
 import { HeadingSelect } from "../components/MathsLearningComponents";
 import { FractionMultiplyDivide } from "./FractionMultiplyDivide";
 import { withStyles } from "@material-ui/core/styles";
@@ -8,6 +8,9 @@ import constants from "../constants/MathsLearningConstants";
 import pic1 from "../assets/cross5.jpg";
 import pic2 from "../assets/cross6.jpg";
 import pic3 from "../assets/neighbor1.jpg";
+import pic4 from "../assets/egypt1.jpeg";
+import pic5 from "../assets/jairusDaughter2.jpeg";
+import pic6 from "../assets/love2.jpeg";
 import prayerImage from "../assets/prayer4.jpg";
 import { FreeBreakfast } from "@material-ui/icons";
 
@@ -33,55 +36,56 @@ const mathsLearningStyle = (theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "80vw",
-    borderWidth: "0.5vw",
+    width: "90vw",
+    borderWidth: "0.3vw",
     borderImage: myTheme.color.conicGradient,
     border: "solid",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "95vw"
     }
   },
   scriptureImage: {
-    height: "8vw",
+    height: "4vw",
     padding: "0.5vw",
-    [theme.breakpoints.down("sm")]: {
-      height: "20vw"
+    [theme.breakpoints.down("xs")]: {
+      height: "0vw"
     }
   },
   scriptureVerse: {
-    width: "70vw",
-    fontSize: "2vw",
+    width: "80vw",
+    fontSize: "1.4vw",
     color: myTheme.color.myPurple,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "90vw",
-      fontSize: "4vw"
+      fontSize: "2.6vw"
     }
   },
   prayerRow: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginTop: "2vh",
   },
   prayerImage: {
-    height: "6vw",
+    height: "4vw",
     padding: "0.5vw",
-    [theme.breakpoints.down("sm")]: {
-      height: "12vw"
+    [theme.breakpoints.down("xs")]: {
+      height: "8vw"
     }
   },
   prayerText: {
     width: "60vw",
-    fontSize: "2vw",
+    fontSize: "1.4vw",
     color: myTheme.color.myPurple,
-    [theme.breakpoints.down("sm")]: {
-      width: "80vw",
-      fontSize: "4vw"
+    [theme.breakpoints.down("xs")]: {
+      width: "90vw",
+      fontSize: "2.8vw"
     }
   },
   commonText: {
     fontSize: "1.4vw",
     textAlign: "center",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "2.8vw"
     }
   },
@@ -90,15 +94,16 @@ const mathsLearningStyle = (theme) => ({
     textAlign: "right",
     fontSize: "1.5vw",
     color: myTheme.color.myBrown,
-    [theme.breakpoints.down("sm")]: {
+    marginTop: "2vh",
+    [theme.breakpoints.down("xs")]: {
       fontSize: "3vw"
     }
   }
 });
 
 function MathsLearning(props) {
-  const [languageIndex, setLanguageIndex] = useState(2); //0:繁體中文
-  const [bibleVersionIndex, setBibleVersionIndex] = useState(0); //0:catholic,1:christian
+  const [languageIndex, setLanguageIndex] = useState(-1); //0:繁體中文
+  const [bibleVersionIndex, setBibleVersionIndex] = useState(-1); //0:catholic,1:christian
   const [topicIndex, setTopicIndex] = useState(0); //*** */
   const [learningToolIndex, setLearningToolIndex] = useState(0);
   const [scriptureVerseIndex, setScriptureVerseIndex] = useState(0);
@@ -110,9 +115,9 @@ function MathsLearning(props) {
   const numberOfBibleVersions = 2;
   const numberOfTopics = [3, 3, 2];
   const numberOfLearningTools = 2;
-  const numberOfScriptureVerses = 3;
+  const numberOfScriptureVerses = 6;
   const numberOfUnits = 3;
-  const scriptureImages = [pic1, pic2, pic3];
+  const scriptureImages = [pic1, pic2, pic3, pic4, pic5, pic6];
 
   const {
     languages,
@@ -129,8 +134,20 @@ function MathsLearning(props) {
   } = constants;
 
   useEffect(() => {//*** */
-    setIndexArray(prev => [languageIndex, bibleVersionIndex, topicIndex, learningToolIndex, prev[4], prev[5]]);
-  }, [languageIndex, bibleVersionIndex, topicIndex, learningToolIndex])
+    setIndexArray(prev => [languageIndex, prev[1], prev[2], prev[3], prev[4], prev[5]]);
+  }, [languageIndex]);
+
+  useEffect(() => {//*** */
+    setIndexArray(prev => [prev[0], bibleVersionIndex, prev[2], prev[3], prev[4], prev[5]]);
+  }, [bibleVersionIndex]);
+
+  useEffect(() => {//*** */
+    setIndexArray(prev => [prev[0], prev[1], topicIndex, prev[3], prev[4], prev[5]]);
+  }, [topicIndex]);
+
+  useEffect(() => {//*** */
+    setIndexArray(prev => [prev[0], prev[1], prev[2], learningToolIndex, prev[4], prev[5]]);
+  }, [learningToolIndex]);
 
   useEffect(() => {
     const queryString = props.location.search;
@@ -285,8 +302,10 @@ function MathsLearning(props) {
         </Typography>
       </Grid>
       <Grid className={classes.emailRow}>
-        <Typography className={classes.emailText}>
+        <Typography className={classes.emailText} >
+          <Link href="mailto:samsoncsyuapple@gmail.com">
           samsoncsyuapple@gmail.com
+          </Link>
         </Typography>
       </Grid>
     </Grid>

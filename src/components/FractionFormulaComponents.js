@@ -5,25 +5,28 @@ import { makeStyles } from "@material-ui/core/styles";
 import { theme as myTheme } from "../themes/theme";
 
 const fractionFormulaStyles = makeStyles((theme) => ({
-  myInputText: {
+  /*myInputText: {
     width: "6vw",
     height: "2.4vw",
     fontSize: "2vw",
     margin: "0.5vw",
     textAlign: "right",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "12vw",
       height: "4.8vw",
       fontSize: "4vw"
     }
-  },
+  },*/
   centerRow: {
     display: "flex",
     justifyContent: "center"
   },
   overflow: {
     overflow: "auto",
-    maxWidth: "70vw"
+    maxWidth: "78vw",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "94vw",
+    },
   },
   leftRow: {
     display: "flex",
@@ -33,84 +36,101 @@ const fractionFormulaStyles = makeStyles((theme) => ({
     alignItems: "center"
   },
   integerInput: {
-    width: "4vw",
-    height: "4vw",
+    width: "3.0vw",
+    height: "3.0vw",
     fontSize: "1.7vw",
-    minWidth: "4vw"
+    minWidth: "3.0vw",
+    borderRadius: "0.4vw",
+    lineHeight: 1.9,
   },
   commonInput: {
-    width: "5.5vw",
+    width: "4.2vw",
     height: "3vw",
     fontSize: "1.5vw",
-    minWidth: "5.5vw"
+    minWidth: "4.2vw",
+    borderRadius: "0.4vw",
+    lineHeight: 2.1,
   },
   smallInput: {
-    width: "4vw",
-    height: "2vw",
+    width: "3.0vw",
+    height: "1.6vw",
     fontSize: "1vw",
-    minWidth: "4vw"
+    minWidth: "3.0vw",
+    borderRadius: "0.3vw",
   },
   operatorInput: {
     borderRadius: "6vw",
-    width: "4vw",
-    height: "4vw",
-    minWidth: "1vw",
+    width: "2.8vw",
+    height: "2.8vw",
+    minWidth: "2.8vw",
     fontSize: "1.7vw",
-    marginRight: "0.3vw",
+    //marginRight: "0.3vw",
+    lineHeight: 1.7, 
+  },
+  border: {
+    borderColor: myTheme.color.myGrey,
+    borderWidth: 1,
+    borderStyle: "solid",
+    textAlign: "center",
+    letterSpacing: 0,
   },
   bracket: {
     borderRadius: "2vw",
-    width: "1.5vw",
+    width: "1.0vw",
     //maxWidth: "1.5vw",
-    minWidth: "1.5vw",
+    minWidth: "1.0vw",
     height: "4vw",
-    fontSize: "3vw",
+    fontSize: "2.6vw",
     margin: "0.3vw",
   },
   fractionLineBox: {
-    width: "6vw",
+    width: "5.5vw",
     height: "0.01vw",
     padding: "0vw",
     margin: "0.3vw",
-    minWidth: "6vw"
+    minWidth: "5.5vw"
   },
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("xs")]: {
     integerInput: {
-      width: "6vw",
-      height: "8vw",
+      width: "5vw",
+      height: "6vw",
       fontSize: "3vw",
-      minWidth: "6vw"
+      minWidth: "5vw",
+      borderRadius: "0.8vw",
     },
     commonInput: {
-      width: "8vw",
+      width: "6.4vw",
       height: "6vw",
       fontSize: "2.6vw",
-      minWidth: "8vw"
+      minWidth: "6.4vw",
+      borderRadius: "0.8vw", 
     },
     smallInput: {
-      width: "6vw",
+      width: "5vw",
       height: "4vw",
       fontSize: "2vw",
-      minWidth: "6vw"
+      minWidth: "5vw",
+      borderRadius: "0.5vw",
     },
     operatorInput: {
       borderRadius: "8vw",
-      width: "6vw",
-      height: "6vw",
-      minWidth: "2vw",
+      width: "5vw",
+      height: "5vw",
+      minWidth: "5vw",
       fontSize: "3vw",
-      marginRight: "0.4vw"
+      //marginRight: "0.4vw",
+      lineHeight: 1.67, 
     },
     bracket: {
       borderRadius: "3vw",
-      width: "2.2vw",
-      minWidth: "2.2vw",
+      width: "1.7vw",
+      minWidth: "1.7vw",
       height: "6vw",
-      fontSize: "4vw",
+      fontSize: "3.8vw",
       margin: "0.4vw",
     },
     fractionLineBox: {
-      width: "10vw",
+      width: "8vw",
       height: "0.02vw",
       padding: "0vw",
       margin: "0.4vw",
@@ -161,8 +181,7 @@ export const FractionFormula = ({
         return (
           <Grid key={index} className={classes.leftRow}>
             {index != 0 && (
-              <Button
-                variant="outlined"
+              <Typography
                 style={
                   isFocusedLine && positionIndex == index && partIndex == 0
                     ? {
@@ -174,19 +193,19 @@ export const FractionFormula = ({
                         color: myTheme.color.myBlue
                       }
                 }
-                className={classes.operatorInput}
+                className={`${classes.operatorInput} ${classes.border}`}
                 onClick={(e) => {
                   handlePartClick(e, index, 0);
                 }}
               >
                 {fraction[0]}
-              </Button>
+              </Typography>
             )}
 
             <Typography
               style={{backgroundColor: myTheme.color.myWhite,
                       color: myTheme.color.myBlue}}
-              className={classes.bracket}
+              className={`${classes.bracket} ${classes.border}`}
               onClick={() => {
                 handleBracketClick(index, 0);
               }}
@@ -196,8 +215,7 @@ export const FractionFormula = ({
 
             {(learningToolIndex == 1 ||
               (/*calculationStage > 0 &&*/ lineIndex > 0)) && (
-              <Button
-                variant="outlined"
+              <Typography
                 style={
                   isFocusedLine && positionIndex == index && partIndex == 1
                     ? {
@@ -209,13 +227,13 @@ export const FractionFormula = ({
                         color: myTheme.color.myBlue
                       }
                 }
-                className={classes.integerInput}
+                className={`${classes.integerInput} ${classes.border}`}
                 onClick={(e) => {
                   handlePartClick(e, index, 1);
                 }}
               >
                 {fraction[1] == 0 ? "" : fraction[1]}
-              </Button>
+              </Typography>
             )}
             <Grid
               container
@@ -223,8 +241,7 @@ export const FractionFormula = ({
               className={classes.fractionColumn}
             >
               {(showSmallInput && index >= fractionIndexInProcess[0] && index <= fractionIndexInProcess[1]) && (
-                <Button
-                  variant="outlined"
+                <Typography
                   style={
                     isFocusedLine && positionIndex == index && partIndex == 2
                       ? {
@@ -236,16 +253,15 @@ export const FractionFormula = ({
                           color: myTheme.color.myBlue
                         }
                   }
-                  className={classes.smallInput}
+                  className={`${classes.smallInput} ${classes.border}`}
                   onClick={(e) => {
                     handlePartClick(e, index, 2);
                   }}
                 >
                   {fraction[2] == 0 ? "" : fraction[2]}
-                </Button>
+                </Typography>
               )}
-              <Button
-                variant="outlined"
+              <Typography
                 style={
                   isFocusedLine && positionIndex == index && partIndex == 3
                     ? {
@@ -257,16 +273,15 @@ export const FractionFormula = ({
                         color: myTheme.color.myBlue
                       }
                 }
-                className={classes.commonInput}
+                className={`${classes.commonInput} ${classes.border}`}
                 onClick={(e) => {
                   handlePartClick(e, index, 3);
                 }}
               >
                 {fraction[3] == 0 ? "" : fraction[3]}
-              </Button>
+              </Typography>
               <Box borderBottom={3} className={classes.fractionLineBox} />
-              <Button
-                variant="outlined"
+              <Typography
                 style={
                   isFocusedLine && positionIndex == index && partIndex == 4
                     ? {
@@ -278,16 +293,15 @@ export const FractionFormula = ({
                         color: myTheme.color.myBlue
                       }
                 }
-                className={classes.commonInput}
+                className={`${classes.commonInput} ${classes.border}`}
                 onClick={(e) => {
                   handlePartClick(e, index, 4);
                 }}
               >
                 {fraction[4] == 0 ? "" : fraction[4]}
-              </Button>
+              </Typography>
               {(showSmallInput && index >= fractionIndexInProcess[0] && index <= fractionIndexInProcess[1]) && (
-                <Button
-                  variant="outlined"
+                <Typography
                   style={
                     isFocusedLine && positionIndex == index && partIndex == 5
                       ? {
@@ -299,20 +313,20 @@ export const FractionFormula = ({
                           color: myTheme.color.myBlue
                         }
                   }
-                  className={classes.smallInput}
+                  className={`${classes.smallInput} ${classes.border}`}
                   onClick={(e) => {
                     handlePartClick(e, index, 5);
                   }}
                 >
                   {fraction[5] == 0 ? "" : fraction[5]}
-                </Button>
+                </Typography>
               )}
             </Grid>
 
             <Typography
               style={{backgroundColor: myTheme.color.myWhite,
                       color: myTheme.color.myBlue}}
-              className={classes.bracket}
+              className={`${classes.bracket} ${classes.border}`}
               onClick={() => {
                 handleBracketClick(index, 1);
               }}

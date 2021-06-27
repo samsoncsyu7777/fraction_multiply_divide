@@ -12,7 +12,7 @@ const textQuestionStyles = makeStyles((theme) => ({
     fontSize: "3vw",
     margin: "0.5vw",
     textAlign: "left",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "90vw",
       //height: "4.8vw",
       fontSize: "4.5vw",
@@ -28,7 +28,7 @@ const textQuestionStyles = makeStyles((theme) => ({
     backgroundColor: myTheme.color.myBlue,
     height: "3.5vw",
     fontSize: "2.5vw",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       height: "4.9vw",
       fontSize: "3.5vw",
     },
