@@ -124,12 +124,24 @@ const loginStyles = makeStyles((theme) =>
       }
     },
     loginButton: {
+      /*
       fontSize: 20,
       color: myTheme.color.myWhite,
       backgroundColor: myTheme.color.myBlue,
       [theme.breakpoints.down("xs")]: {
         fontSize: 16,
-      }
+      },*/
+      color: myTheme.color.myWhite,
+      backgroundColor: myTheme.color.myBlue,
+      height: "4vw",
+      width: "7vw",
+      fontSize: "1.3vw",
+      //margin: "0.5vw",
+      [theme.breakpoints.down("xs")]: {
+        height: "8vw",
+        width: "14vw",
+        fontSize: "2.6vw",
+      },
     },
     buttonText: {
       fontSize: "1.6vw",
@@ -398,6 +410,7 @@ export const Login = ({
             </Typography>
             <Button
               className={classes.researchLink}
+              style={{textTransform: 'capitalize'}}
               onClick={() =>
                 window.open(
                   "https://link.springer.com/chapter/10.1007/978-3-030-52240-7_48",
@@ -411,6 +424,7 @@ export const Login = ({
             </Button>
             <Button
               className={classes.researchLink}
+              style={{textTransform: 'capitalize'}}
               onClick={() =>
                 window.open(
                   "https://www.researchgate.net/publication/240886944_Using_online_assessment_to_provide_instant_feedback",
@@ -530,6 +544,7 @@ export const Login = ({
               <Button
                 variant="contained"
                 className={classes.loginButton}
+                style={{textTransform: 'capitalize'}}
                 onClick={() => {
                   submit();
                 }}

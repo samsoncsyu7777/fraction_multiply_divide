@@ -1,9 +1,11 @@
 import React from "react";
 import {
   Snackbar,
+  Typography,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
+import { InlineMath, /*BlockMath*/ } from "react-katex";
 
 import { theme as myTheme } from "../themes/theme";
 
@@ -22,6 +24,8 @@ function Alert(props) {
 
 export const AlertSnackbar = ({ open, closeAlert, errorMessage, severity }) => {
   const classes = alertSnackbarStyles();
+  console.log(errorMessage)
+  const errorMessageArray = errorMessage.split("^"); //
 
   return (
     <Snackbar
@@ -34,8 +38,21 @@ export const AlertSnackbar = ({ open, closeAlert, errorMessage, severity }) => {
         onClose={closeAlert}
         severity={severity}
       >
-        <div>{errorMessage}</div>
+        <Typography 
+        className={classes.alert} 
+        style={{whiteSpace: 'pre-line'}}
+        >
+        {errorMessageArray.map((text, index) => {
+          return index % 2 === 0 ? (
+            <span key={index}>{text}</span>
+          ) : (
+            <InlineMath key={index}>{text}</InlineMath>
+          );
+        })}
+      </Typography>
       </Alert>
     </Snackbar>
   );
 };
+
+        /*<div>{errorMessage}</div>*/

@@ -66,18 +66,26 @@ export const pagesStyles = makeStyles((theme) => ({
   okButton: {
     height: "4vw",
     width: "7vw",
-    fontSize: "1vw",
+    fontSize: "1.3vw",
     margin: "0.5vw",
     [theme.breakpoints.down("xs")]: {
       height: "8vw",
       width: "14vw",
-      fontSize: "2vw",
+      fontSize: "2.6vw",
     },
   },
   resetArrow: {
     fontSize: "6vw",
+    //lineHeight: "5vw",
+    //padding: 0,
+    //display: "flex",
+    //alignContent: "center",
+    //alignItems: "center",
+    //alignSelf: "center",
+    height: "2.5vw",
     [theme.breakpoints.down("xs")]: {
       fontSize: "12vw",
+      height: "5.0vw"
     },
   },
 }));

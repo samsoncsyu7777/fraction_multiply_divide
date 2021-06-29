@@ -87,6 +87,7 @@ export const StageButtons = ({
           color={stageState === -1 ? "secondary" : "primary"}
           style={{
             backgroundColor: stageState === -1 ? myTheme.color.myYellow : "",
+            textTransform: 'capitalize'
             //height: 45
           }}
           onClick={() => handleStageClick(-1)}
@@ -100,6 +101,7 @@ export const StageButtons = ({
           color={stageState === -2 ? "secondary" : "primary"}
           style={{
             backgroundColor: stageState === -2 ? myTheme.color.myYellow : "",
+            textTransform: 'capitalize'
             //height: 45
           }}
           onClick={() => handleStageClick(-2)}
@@ -113,6 +115,7 @@ export const StageButtons = ({
           color={stageState === -3 ? "secondary" : "primary"}
           style={{
             backgroundColor: stageState === -3 ? myTheme.color.myYellow : "",
+            textTransform: 'capitalize'
             //height: 45
           }}
           onClick={() => handleStageClick(-3)}
