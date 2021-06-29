@@ -559,8 +559,13 @@ const constants = {
     "当算式有左括号时，也要有右括号。",
     "When the formula has a left parenthesis, there must also be a right parenthesis.",
     "Lorsque la formule a une parenthèse gauche, il doit également y avoir une parenthèse droite."
+  ],
+  totalScoreForUnit: [
+    "單元總分", "单元总分", "Unit total score", "Score total de l'unité"
+  ],
+  uploadTotalScore: [
+    "遞交單元總分", "递交单元总分", "Submit unit total score", "Soumettre le score total de l'unité"
   ]
-
 };
 
 export default constants;

@@ -37,8 +37,8 @@ const myKeypadStyles = makeStyles((theme) => ({
   },
 }));
 
-export const MyKeypad = ({ handleClick, topicIndex, formulaFocusedIndex }) => {
-  const keypadTexts = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+export const MyKeypad = ({ handleClick, topicIndex, formulaFocusedIndex, isMC }) => {
+  let keypadTexts = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   const keypadColors = [myTheme.color.red, myTheme.color.orange, myTheme.color.yellow, myTheme.color.lime, myTheme.color.green, myTheme.color.cyan, myTheme.color.blue, myTheme.color.purple];
   var randomIndex = Math.floor(Math.random() * keypadColors.length);
   /*if (topicIndex != 1 || (topicIndex == 1 && formulaFocusedIndex > 0)) {
@@ -52,7 +52,9 @@ export const MyKeypad = ({ handleClick, topicIndex, formulaFocusedIndex }) => {
   keypadTexts.push("×");    
   keypadTexts.push("÷");    
   keypadTexts.push("<-");
-
+  if (isMC) {
+    keypadTexts = ["A", "B", "C" , "D"];
+  }
   const classes = myKeypadStyles();
 
   return (

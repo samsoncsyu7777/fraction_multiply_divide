@@ -5,7 +5,7 @@ import { theme as myTheme } from "../themes/theme";
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
-import { SportsRugbySharp } from "@material-ui/icons";
+//import { SportsRugbySharp } from "@material-ui/icons";
 
 const loginStyles = makeStyles((theme) =>
   createStyles({
@@ -193,6 +193,7 @@ export const Login = ({
     ["購買", "购买", "Purchase", "Acheter"],
     ["登入", "登入", "Login", "Connectez-vous"]
   ];
+  const tryAgain = ["重新輸入", "重新输入", "Re-enter", "Rentrer"];
   const introduction = [
     "針對學習盲點，對同學的列式、步驟和答案進行分析，即時作出回饋和概念解釋，同學完成試卷後，末頁將列出同學需注意的所有學習盲點和完成所需時間。",
     "针对学习盲点，对同学的列式、步骤和答案进行分析，即时作出回馈和概念解释，同学完成试卷后，末页将列出同学需注意的所有学习盲点和完成所需时间。",
@@ -264,10 +265,10 @@ export const Login = ({
     "(Connectez-vous aux copies d'examen simulé de différentes unités 3 fois en six mois)"
   ];*/
   const payRemindText = [
-    "我們選用Stripe付款平台，方便可靠。交易成功後，您可以在半年內使用電郵地址和信用卡最後4個編號登入不同單元的模擬試卷3次。",
-    "我们选用Stripe付款平台，方便可靠。交易成功后，您可以在半年内使用电邮地址和信用卡最后4个编号登入不同单元的模拟试卷3次。",
-    "We use Stripe's payment platform, which is convenient and reliable. After a successful transaction, you can use your email and the last 4 digits of your credit card to log in to the mock exam papers of different units 3 times within half a year.",
-    "Nous utilisons la plateforme de paiement de Stripe, qui est pratique et fiable. Après une transaction réussie, vous pouvez utiliser votre e-mail et les 4 derniers chiffres de votre carte de crédit pour vous connecter aux copies d'examen blanc de différentes unités 3 fois en six mois."
+    "我們選用Stripe付款平台，方便可靠。交易成功後，您將收到一個包含使用者名稱及密碼的電子郵件，並可以在半年內登入不同單元的模擬試卷3次。",
+    "我们选用Stripe付款平台，方便可靠。交易成功后，您将收到一个包含使用者名称及密码的电子邮件，并可以在半年内登入不同单元的模拟试卷3次。",
+    "We use Stripe's payment platform, which is convenient and reliable. After a successful transaction, you will receive an email containing your username and password, and you can log in to the mock exam papers of different units 3 times within half a year.",
+    "Nous utilisons la plateforme de paiement de Stripe, qui est pratique et fiable. Après une transaction réussie, vous recevrez un e-mail contenant votre nom d'utilisateur et votre mot de passe, et vous pourrez vous connecter aux copies d'examen blanc de différentes unités 3 fois en six mois."
   ];
 
   const facebookShare = [
@@ -288,17 +289,17 @@ export const Login = ({
     "Now waiting for your share to Facebook and confirmation from Facebook.",
     "En attendant votre partage sur Facebook et la confirmation de Facebook."
   ];
-  const email = [
-    "您付款時使用的電郵",
-    "您付款时使用的电邮",
-    "The email you used for payment",
-    "L'email que vous avez utilisé pour le paiement"
+  const email = [ "", "", "", ""
+    //"您付款時使用的電郵",
+    //"您付款时使用的电邮",
+    //"The email you used for payment",
+    //"L'email que vous avez utilisé pour le paiement"
   ];
-  const passwordHint = [
-    "您付款時使用的信用卡最後4個編號",
-    "您付款时使用的信用卡最后4个编号",
-    "The last 4 digits of the credit card you used for payment",
-    "Les 4 derniers chiffres de la carte de crédit que vous avez utilisée pour le paiement"
+  const passwordHint = [ "", "", "", ""
+    //"您付款時使用的信用卡最後4個編號",
+    //"您付款时使用的信用卡最后4个编号",
+    //"The last 4 digits of the credit card you used for payment",
+    //"Les 4 derniers chiffres de la carte de crédit que vous avez utilisée pour le paiement"
   ];
   const shareUrl =
     "https://u2snfukih9dkcrgrzex8iq-on.drv.tw/MathsFractionMultiplyDivide/?lang=" +
@@ -530,7 +531,7 @@ export const Login = ({
                 //}}
                 placeholder={passwordHint[languageIndex]}
                 value={password}
-                max="9999"
+                max="99999999999"
                 min="1000"
                 type="number"
                 onChange={(e) => {
@@ -549,7 +550,7 @@ export const Login = ({
                   submit();
                 }}
               >
-                {loginState === "failed" ? "Try Again" : "Login"}
+                {loginState === "failed" ? tryAgain[languageIndex] : buttonsText[3][languageIndex]}
               </Button>
             </Grid>
             {loginState !== "unclick" && (

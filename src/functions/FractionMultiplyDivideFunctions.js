@@ -94,7 +94,7 @@ const {
 export const timeDelay = 200;
 
 //A&S only. Need both A&S and mixed versions -> This version can serve both
-export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, setErrorMessage, languageIndex, setOpenAlert) {
+export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, handleSetError, languageIndex, setOpenAlert) {
     /*console.log("positiveResultCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -143,10 +143,7 @@ export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, 
             fractionLinesArray[index][i][3] >= fractionLinesArray[index][i][4] &&
             fractionLinesArray[index][i][4] > 0
         ) {
-            setErrorMessage(noImproper[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(noImproper[languageIndex]);            
             return false;
         }
     }
@@ -160,18 +157,12 @@ export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, 
 
     //check at least one fraction
     if (sumOfDenominators === 0) {
-        setErrorMessage(atLeastOneFraction[languageIndex]);
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
+        handleSetError(atLeastOneFraction[languageIndex]);        
         return false;
     }
     //check result is negative
     if (result < 0) {
-        setErrorMessage(negativeResult[languageIndex]);
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
+        handleSetError(negativeResult[languageIndex]);        
         return false;
     } else {
         return true;
@@ -216,7 +207,7 @@ export const stepMessage2 = (startIndex, endIndex, issue, decrease, languageInde
 
 //A&S only
 export function noVariousDenominatorCheck2(
-    index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, setOpenAlert, languageIndex, setErrorMessage, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
+    index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, setOpenAlert, languageIndex, handleSetError, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
 ) {
     console.log("noVariousDenominatorCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -256,10 +247,7 @@ export function noVariousDenominatorCheck2(
             JSON.stringify(bracketArray[index]) !==
             JSON.stringify(bracketArray[index - 1])
         ) {
-            setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
             return false;
         }
         //check denominators become lcm
@@ -279,10 +267,7 @@ export function noVariousDenominatorCheck2(
                 middleMessage +
                 sameNumberOfFractions3[languageIndex]
             );*/
-            setErrorMessage(stepMessage(startIndex, endIndex, noVarDenom[languageIndex], 0));
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(stepMessage(startIndex, endIndex, noVarDenom[languageIndex], 0));            
             return false;
         }
         console.log("startIndex:" + startIndex);
@@ -292,19 +277,13 @@ export function noVariousDenominatorCheck2(
             if (
                 fractionLinesArray[index][i][0] != fractionLinesArray[index - 1][i][0]
             ) {
-                setErrorMessage(sameOperatorsInNoVarDenom[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(sameOperatorsInNoVarDenom[languageIndex]);                
                 return false;
             }
             if (
                 fractionLinesArray[index][i][1] != fractionLinesArray[index - 1][i][1]
             ) {
-                setErrorMessage(sameWholeNumbersInNoVarDenom[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(sameWholeNumbersInNoVarDenom[languageIndex]);                
                 return false;
             }
             console.log("index in noVarious:" + index);
@@ -316,20 +295,14 @@ export function noVariousDenominatorCheck2(
                     0 ||
                     fractionLinesArray[index][i][4] == 0
                 ) {
-                    setErrorMessage(newDenominatorBeCM[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(newDenominatorBeCM[languageIndex]);                    
                     return false;
                 }
                 if (lcm == 0) {
                     lcm = fractionLinesArray[index][i][4];
                 } else {
                     if (fractionLinesArray[index][i][4] != lcm) {
-                        setErrorMessage(sameDenominatorHint[languageIndex]);
-                        setTimeout(() => {
-                            setOpenAlert(true);
-                        }, timeDelay);
+                        handleSetError(sameDenominatorHint[languageIndex]);                        
                         return false;
                     }
                 }
@@ -342,10 +315,7 @@ export function noVariousDenominatorCheck2(
                     fractionLinesArray[index - 1][i][3] !=
                     denominatorMultiple
                 ) {
-                    setErrorMessage(multiplyWithSameInteger[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(multiplyWithSameInteger[languageIndex]);                    
                     return false;
                 }
                 //whole number only
@@ -354,10 +324,7 @@ export function noVariousDenominatorCheck2(
                     fractionLinesArray[index][i][3] > 0 ||
                     fractionLinesArray[index][i][4] > 0
                 ) {
-                    setErrorMessage(onlyWholeNumbers[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(onlyWholeNumbers[languageIndex]);                    
                     return false;
                 }
             }
@@ -376,10 +343,7 @@ export function noVariousDenominatorCheck2(
                 }
             }
             if (isFactor) {
-                setErrorMessage(CMToLCMHint[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(CMToLCMHint[languageIndex]);                
                 return false;
             }
         }
@@ -399,7 +363,7 @@ export function noVariousDenominatorCheck2(
 
 //A&S only. need both A&S and mixed versions
 export function noNegativeNumeratorResultCheck2(
-    index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, setOpenAlert, languageIndex, setErrorMessage, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine
+    index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, setOpenAlert, languageIndex, handleSetError, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine
 ) {
     console.log("noNegativeNumeratorResultCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -448,10 +412,7 @@ export function noNegativeNumeratorResultCheck2(
             JSON.stringify(bracketArray[index]) !==
             JSON.stringify(bracketArray[index - 1])
         ) {
-            setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
             return false;
         }
         if (
@@ -467,20 +428,14 @@ export function noNegativeNumeratorResultCheck2(
                 middleMessage +
                 sameNumberOfFractions3[languageIndex]
             );*/
-            setErrorMessage(stepMessage(startIndex, endIndex, noNegNum[languageIndex], 0));
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(stepMessage(startIndex, endIndex, noNegNum[languageIndex], 0));            
             return false;
         }
         for (i = startIndex; i < endIndex + 1; i++) {
             if (
                 fractionLinesArray[index][i][0] != fractionLinesArray[index - 1][i][0]
             ) {
-                setErrorMessage(sameOperatorsInNoNegNum[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(sameOperatorsInNoNegNum[languageIndex]);                
                 return false;
             }
             if (
@@ -493,18 +448,12 @@ export function noNegativeNumeratorResultCheck2(
                 //denominator should be the lcm
                 if (wholeDiff > 0 || fractionLinesArray[index - 1][i][4] > 0) {
                     if (fractionLinesArray[index][i][4] != calculatedLcm) {
-                        setErrorMessage(denominatorInvolvedBeLCM[languageIndex]);
-                        setTimeout(() => {
-                            setOpenAlert(true);
-                        }, timeDelay);
+                        handleSetError(denominatorInvolvedBeLCM[languageIndex]);                        
                         return false;
                     }
                 } else {
                     if (fractionLinesArray[index][i][4] != 0) {
-                        setErrorMessage(wholeNotInvolvedKeepSame[languageIndex]);
-                        setTimeout(() => {
-                            setOpenAlert(true);
-                        }, timeDelay);
+                        handleSetError(wholeNotInvolvedKeepSame[languageIndex]);                        
                         return false;
                     }
                 }
@@ -512,10 +461,7 @@ export function noNegativeNumeratorResultCheck2(
                     fractionLinesArray[index][i][3] !=
                     fractionLinesArray[index - 1][i][3] + wholeDiff * calculatedLcm
                 ) {
-                    setErrorMessage(abdicatedNumerator[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(abdicatedNumerator[languageIndex]);                    
                     return false;
                 }
             } else {
@@ -527,26 +473,17 @@ export function noNegativeNumeratorResultCheck2(
                     fractionLinesArray[index][i][4] !=
                     fractionLinesArray[index - 1][i][4]
                 ) {
-                    setErrorMessage(fractionNotInvolvedKeepSame[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(fractionNotInvolvedKeepSame[languageIndex]);                    
                     return false;
                 }
             }
         }
         if (numeratorResult >= calculatedLcm) {
-            setErrorMessage(abdicateTooMuch[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(abdicateTooMuch[languageIndex]);            
             return false;
         }
         if (numeratorResult < 0) {
-            setErrorMessage(abdicateTooLittle[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(abdicateTooLittle[languageIndex]);            
             return false;
         }
         setIndexDecreasedByLastStage(endIndex - startIndex);
@@ -564,7 +501,7 @@ export function noNegativeNumeratorResultCheck2(
 }
 
 //A&S only
-export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, setOpenAlert, languageIndex, setErrorMessage, startEndIndexLastStage, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setStartEndIndexLastStage, setFractionIndexInProcess) {
+export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, setOpenAlert, languageIndex, handleSetError, startEndIndexLastStage, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setStartEndIndexLastStage, setFractionIndexInProcess) {
     console.log("addToOneFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -588,10 +525,7 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
         fractionLinesArray[index - 1].length - indexDecreasedByLastStage
     ) {
         //>2
-        setErrorMessage(oneFractionOnly[languageIndex]);
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
+        handleSetError(oneFractionOnly[languageIndex]);        
         return false;
     }
     let allBracketArray = [...bracketArray];
@@ -621,10 +555,7 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
     if (
         JSON.stringify(bracketArray[index]) !== JSON.stringify(tmpBracketArray)
     ) {
-        setErrorMessage(parenthesesMessage(bracketArray[index].length, tmpBracketArray.length) + parentheses[languageIndex]);
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
+        handleSetError(parenthesesMessage(bracketArray[index].length, tmpBracketArray.length) + parentheses[languageIndex]);
         return false;
     }
     var numeratorResult = 0;
@@ -660,19 +591,13 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
             fractionLinesArray[index][startEndIndexLastStage[0]][4] != calculatedLcm
         ) {
             //position: [0]
-            setErrorMessage(sameDenominatorInAddToOne[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(sameDenominatorInAddToOne[languageIndex]);            
             return false;
         }
     } else {
         if (fractionLinesArray[index][startEndIndexLastStage[0]][4] != 0) {
             //position: [0]
-            setErrorMessage(wholeWithoutFraction[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(wholeWithoutFraction[languageIndex]);            
             return false;
         }
     }
@@ -681,13 +606,10 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
     ) {
         //position: [0]
         if (negativeInNumeratorProcess) {
-            setErrorMessage(numeratorAvoidNegative[languageIndex]);
+            handleSetError(numeratorAvoidNegative[languageIndex]);
         } else {
-            setErrorMessage(incorrectNumerator[languageIndex]);
-        }
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
+            handleSetError(incorrectNumerator[languageIndex]);
+        }        
         return false;
     }
     if (
@@ -695,13 +617,10 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
     ) {
         //position: [0]
         if (negativeInWholeProcess) {
-            setErrorMessage(wholeAvoidNegative[languageIndex]);
+            handleSetError(wholeAvoidNegative[languageIndex]);
         } else {
-            setErrorMessage(incorrectCalculatedWhole[languageIndex]);
-        }
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
+            handleSetError(incorrectCalculatedWhole[languageIndex]);
+        }        
         return false;
     }
     setCalculationStage(3);
@@ -715,14 +634,11 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
 }
 
 //equal //for whole formula
-export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert, setErrorMessage, languageIndex) {
+export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert, handleSetError, languageIndex) {
     var i;
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
         if (i > 0 && fractionLinesArray[index][i][0] == "") {
-            setErrorMessage(noOperator[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(noOperator[languageIndex]);            
             return false;
         }
         if (
@@ -730,10 +646,7 @@ export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert,
             (fractionLinesArray[index][i][3] == "") &
             (fractionLinesArray[index][i][4] == "")
         ) {
-            setErrorMessage(noNumber[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(noNumber[languageIndex]);            
             return false;
         }
         if (
@@ -742,10 +655,7 @@ export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert,
             (fractionLinesArray[index][i][3] != "" &&
                 fractionLinesArray[index][i][4] == "")
         ) {
-            setErrorMessage(fractionHasBoth[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(fractionHasBoth[languageIndex]);            
             return false;
         }
     }
@@ -753,13 +663,10 @@ export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert,
 }
 
 //equal //for question whole formula only
-export function singleNumberCheck2(index, fractionLinesArray, languageIndex, setErrorMessage, setOpenAlert) {
+export function singleNumberCheck2(index, fractionLinesArray, languageIndex, handleSetError, setOpenAlert) {
     if (fractionLinesArray[index].length == 2) {
         if (index == 0) {
-            setErrorMessage(singleNumber[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(singleNumber[languageIndex]);            
             return false;
         }
     }
@@ -768,7 +675,7 @@ export function singleNumberCheck2(index, fractionLinesArray, languageIndex, set
 
 //little bit differ, fix it for mixed final stage //for whole formula?
 export function noImproperFractionCheck2(
-    completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, setErrorMessage, mixedStage, setStartEndIndexLastStage, nextNewStep, setSeverity, typeOfCalculation, setOpenAlert, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
+    completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, handleSetError, mixedStage, setStartEndIndexLastStage, nextNewStep, setSeverity, typeOfCalculation, setOpenAlert, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
 ) {
     console.log("noImproperFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -798,10 +705,7 @@ export function noImproperFractionCheck2(
                 return false;
             } else {
                 //*** */setErrorMessage(noImproper[languageIndex]);
-                setErrorMessage(noImproperAfterA_S[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(noImproperAfterA_S[languageIndex]);                
                 return false;
             }
         }
@@ -819,20 +723,14 @@ export function noImproperFractionCheck2(
             JSON.stringify(bracketArray[index]) !==
             JSON.stringify(bracketArray[index - 1])
         ) {
-            setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
             return false;
         }
         if (
             fractionLinesArray[index].length !==
             fractionLinesArray[index - 1].length
         ) {
-            setErrorMessage(oneFractionOnly[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(oneFractionOnly[languageIndex]);            
             return false;
         }
         for (i = startIndex; i < startIndex + 1; i++) {
@@ -856,10 +754,7 @@ export function noImproperFractionCheck2(
                     fractionLinesArray[index - 1][i][4]
                 )
               ) {*/
-                setErrorMessage(incorrectWhole[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(incorrectWhole[languageIndex]);                
                 return false;
             }
             if (fractionLinesArray[index - 1][i][4] == 1) {
@@ -867,10 +762,7 @@ export function noImproperFractionCheck2(
                     fractionLinesArray[index][i][3] > 0 ||
                     fractionLinesArray[index][i][4] > 0
                 ) {
-                    setErrorMessage(wholeNoFraction[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(wholeNoFraction[languageIndex]);                    
                     return false;
                 }
             } else {
@@ -878,10 +770,7 @@ export function noImproperFractionCheck2(
                     fractionLinesArray[index][i][4] !=
                     fractionLinesArray[index - 1][i][4]
                 ) {
-                    setErrorMessage(sameDenominatorInNoImproper[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(sameDenominatorInNoImproper[languageIndex]);                    
                     return false;
                 }
                 if (
@@ -889,10 +778,7 @@ export function noImproperFractionCheck2(
                     fractionLinesArray[index - 1][i][3] %
                     fractionLinesArray[index - 1][i][4]
                 ) {
-                    setErrorMessage(numeratorFromImproper[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(numeratorFromImproper[languageIndex]);                    
                     return false;
                 }
             }
@@ -973,7 +859,7 @@ export function noImproperFractionCheck2(
 
 //M&D only
 export function noMixedFractionCheck2(
-    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, setOpenAlert, languageIndex, setErrorMessage, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setStartEndIndexLastStage
+    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setStartEndIndexLastStage
 ) {
     console.log("noMixedFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -1002,14 +888,11 @@ export function noMixedFractionCheck2(
                         fractionLinesArray[index - 1][i][1] ||
                         fractionLinesArray[index][i][4] != 1
                     ) {
-                        setErrorMessage(wholeToNumerator[languageIndex]);
+                        handleSetError(wholeToNumerator[languageIndex]);
                     }
                 } else {
-                    setErrorMessage(noMixed[languageIndex]);
-                }
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                    handleSetError(noMixed[languageIndex]);
+                }                
             } else {
                 console.log(
                     "setFractionIndexInProcess with: " + startIndex + endIndex
@@ -1041,10 +924,7 @@ export function noMixedFractionCheck2(
             JSON.stringify(bracketArray[index]) !==
             JSON.stringify(bracketArray[index - 1])
         ) {
-            setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
             return false;
         }
         if (
@@ -1060,20 +940,14 @@ export function noMixedFractionCheck2(
                 middleMessage +
                 sameNumberOfFractions3[languageIndex]
             );*/
-            setErrorMessage(stepMessage(startIndex, endIndex, noMixedIssue[languageIndex], 0));
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(stepMessage(startIndex, endIndex, noMixedIssue[languageIndex], 0));            
             return false;
         }
         for (i = startIndex; i < endIndex + 1; i++) {
             if (
                 fractionLinesArray[index][i][0] != fractionLinesArray[index - 1][i][0]
             ) {
-                setErrorMessage(sameOperatorsInNoMixFract[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(sameOperatorsInNoMixFract[languageIndex]);                
                 return false;
             }
             var calculatedNumerator =
@@ -1090,28 +964,19 @@ export function noMixedFractionCheck2(
                     fractionLinesArray[index - 1][i][1] ||
                     fractionLinesArray[index][i][4] != 1
                 ) {
-                    setErrorMessage(wholeToNumerator[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(wholeToNumerator[languageIndex]);                    
                     return false;
                 }
             } else {
                 if (fractionLinesArray[index][i][3] != calculatedNumerator) {
-                    setErrorMessage(mixedToNumerator[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(mixedToNumerator[languageIndex]);                    
                     return false;
                 }
                 if (
                     fractionLinesArray[index][i][4] !=
                     fractionLinesArray[index - 1][i][4]
                 ) {
-                    setErrorMessage(sameDenominatorInNoMixFract[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(sameDenominatorInNoMixFract[languageIndex]);                    
                     return false;
                 }
             }
@@ -1131,7 +996,7 @@ export function noMixedFractionCheck2(
 
 //M&D only
 export function noDivisionCheck2(
-    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setOpenAlert, languageIndex, setErrorMessage, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setStartEndIndexLastStage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
+    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setStartEndIndexLastStage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
 ) {
     console.log("noDivisionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -1153,10 +1018,7 @@ export function noDivisionCheck2(
             //*** */if (index != 0 && !isNewStep && calculationStage == 1) {
             if (index !== 0 && !isNewStepTmp && calculationStage === 1) {
                 //newStep
-                setErrorMessage(noDivision[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(noDivision[languageIndex]);                
             } else {
                 console.log(
                     "setFractionIndexInProcess with: " + startIndex + endIndex
@@ -1191,10 +1053,7 @@ export function noDivisionCheck2(
             JSON.stringify(bracketArray[index]) !==
             JSON.stringify(bracketArray[index - 1])
         ) {
-            setErrorMessage(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(parenthesesMessage(bracketArray[index].length, bracketArray[index - 1].length) + parentheses[languageIndex]);
             return false;
         }
         if (
@@ -1210,18 +1069,12 @@ export function noDivisionCheck2(
                 middleMessage +
                 sameNumberOfFractions3[languageIndex]
             );*/
-            setErrorMessage(stepMessage(startIndex, endIndex, noDivisionIssue[languageIndex], 0));
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(stepMessage(startIndex, endIndex, noDivisionIssue[languageIndex], 0));            
             return false;
         }
         for (i = startIndex; i < endIndex + 1; i++) {
             if (fractionLinesArray[index][i][1] > 0) {
-                setErrorMessage(noMixed[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(noMixed[languageIndex]);                
                 return false;
             }
             if (i == startIndex || fractionLinesArray[index - 1][i][0] == "×") {
@@ -1231,10 +1084,7 @@ export function noDivisionCheck2(
                     fractionLinesArray[index][i][4] !=
                     fractionLinesArray[index - 1][i][4]
                 ) {
-                    setErrorMessage(sameMultipliers[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(sameMultipliers[languageIndex]);                    
                     return false;
                 }
             } else if (fractionLinesArray[index - 1][i][0] == "÷") {
@@ -1244,10 +1094,7 @@ export function noDivisionCheck2(
                     fractionLinesArray[index][i][4] !=
                     fractionLinesArray[index - 1][i][3]
                 ) {
-                    setErrorMessage(divisorsUpDown[languageIndex]);
-                    setTimeout(() => {
-                        setOpenAlert(true);
-                    }, timeDelay);
+                    handleSetError(divisorsUpDown[languageIndex]);                    
                     return false;
                 }
             }
@@ -1266,7 +1113,7 @@ export function noDivisionCheck2(
 
 //M&D only
 export function noMultiplicationCheck2(
-    index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, setStartEndIndexLastStage, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, setErrorMessage, primeNumbers, setOpenAlert, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
+    index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, setStartEndIndexLastStage, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, handleSetError, primeNumbers, setOpenAlert, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
 ) {
     console.log("noMultiplicationCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -1325,20 +1172,14 @@ export function noMultiplicationCheck2(
         if (
             JSON.stringify(bracketArray[index]) !== JSON.stringify(tmpBracketArray)
         ) {
-            setErrorMessage(parenthesesMessage(bracketArray[index].length, tmpBracketArray.length) + parentheses[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(parenthesesMessage(bracketArray[index].length, tmpBracketArray.length) + parentheses[languageIndex]);
             return false;
         }
         if (
             fractionLinesArray[index].length >
             fractionLinesArray[index - 1].length - indexDecreasedByLastStage
         ) {
-            setErrorMessage(oneFractionOnly[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(oneFractionOnly[languageIndex]);
             return false;
         }
         var i;
@@ -1356,17 +1197,11 @@ export function noMultiplicationCheck2(
             fractionLinesArray[index][startIndex][3] != numerator ||
             fractionLinesArray[index][startIndex][4] != denominator
         ) {
-            setErrorMessage(productOfFractions[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(productOfFractions[languageIndex]);            
             return false;
         }
         if (fractionLinesArray[index][startIndex][1] !== 0) {
-            setErrorMessage(noIntegerAfterMulti[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(noIntegerAfterMulti[languageIndex]);            
             return false;
         }
         for (i = 0; i < primeNumbers.length; i++) {
@@ -1374,10 +1209,7 @@ export function noMultiplicationCheck2(
                 fractionLinesArray[index][startIndex][3] % primeNumbers[i] == 0 &&
                 fractionLinesArray[index][startIndex][4] % primeNumbers[i] == 0
             ) {
-                setErrorMessage(simplifyIt[languageIndex]);
-                setTimeout(() => {
-                    setOpenAlert(true);
-                }, timeDelay);
+                handleSetError(simplifyIt[languageIndex]);                
                 console.log("noMulti call setOkButtonStage(1)");
                 setOkButtonStage(1);
                 return false;
@@ -1418,7 +1250,7 @@ export function noMultiplicationCheck2(
     return true;
 }
 
-export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, setErrorMessage, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setOpenAlert) {
+export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, handleSetError, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setOpenAlert) {
     console.log("otherFractionsCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1442,13 +1274,10 @@ export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issu
                 middleMessage +
                 sameNumberOfFractions3[languageIndex]
             );*/
-            setErrorMessage(stepMessage(startIndex, endIndex, issue, 0));
+            handleSetError(stepMessage(startIndex, endIndex, issue, 0));
         } else {
-            setErrorMessage(decreaseMessage[languageIndex] + stepMessage(startIndex, endIndex, issue, decrease));
+            handleSetError(decreaseMessage[languageIndex] + stepMessage(startIndex, endIndex, issue, decrease));
         }
-        setTimeout(() => {
-            setOpenAlert(true);
-        }, timeDelay);
         return false;
     }
     if (startIndex === 0) {
@@ -1468,10 +1297,7 @@ export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issu
             fractionLinesArray[index][startIndex][0] !==
             fractionLinesArray[index - 1][startIndex][0]
         ) {
-            setErrorMessage(operatorBeforeStep[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(operatorBeforeStep[languageIndex]);            
             return false;
         }
         return (
@@ -1491,7 +1317,7 @@ export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issu
     }
 }
 
-export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, setErrorMessage, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex, setOpenAlert) {
+export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, handleSetError, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex, setOpenAlert) {
     console.log("oneSectionFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1519,7 +1345,7 @@ export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, 
             //*** */if (JSON.stringify(fractionLinesArray[index][i]) !== JSON.stringify(fractionLinesArray[index - 1][i + decrease])) {
             //setErrorMessage("keep other fractions and operators the same");
             if (decrease > 0) {
-                setErrorMessage(decreaseMessage[languageIndex] + stepMessage(orginalStart, orginalEnd, issue, decrease));
+                handleSetError(decreaseMessage[languageIndex] + stepMessage(orginalStart, orginalEnd, issue, decrease));
             } else {
                 /*let middleMessage =
                    fractionIndexInProcess[0] === fractionIndexInProcess[1]
@@ -1531,18 +1357,15 @@ export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, 
                      middleMessage +
                      keepOthers3[languageIndex]
                  );*/
-                setErrorMessage(keepOthers1[languageIndex] + stepMessage(orginalStart, orginalEnd, issue, 0));
-            }
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+                handleSetError(keepOthers1[languageIndex] + stepMessage(orginalStart, orginalEnd, issue, 0));
+            }            
             return false;
         }
     }
     return true;
 }
 
-export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, setStartEndIndexLastStage, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setErrorMessage, languageIndex, setOpenAlert) {
+export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, setStartEndIndexLastStage, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, handleSetError, languageIndex, setOpenAlert) {
     console.log("noBracketCheck");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
@@ -1609,10 +1432,7 @@ export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCa
             return false;
         } else {
             //bracket odd number
-            setErrorMessage(oddBrackets[languageIndex]);
-            setTimeout(() => {
-                setOpenAlert(true);
-            }, timeDelay);
+            handleSetError(oddBrackets[languageIndex]);            
             return false;
         }
     } else {
@@ -1749,7 +1569,6 @@ export async function noMixedCalCheck2(
                     });
                 }
             }
-
             return false;
         } else if (A_S) {
             //A&S
@@ -1926,7 +1745,7 @@ export async function noMixedCalCheck2(
     }
 }
 
-export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setStartEndIndexLastStage, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, setOpenAlert, languageIndex, setErrorMessage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck) {
+export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setStartEndIndexLastStage, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, setOpenAlert, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck) {
     console.log("checkSimplifyValue");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1947,10 +1766,7 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
           numeratorDeduceFactor *=
             fractionLinesArray[index][i][3] / fractionLinesArray[index][i][2];
         } else {
-          setErrorMessage(beAFactorOfNumerator[languageIndex]);
-          setTimeout(() => {
-            setOpenAlert(true);
-          }, timeDelay);
+          handleSetError(beAFactorOfNumerator[languageIndex]);          
           return false;
         }
       } else {
@@ -1965,10 +1781,7 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
           denominatorDeduceFactor *=
             fractionLinesArray[index][i][4] / fractionLinesArray[index][i][5];
         } else {
-          setErrorMessage(beAFactorOfDenominator[languageIndex]);
-          setTimeout(() => {
-            setOpenAlert(true);
-          }, timeDelay);
+          handleSetError(beAFactorOfDenominator[languageIndex]);          
           return false;
         }
       } else {
@@ -1976,10 +1789,7 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
       }
     }
     if (numeratorDeduceFactor != denominatorDeduceFactor) {
-      setErrorMessage(sameFactorInReduction[languageIndex]);
-      setTimeout(() => {
-        setOpenAlert(true);
-      }, timeDelay);
+      handleSetError(sameFactorInReduction[languageIndex]);      
       return false;
     }
     for (i = 0; i < primeNumbers.length; i++) {
@@ -1987,14 +1797,11 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
         newNumerator % primeNumbers[i] == 0 &&
         newDenominator % primeNumbers[i] == 0
       ) {
-        setErrorMessage(
+        handleSetError(
           furtherReduceFactorLeft[languageIndex] +
           primeNumbers[i] +
           furtherReduceFactorRight[languageIndex]
-        );
-        setTimeout(() => {
-          setOpenAlert(true);
-        }, timeDelay);
+        );        
         return false;
       } else {
         if (

@@ -81,7 +81,7 @@ export const FractionMultiplyDivide = ({
   const [okButtonStage, setOkButtonStage] = useState(0); //"Enter", "Reduce?", "Completed"
   const [calculationStage, setCalculationStage] = useState(0); //0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
   const [calculatedLcm, setCalculatedLcm] = useState(1);
-  const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });
+  const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });//stage: 0-20common stages, -1self-design, -2exam, -3leaderboard, -4submitTotal
   const [isLogined, setIsLogined] = useState(false); //FALSE
   const { topicIndex, learningToolIndex } = topicToolIndex;
   //const timeDelay = 200;
@@ -128,6 +128,12 @@ export const FractionMultiplyDivide = ({
   const [loginType, setLoginType] = useState("");
   const [loginResponseArray, setLoginResponseArray] = useState([]);
   const [loginWrongAnswerArray, setLoginWrongAnswerArray] = useState([]);
+  const [errorMessageArray, setErrorMessageArray] = useState([]);
+  const [scoreArray, setScoreArray] = useState({ exam: 0, topic0: { tool0: { stage0: 0 } } });
+  const [scoreTotalForUnit, setScoreTotalForUnit] = useState(0);
+  const [errorMessageTimes, setErrorMessageTimes] = useState(0);
+  const [stageScore, setStageScore] = useState(0);//0
+  const [startTime, setStartTime] = useState(0);
   //use calculationStage for both A&S and M&D
   /*let mixedStage; //= "hasBracket";
   const setMixedStage = (stage) => {
@@ -233,7 +239,8 @@ export const FractionMultiplyDivide = ({
     noMixedIssue,
     noDivisionIssue,
     noMultipleIssue,
-
+    totalScoreForUnit,
+    uploadTotalScore,
   } = constants;
 
   useEffect(() => {
@@ -246,8 +253,11 @@ export const FractionMultiplyDivide = ({
   //both versions equal
   useEffect(() => {
     console.log("change topicToolIndex")
+    if (examIndex === 1) {
+
+    }
     if (isLogined) {
-      setStageOrder({ stage: -2, order: 0 });
+      //setStageOrder({ stage: -2, order: 2 });//0
     } else {
       if (questions[topicIndex][learningToolIndex].length === 0) {
         if (stageOrder === { stage: -1, order: 0 }) {
@@ -266,6 +276,10 @@ export const FractionMultiplyDivide = ({
   }, [indexArray]); //[topicToolIndex]);
 
   useEffect(() => {
+    setStageScore(0);
+  }, [indexArray[2], indexArray[3], indexArray[4], stageOrder.stage]);
+
+  useEffect(() => {
     //console.log("unitIndex:"+unitIndex)
     //console.log("questionsFilesArray[0]:"+questionsFilesArray[0])
     //questions = [...questionsFilesArray[unitIndex]];
@@ -274,7 +288,14 @@ export const FractionMultiplyDivide = ({
     //brackets = [...bracketsFilesArray[unitIndex]];
     setBrackets(bracketsFilesArray[unitIndex]);
     resetDefault();
+    setScoreArray({ exam: 0, topic0: { tool0: { stage0: 0 } } });
+    setScoreTotalForUnit(0);
   }, [unitIndex]);
+
+  /*useEffect(() => {
+    console.log("score change")
+    calculateTotalScoreForUnit();
+  }, [scoreArray])*/
 
   //both versions equal
   useEffect(() => {
@@ -289,7 +310,7 @@ export const FractionMultiplyDivide = ({
     console.log("fractionLinesArray.length:" + fractionLinesArray.length);
     console.log("completed:" + completed);
     if (
-      stageOrder.stage > -1 &&
+      (stageOrder.stage > -1 || (stageOrder.stage === -2 && isLogined && loginType === "fractionFormula")) &&
       formulaFocusedIndex === 0 &&
       fractionLinesArray[0][1][0] != "" &&
       calculationStage < 2 &&
@@ -326,6 +347,47 @@ export const FractionMultiplyDivide = ({
     setOpenAlert(false);
   };
 
+  function handleSetError(errorMsg) {
+    setSeverity("error");
+    setErrorMessage(errorMsg);
+    setTimeout(() => {
+      setOpenAlert(true);
+    }, timeDelay);
+    if (examIndex === 1 && stageOrder.stage === -2 && isLogined) {
+      let tmpErrorArray = [...errorMessageArray];
+      tmpErrorArray.push(errorMsg);
+      setErrorMessageArray(tmpErrorArray);
+      setErrorMessageTimes((prev) => prev + 1);
+    }
+  }
+
+  function pushScoreInArray(newScore) {
+    if (examIndex === 1) {
+      let tmpObject = scoreArray;
+      if (stageOrder.stage === -2) {
+        tmpObject["exam"] = newScore;
+      } else if (stageOrder.stage > -1) {
+        if (tmpObject["topic" + topicIndex] === undefined) {
+          tmpObject["topic" + topicIndex] ={};
+        }
+        if (tmpObject["topic" + topicIndex]["tool" + learningToolIndex] === undefined) {
+          tmpObject["topic" + topicIndex]["tool" + learningToolIndex] ={};
+        }
+        if (tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] === undefined 
+          || tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] < newScore) {
+            tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] = newScore;
+          }
+      }
+      console.log(tmpObject);
+      setScoreArray(tmpObject);
+      calculateTotalScoreForUnit(tmpObject);
+    }
+  }
+
+  useEffect(() => {
+    console.log(errorMessageArray)
+  }, [errorMessageArray])//
+
   //equal
   function resetDefault() {
     setSeverity("error");
@@ -345,6 +407,9 @@ export const FractionMultiplyDivide = ({
     setStartEndIndexLastLine([0, 0]); //***
     //***setBracketStageArray({bracketStage: "", type: "", startIndex: 0, endIndex: 1});//*** */
     setLastMixBrackArray({ lastMix: "", lastBrack: "" }); //*** */
+    setErrorMessageTimes(0);
+    console.log(Date.now())
+    setStartTime(Date.now());
     /*** if (stageOrder.stage > -1) {
       setQuestion(stageOrder.stage, stageOrder.order);
       //setBracketArray([[]]); //get from const
@@ -444,7 +509,7 @@ export const FractionMultiplyDivide = ({
           console.log(tmpFormula[0])
           let tmpArray = [];
           let i;
-          for (i = 0; i < tmpFormula[0].length - 2; i++) {
+          for (i = 0; i < tmpFormula[0].length - 1; i++) {
             tmpArray.push(tmpFormula[0][i]);
           }
           setBracketArray([tmpFormula[0][tmpFormula[0].length - 1]]);
@@ -485,7 +550,24 @@ export const FractionMultiplyDivide = ({
         ) {
           setStageOrder({ stage: stageOrder.stage + 1, order: 0 });
         } else {
-          setStageOrder({ stage: -1, order: 0 });
+          if (examIndex === 1) {
+            setStageOrder({ stage: -2, order: 0 });
+          } else {
+            setStageOrder({ stage: -1, order: 0 });
+          }
+        }
+      } else if (stageOrder.stage === -2 && isLogined) {
+        console.log("loginQuestionData.questions.length:" + loginQuestionData.questions.length)
+        if (stageOrder.order < loginQuestionData.questions.length - 1) {
+          //setStageOrder({stage: (prev) => prev, order: (prev) => prev + 1});
+          console.log("order+1")
+          setStageOrder({
+            stage: stageOrder.stage,
+            order: stageOrder.order + 1
+          });
+        } else {
+          //complete mock exam paper
+
         }
       } else {
         console.log("resetClick");
@@ -551,7 +633,7 @@ export const FractionMultiplyDivide = ({
 
   //A&S only. Need both A&S and mixed versions -> This version can serve both
   function positiveResultCheck(index, startIndex, endIndex) {
-    return positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, setErrorMessage, languageIndex, setOpenAlert);
+    return positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, handleSetError, languageIndex, setOpenAlert);
   }
 
   const parenthesesMessage = (newLength, lastLength) => {
@@ -570,7 +652,7 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return noVariousDenominatorCheck2(
-      index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, setOpenAlert, languageIndex, setErrorMessage, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
+      index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, setOpenAlert, languageIndex, handleSetError, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
     );
   }
 
@@ -581,22 +663,22 @@ export const FractionMultiplyDivide = ({
     startIndex,
     endIndex
   ) {
-    return noNegativeNumeratorResultCheck2(index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, setOpenAlert, languageIndex, setErrorMessage, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine);
+    return noNegativeNumeratorResultCheck2(index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, setOpenAlert, languageIndex, handleSetError, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine);
   }
 
   //A&S only
   function addToOneFractionCheck(index, startIndex, endIndex) {
-    return addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, setOpenAlert, languageIndex, setErrorMessage, startEndIndexLastStage, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setStartEndIndexLastStage, setFractionIndexInProcess);
+    return addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, setOpenAlert, languageIndex, handleSetError, startEndIndexLastStage, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setStartEndIndexLastStage, setFractionIndexInProcess);
   }
 
   //equal //for whole formula
   function fractionOrIntegerCheck(index) {
-    return fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert, setErrorMessage, languageIndex);
+    return fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert, handleSetError, languageIndex);
   }
 
   //equal //for question whole formula only
   function singleNumberCheck(index) {
-    return singleNumberCheck2(index, fractionLinesArray, languageIndex, setErrorMessage, setOpenAlert);
+    return singleNumberCheck2(index, fractionLinesArray, languageIndex, handleSetError, setOpenAlert);
   }
 
   //little bit differ, fix it for mixed final stage //for whole formula?
@@ -607,7 +689,7 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return noImproperFractionCheck2(
-      completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, setErrorMessage, mixedStage, setStartEndIndexLastStage, nextNewStep, setSeverity, typeOfCalculation, setOpenAlert, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
+      completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, handleSetError, mixedStage, setStartEndIndexLastStage, nextNewStep, setSeverity, typeOfCalculation, setOpenAlert, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
     )
   }
 
@@ -642,7 +724,7 @@ export const FractionMultiplyDivide = ({
     isNewStepTmp /*** */
   ) {
     return noMixedFractionCheck2(
-      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, setOpenAlert, languageIndex, setErrorMessage, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setStartEndIndexLastStage
+      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setStartEndIndexLastStage
     )
   }
 
@@ -655,7 +737,7 @@ export const FractionMultiplyDivide = ({
     isNewStepTmp /*** */
   ) {
     return noDivisionCheck2(
-      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setOpenAlert, languageIndex, setErrorMessage, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setStartEndIndexLastStage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
+      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setStartEndIndexLastStage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
     );
   }
 
@@ -667,16 +749,16 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return noMultiplicationCheck2(
-      index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, setStartEndIndexLastStage, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, setErrorMessage, primeNumbers, setOpenAlert, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
+      index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, setStartEndIndexLastStage, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, handleSetError, primeNumbers, setOpenAlert, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
     );
   }
 
   function otherFractionsCheck(index, startIndex, endIndex, decrease, issue) {
-    return otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, setErrorMessage, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setOpenAlert);
+    return otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, handleSetError, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setOpenAlert);
   }
 
   function oneSectionFractionCheck(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd) {
-    return oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, setErrorMessage, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex, setOpenAlert);
+    return oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, handleSetError, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex, setOpenAlert);
   }
 
   useEffect(() => {
@@ -707,7 +789,7 @@ export const FractionMultiplyDivide = ({
   }, [mixedStageArray]);
 
   function noBracketCheck(index, checkValueNeeded) {
-    return noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, setStartEndIndexLastStage, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setErrorMessage, languageIndex, setOpenAlert);
+    return noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, setStartEndIndexLastStage, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, handleSetError, languageIndex, setOpenAlert);
   }
 
   useEffect(() => {
@@ -921,7 +1003,7 @@ export const FractionMultiplyDivide = ({
   }
 
   function checkSimplifyValue(index, checkValue, startIndex, endIndex) {
-    return checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setStartEndIndexLastStage, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, setOpenAlert, languageIndex, setErrorMessage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck);
+    return checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setStartEndIndexLastStage, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, setOpenAlert, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck);
   }
 
   const okClick = (e) => {
@@ -946,13 +1028,13 @@ export const FractionMultiplyDivide = ({
           //only for M&D
           if (typeOfCalculation === "M&D") {
             if (calculationStage == 0) {
-              setErrorMessage(noMixedBeforeReduction[languageIndex]);
+              handleSetError(noMixedBeforeReduction[languageIndex]);
             } else {
-              setErrorMessage(noDivisionBeforeReduction[languageIndex]);
+              handleSetError(noDivisionBeforeReduction[languageIndex]);
             }
-            setTimeout(() => {
+            /*setTimeout(() => {
               setOpenAlert(true);
-            }, timeDelay);
+            }, timeDelay);*/
           }
         }
         break;
@@ -978,6 +1060,10 @@ export const FractionMultiplyDivide = ({
 
   //need mixed version
   const handleKeypadClick = (e, key) => {
+    if (stageOrder.stage === -2 && isLogined && loginType === "MC") {
+      checkMCAnswer(key);
+      return;
+    }
     var pushLine = false;
     var pushPosition = false;
     if (
@@ -1116,7 +1202,7 @@ export const FractionMultiplyDivide = ({
       setFractionPartIndex(partIndex);
     }
   };
-
+ 
   function completeFunction() {
     setErrorMessage("👍🏻" + wellDone[languageIndex]);
     setFormulaFocusedIndex((prevState) => prevState + 1); // formulaFocusedIndex + 1);
@@ -1125,16 +1211,55 @@ export const FractionMultiplyDivide = ({
     setTimeout(() => {
       setOpenAlert(true);
     }, timeDelay);
+    let numberOfHalfMinute = (Date.now() - startTime) / (30 * 1000);
+    if (numberOfHalfMinute > 10) { numberOfHalfMinute = 10;}
+    let marksFromTime = (11 - numberOfHalfMinute) * 2;
+    let marksFromNumberOfHints = (10 - errorMessageTimes) * 2;
+    let marksFromThisQuestion = 20 + marksFromTime + marksFromNumberOfHints;
+    if (examIndex === 1 && isLogined && stageOrder.stage === -2) {
+      if (loginType === "fractionText") {
+        marksFromThisQuestion *= 3;
+      } else {
+        marksFromThisQuestion *= 2;
+      }
+    }
+    console.log(marksFromThisQuestion);
+    console.log(stageScore);
+    pushScoreInArray(stageScore + marksFromThisQuestion);
+    setStageScore((prev) => prev + marksFromThisQuestion);
   }
 
   useEffect(() => {
     if (isLogined) {
       console.log(loginQuestionData.questions[0][0]);
       //setLoginQuestionTypeArray(loginQuestionData.types);
+      setStageOrder({ stage: -2, order: 0 });//0
       resetDefault();
       resetQuestion();
     }
+    setErrorMessageArray([]);
   }, [isLogined]);
+
+  function calculateTotalScoreForUnit(tmpObject) {
+    console.log("calculateTotalScoreForUnit");
+    let scoreTotal = 0;
+    for (let x in tmpObject) {
+      if (x === "exam") {
+        scoreTotal += tmpObject[x];
+      } else {
+        //if (scoreArray[x] === undefined) {return}
+        for (let y in tmpObject[x]) {
+          //if (scoreArray[x][y] === undefined) {return}
+          for (let z in tmpObject[x][y]) {
+            //if (scoreArray[x][y][z] === undefined) {return}
+            scoreTotal += tmpObject[x][y][z];
+          }
+        }
+      }
+    }
+    console.log(scoreTotal);
+    setScoreTotalForUnit(scoreTotal);
+  }
 
   function textQuestionFormulaCheck() {
     let tmpArray = [];
@@ -1146,7 +1271,7 @@ export const FractionMultiplyDivide = ({
     console.log(tmpArray);
     let formulaIsCorrect = false;
     loginFormulaAnswerArray.forEach(formula => {
-      console.log(formula);     
+      console.log(formula);
       console.log(compare2LayerArray(tmpArray, formula))
       if (compare2LayerArray(tmpArray, formula)) {
         console.log("correct")
@@ -1164,10 +1289,10 @@ export const FractionMultiplyDivide = ({
         formulaErrorMessage = loginResponseArray[i][languageIndex];
       }
     }
-    setErrorMessage(formulaErrorMessage);
-    setTimeout(() => {
+    handleSetError(formulaErrorMessage);
+    /*setTimeout(() => {
       setOpenAlert(true);
-    }, timeDelay);
+    }, timeDelay);*/
   }
 
   function compare2LayerArray(arrayA, arrayB) {
@@ -1186,10 +1311,28 @@ export const FractionMultiplyDivide = ({
           if (!tmpCorrect) {
             return tmpCorrect;
           }
-        } else {return false;}
+        } else { return false; }
       }
       return tmpCorrect;
-    } else {return false;}
+    } else { return false; }
+  }
+
+  function checkMCAnswer(key) {
+    console.log(key);
+    console.log(loginFormulaAnswerArray[0][0][0]);
+    if (key === loginFormulaAnswerArray[0][0][0]) {
+      completeFunction();
+    } else {
+      let i;
+      for (i = 0; i < loginWrongAnswerArray[0][0].length; i++) {
+        if (key === loginWrongAnswerArray[0][0][i]) {
+          handleSetError(loginResponseArray[i][languageIndex]);
+          /*setTimeout(() => {
+            setOpenAlert(true);
+          }, timeDelay);*/
+        }
+      }
+    }
   }
 
   const classes = pagesStyles(); //
@@ -1212,107 +1355,127 @@ export const FractionMultiplyDivide = ({
       <Grid className={classes.spaceGrid} />
 
       {isLogined && loginQuestionText.length > 1 && (
-        <TextQuestion textQuestion={loginQuestionText[languageIndex]} setIsLogined={setIsLogined} />
+        <TextQuestion textQuestion={loginQuestionText[languageIndex]} setIsLogined={setIsLogined} languageIndex={languageIndex} />
       )}
-      <Grid className={classes.centerRow}>
-        {stageOrder.stage === -2 && !isLogined ? (
-          <Grid className={classes.formulaColumn}>
-            <Login
-              languageIndex={languageIndex}
-              bibleVersionIndex={bibleVersionIndex}
-              isLogined={isLogined}
-              setIsLogined={setIsLogined}
-              setLoginQuestionData={setLoginQuestionData}
-            />
-          </Grid>
-        ) : (
-          <Grid className={classes.formulaColumn}>
-            {fractionLinesArray.map((formula, index) => {
-              return (
-                (index === formulaFocusedIndex ||
-                  index < formulaFocusedIndex) && ( //
-                  <Grid
-                    key={index}
-                    className={`${classes.formulaRow} ${classes.commonPadding}`}
-                  >
-                    <Grid className={classes.row}>
-                      <Typography
-                        className={classes.formulaLine}
-                        style={{ opacity: index == 0 ? 0 : 1 }}
-                      >
-                        =
-                      </Typography>
-                      <Box
-                        className={`${classes.formulaLine} ${classes.formulaBox}`}
-                        border={1}
-                        borderColor={
-                          index == formulaFocusedIndex
-                            ? myTheme.color.myMagenta
-                            : myTheme.color.blue
-                        }
-                        style={{
-                          borderWidth: index == formulaFocusedIndex ? 3 : 1
-                        }}
-                      >
-                        <FractionFormula
-                          formula={formula}
-                          handlePartClick={handlePartClick}
-                          isFocusedLine={formulaFocusedIndex == index}
-                          positionIndex={fractionPositionIndex}
-                          partIndex={fractionPartIndex}
-                          learningToolIndex={learningToolIndex}
-                          showSmallInput={
-                            okButtonStage == 2 && index == formulaFocusedIndex
-                          }
-                          calculationStage={calculationStage}
-                          lineIndex={fractionLinesArray.indexOf(formula)} //{index}
-                          bracketArray={bracketArray}
-                          setBracketArray={setBracketArray}
-                          fractionIndexInProcess={fractionIndexInProcess}
-                          fractionLength={fractionLinesArray.length} //
-                          formulaFocusedIndex={formulaFocusedIndex} //
-                          okButtonStage={okButtonStage}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid className={classes.twoButtons}>
-                      {index == formulaFocusedIndex && (
-                        <Button
-                          className={classes.okButton}
-                          variant="contained"
-                          style={{ textTransform: 'capitalize' }}
-                          onClick={okClick}
-                          color="primary"
+      {
+        !(loginType === "MC" && isLogined) &&
+        <Grid className={classes.centerRow}>
+          {stageOrder.stage === -2 && !isLogined ? (
+            <Grid className={classes.formulaColumn}>
+              <Login
+                languageIndex={languageIndex}
+                bibleVersionIndex={bibleVersionIndex}
+                isLogined={isLogined}
+                setIsLogined={setIsLogined}
+                setLoginQuestionData={setLoginQuestionData}
+              />
+            </Grid>
+          ) : (
+            <Grid className={classes.formulaColumn}>
+              {fractionLinesArray.map((formula, index) => {
+                return (
+                  (index === formulaFocusedIndex ||
+                    index < formulaFocusedIndex) && ( //
+                    <Grid
+                      key={index}
+                      className={`${classes.formulaRow} ${classes.commonPadding}`}
+                    >
+                      <Grid className={classes.row}>
+                        <Typography
+                          className={classes.formulaLine}
+                          style={{ opacity: index == 0 ? 0 : 1 }}
                         >
-                          {okButtonText[languageIndex * 3 + okButtonStage]}
-                        </Button>
-                      )}
-                      {index == fractionLinesArray.length - 1 &&
-                        (okButtonStage == 1 || completed) && (
+                          =
+                        </Typography>
+                        <Box
+                          className={`${classes.formulaLine} ${classes.formulaBox}`}
+                          border={1}
+                          borderColor={
+                            index == formulaFocusedIndex
+                              ? myTheme.color.myMagenta
+                              : myTheme.color.blue
+                          }
+                          style={{
+                            borderWidth: index == formulaFocusedIndex ? 3 : 1
+                          }}
+                        >
+                          <FractionFormula
+                            formula={formula}
+                            handlePartClick={handlePartClick}
+                            isFocusedLine={formulaFocusedIndex == index}
+                            positionIndex={fractionPositionIndex}
+                            partIndex={fractionPartIndex}
+                            learningToolIndex={(isLogined && stageOrder.stage === -2) ? 1 : learningToolIndex}
+                            showSmallInput={
+                              okButtonStage == 2 && index == formulaFocusedIndex
+                            }
+                            calculationStage={calculationStage}
+                            lineIndex={fractionLinesArray.indexOf(formula)} //{index}
+                            bracketArray={bracketArray}
+                            setBracketArray={setBracketArray}
+                            fractionIndexInProcess={fractionIndexInProcess}
+                            fractionLength={fractionLinesArray.length} //
+                            formulaFocusedIndex={formulaFocusedIndex} //
+                            okButtonStage={okButtonStage}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid className={classes.twoButtons}>
+                        {index == formulaFocusedIndex && (
                           <Button
                             className={classes.okButton}
                             variant="contained"
                             style={{ textTransform: 'capitalize' }}
-                            onClick={resetClick}
+                            onClick={okClick}
                             color="primary"
                           >
-                            <ForwardRoundedIcon
-                              className={classes.resetArrow}
-                            />
+                            {okButtonText[languageIndex * 3 + okButtonStage]}
                           </Button>
                         )}
+                        {index == fractionLinesArray.length - 1 &&
+                          (okButtonStage == 1 || completed) && (
+                            <Button
+                              className={classes.okButton}
+                              variant="contained"
+                              style={{ textTransform: 'capitalize' }}
+                              onClick={resetClick}
+                              color="primary"
+                            >
+                              <ForwardRoundedIcon
+                                className={classes.resetArrow}
+                              />
+                            </Button>
+                          )}
+                      </Grid>
                     </Grid>
-                  </Grid>
-                )
-              );
-            })}
-          </Grid>
-        )}
-      </Grid>
+                  )
+                );
+              })}
+            </Grid>
+          )}
+        </Grid>
+      }
+      {
+        isLogined && loginType === "MC" && completed &&
+        <Grid className={classes.centerRow}>
+          <Button
+            className={classes.okButton}
+            variant="contained"
+            style={{ textTransform: 'capitalize' }}
+            onClick={resetClick}
+            color="primary"
+          >
+            <ForwardRoundedIcon
+              className={classes.resetArrow}
+            />
+          </Button>
+        </Grid>
+      }
       <MyKeypad
         handleClick={handleKeypadClick}
         topicIndex={topicIndex}
         formulaFocusedIndex={formulaFocusedIndex}
+        isMC={loginType === "MC"}
       />
       <AlertSnackbar
         open={openAlert}
