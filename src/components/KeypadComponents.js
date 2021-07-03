@@ -7,19 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { theme as myTheme } from "../themes/theme";
 
-const myKeypadStyles = makeStyles((theme) => ({
-  myInputText: {
-    width: "6vw",
-    height: "2.4vw",
-    fontSize: "2vw",
-    margin: "0.5vw",
-    textAlign: "right",
-    [theme.breakpoints.down("xs")]: {
-      width: "12vw",
-      height: "4.8vw",
-      fontSize: "4vw",
-    },
-  },
+const myKeypadStyles = makeStyles((theme) => ({  
   centerRow: {
     display: "flex",
     justifyContent: "center",

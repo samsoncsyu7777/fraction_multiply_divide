@@ -5,7 +5,6 @@ import { theme as myTheme } from "../themes/theme";
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
-//import { SportsRugbySharp } from "@material-ui/icons";
 
 const loginStyles = makeStyles((theme) =>
   createStyles({
@@ -18,55 +17,55 @@ const loginStyles = makeStyles((theme) =>
       alignItems: "center"
     },
     feature: {
-      fontSize: 28,
+      fontSize: "2.6vw",
       color: myTheme.color.myBrown,
       margin: "1vh",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 18
+        fontSize: "5.2vw"
       }
     },
     introduction: {
-      fontSize: 20,
+      fontSize: "2vw",
       color: myTheme.color.myBrown,
       margin: "1vh",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 12
+        fontSize: "4vw"
       }
     },
     explanation: {
-      fontSize: 18,
+      fontSize: "1.8vw",
       color: myTheme.color.myBlack,
       margin: "1vh",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 10
+        fontSize: "3.6vw",
       }
     },
     buy: {
-      fontSize: 28,
+      fontSize: "2.4vw",
       color: myTheme.color.myBlue,
       marginTop: "2vh",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 18
+        fontSize: "4.2vw",
       }
     },
     currency: {
-      fontSize: 20,
+      fontSize: "1.8vw",
       color: myTheme.color.myBlue,
       borderColor: myTheme.color.myBlue,
-      borderWidth: 3,
-      margin: 10,
+      borderWidth: "0.4vw",
+      margin: "1vw",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 12,
-        borderWidth: 2,
-        margin: 5
+        fontSize: "3.2vw",
+        borderWidth: "1vw",
+        margin: "0.3vw"
       }
     },
     remainTime: {
-      fontSize: 20,
+      fontSize: "1.6vw",
       textAlign: "center",
       color: myTheme.color.myBlue,
       [theme.breakpoints.down("xs")]: {
-        fontSize: 12
+        fontSize: "3.6vw",
       }
     },
     margin: {
@@ -76,67 +75,64 @@ const loginStyles = makeStyles((theme) =>
     marginTop: {
       marginTop: "2vh"
     },
+    column: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+    },
     research: {
-      fontSize: 24,
+      fontSize: "2.4vw",
       marginTop: "2vh",
       color: myTheme.color.myDarkPurple,
       [theme.breakpoints.down("xs")]: {
-        fontSize: 14
+        fontSize: "4.8vw",
       }
     },
     researchLink: {
-      fontSize: 20,
+      fontSize: "2vw",
       color: myTheme.color.myDarkPurple,
       textAlign: "left",
       marginBottom: "0.5vw",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 12
+        fontSize: "4vw"
       }
     },
     facebookShare: {
-      fontSize: 24,
+      fontSize: "2.0vw",
       margin: "2vh",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 14
+        fontSize: "4.0vw"
       }
     },
     waitingText: {
-      fontSize: 20,
+      fontSize: "2vw",
       color: myTheme.color.myBrown,
       [theme.breakpoints.down("xs")]: {
-        fontSize: 12
+        fontSize: "4vw",
       }
     },
     login: {
-      fontSize: 24,
+      fontSize: "2.1vw",
       [theme.breakpoints.down("xs")]: {
-        fontSize: 16
+        fontSize: "4.8vw"
       }
     },
     input: {
-      width: 450,
-      height: 28,
-      fontSize: 16,
+      width: "50vw",
+      height: "3.0vw",
+      fontSize: "1.5vw",
       [theme.breakpoints.down("xs")]: {
-        width: 300,
-        height: 20,
-        fontSize: 12
+        width: "70vw",
+        height: "6.4vw",
+        fontSize: "3.6vw"
       }
     },
-    loginButton: {
-      /*
-      fontSize: 20,
-      color: myTheme.color.myWhite,
-      backgroundColor: myTheme.color.myBlue,
-      [theme.breakpoints.down("xs")]: {
-        fontSize: 16,
-      },*/
+    loginButton: {      
       color: myTheme.color.myWhite,
       backgroundColor: myTheme.color.myBlue,
       height: "4vw",
       width: "7vw",
       fontSize: "1.3vw",
-      //margin: "0.5vw",
       [theme.breakpoints.down("xs")]: {
         height: "8vw",
         width: "14vw",
@@ -149,13 +145,12 @@ const loginStyles = makeStyles((theme) =>
       padding: "1.2vw",
       margin: "1.0vw",
       height: "1.4vw",
-      //maxWidth: "10vw",
       borderColor: myTheme.color.myDarkGreen,
       borderWidth: 1,
       borderStyle: "solid",
       textAlign: "center",
       letterSpacing: 0,
-      lineHeight: 0.95,
+      lineHeight: "95%",
       borderRadius: "1vw",
 
       [theme.breakpoints.down("xs")]: {
@@ -163,9 +158,8 @@ const loginStyles = makeStyles((theme) =>
         padding: "1vw",
         margin: "1vw",
         height: "4vw",
-        lineHeight: 1.3,
+        lineHeight: "130%",
         borderRadius: "1.6vw",
-        //maxWidth: "20vw",
       }
     },
   })
@@ -257,13 +251,7 @@ export const Login = ({
     "https://buy.stripe.com/bIY8zq3XY6BHgi48wO",
     "https://buy.stripe.com/7sI9Du8ee9NT7Ly3cv",
     "https://buy.stripe.com/6oE2b2dyy8JPe9WdRc"
-  ];
-  /*const remainTime = [
-    "(半年內登入不同單元的模擬試卷3次)",
-    "(半年内登入不同单元的模拟试卷3次)",
-    "(Login mock exam papers of different units 3 times within half a year)",
-    "(Connectez-vous aux copies d'examen simulé de différentes unités 3 fois en six mois)"
-  ];*/
+  ];  
   const payRemindText = [
     "我們選用Stripe付款平台，方便可靠。交易成功後，您將收到一個包含使用者名稱及密碼的電子郵件，並可以在半年內登入不同單元的模擬試卷3次。",
     "我们选用Stripe付款平台，方便可靠。交易成功后，您将收到一个包含使用者名称及密码的电子邮件，并可以在半年内登入不同单元的模拟试卷3次。",
@@ -405,7 +393,7 @@ export const Login = ({
               {explanation[languageIndex]}
             </Typography>
           </Grid>}
-          {buttonIndex === 1 && <Grid>
+          {buttonIndex === 1 && <Grid className={classes.column}>
             <Typography className={classes.research}>
               {research[languageIndex]}:
             </Typography>
@@ -505,10 +493,7 @@ export const Login = ({
             >
               <Typography className={classes.login}>Username：</Typography>
               <input
-                className={classes.input}
-                //style={{
-                //  fontSize: user === "" ? (languageIndex < 2 ? 14 : 10) : 20
-                //}}
+                className={classes.input}                
                 placeholder={email[languageIndex]}
                 value={user}
                 type="email"
@@ -525,10 +510,7 @@ export const Login = ({
             >
               <Typography className={classes.login}>Password：</Typography>
               <input
-                className={classes.input}
-                //style={{
-                //  fontSize: password === "" ? (languageIndex < 2 ? 14 : 10) : 20
-                //}}
+                className={classes.input}                
                 placeholder={passwordHint[languageIndex]}
                 value={password}
                 max="99999999999"

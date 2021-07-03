@@ -4,23 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { theme as myTheme } from "../themes/theme";
 
-const fractionFormulaStyles = makeStyles((theme) => ({
-  /*myInputText: {
-    width: "6vw",
-    height: "2.4vw",
-    fontSize: "2vw",
-    margin: "0.5vw",
-    textAlign: "right",
-    [theme.breakpoints.down("xs")]: {
-      width: "12vw",
-      height: "4.8vw",
-      fontSize: "4vw"
-    }
-  },*/
-  centerRow: {
-    display: "flex",
-    justifyContent: "center"
-  },
+const fractionFormulaStyles = makeStyles((theme) => ({    
   overflow: {
     overflow: "auto",
     maxWidth: "78vw",
@@ -65,7 +49,6 @@ const fractionFormulaStyles = makeStyles((theme) => ({
     height: "2.8vw",
     minWidth: "2.8vw",
     fontSize: "1.7vw",
-    //marginRight: "0.3vw",
     lineHeight: "160%", 
   },
   border: {
@@ -78,7 +61,6 @@ const fractionFormulaStyles = makeStyles((theme) => ({
   bracket: {
     borderRadius: "2vw",
     width: "1.0vw",
-    //maxWidth: "1.5vw",
     minWidth: "1.0vw",
     height: "4vw",
     fontSize: "2.6vw",
@@ -122,7 +104,6 @@ const fractionFormulaStyles = makeStyles((theme) => ({
       height: "5vw",
       minWidth: "5vw",
       fontSize: "3vw",
-      //marginRight: "0.4vw",
       lineHeight: "180%", 
     },
     bracket: {
@@ -156,8 +137,6 @@ export const FractionFormula = ({
   bracketArray,
   setBracketArray,
   fractionIndexInProcess,
-  fractionLength,
-  formulaFocusedIndex,
   okButtonStage
 }) => {
   const handleBracketClick = (index, bracketOrder) => {

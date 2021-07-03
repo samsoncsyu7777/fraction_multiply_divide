@@ -7,6 +7,9 @@ import { FractionFormula } from "../components/FractionFormulaComponents";
 import { StageButtons } from "../components/StageComponents";
 import { Login } from "../components/LoginComponents";
 import { TextQuestion } from "../components/TextQuestionComponents";
+import { UploadScore } from "../components/UploadScoreComponents";
+import { Leaderboard } from "../components/LeaderboardComponents";
+import { ExamCompleteTable } from "../components/ExamCompleteTableComponents";
 import questions0 from "../questions/Questions0";
 import brackets0 from "../questions/Brackets0";
 import questions1 from "../questions/Questions1";
@@ -122,7 +125,7 @@ export const FractionMultiplyDivide = ({
   const bracketsFilesArray = [[...brackets0], [...brackets1], [...brackets2]];
   const [loginQuestionData, setLoginQuestionData] = useState({});
   //const [loginQuestionTypeArray, setLoginQuestionTypeArray] = useState([]);
-  const [loginQuestionText, setLoginQuestionText] = useState("");
+  const [loginQuestionText, setLoginQuestionText] = useState(["", "", "", ""]);
   const [loginFormulaAnswerArray, setLoginFormulaAnswerArray] = useState([]);
   const [loginBracketAnswerArray, setLoginBracketAnswerArray] = useState([]);
   const [loginType, setLoginType] = useState("");
@@ -134,6 +137,9 @@ export const FractionMultiplyDivide = ({
   const [errorMessageTimes, setErrorMessageTimes] = useState(0);
   const [stageScore, setStageScore] = useState(0);//0
   const [startTime, setStartTime] = useState(0);
+  const [examCompleted, setExamCompleted] = useState(false);
+  const [logoutButtonStage, setLogoutButtonStage] = useState("unclick");
+
   //use calculationStage for both A&S and M&D
   /*let mixedStage; //= "hasBracket";
   const setMixedStage = (stage) => {
@@ -239,8 +245,10 @@ export const FractionMultiplyDivide = ({
     noMixedIssue,
     noDivisionIssue,
     noMultipleIssue,
-    totalScoreForUnit,
     uploadTotalScore,
+    unitTitle,
+    logoutText,
+    sureText,
   } = constants;
 
   useEffect(() => {
@@ -342,6 +350,25 @@ export const FractionMultiplyDivide = ({
     console.log("tmpArray3:" + tmpArray3);
   };
 
+  const clickLogoutButton = () => {
+    if (logoutButtonStage === "unclick") {
+      setLogoutButtonStage("clicked");
+    } else if (logoutButtonStage === "clicked") {
+      setErrorMessageArray([]);
+      setExamCompleted(false);
+      setIsLogined(false);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (logoutButtonStage === "clicked") {
+        setLogoutButtonStage("unclick");
+      }
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [logoutButtonStage]);
+
   //equal
   const closeAlert = (e) => {
     setOpenAlert(false);
@@ -368,15 +395,15 @@ export const FractionMultiplyDivide = ({
         tmpObject["exam"] = newScore;
       } else if (stageOrder.stage > -1) {
         if (tmpObject["topic" + topicIndex] === undefined) {
-          tmpObject["topic" + topicIndex] ={};
+          tmpObject["topic" + topicIndex] = {};
         }
         if (tmpObject["topic" + topicIndex]["tool" + learningToolIndex] === undefined) {
-          tmpObject["topic" + topicIndex]["tool" + learningToolIndex] ={};
+          tmpObject["topic" + topicIndex]["tool" + learningToolIndex] = {};
         }
-        if (tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] === undefined 
+        if (tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] === undefined
           || tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] < newScore) {
-            tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] = newScore;
-          }
+          tmpObject["topic" + topicIndex]["tool" + learningToolIndex]["stage" + stageOrder.stage] = newScore;
+        }
       }
       console.log(tmpObject);
       setScoreArray(tmpObject);
@@ -567,7 +594,9 @@ export const FractionMultiplyDivide = ({
           });
         } else {
           //complete mock exam paper
-
+          setLoginQuestionText(["", "", "", ""]);
+          setLoginType("");
+          setExamCompleted(true);
         }
       } else {
         console.log("resetClick");
@@ -1202,7 +1231,7 @@ export const FractionMultiplyDivide = ({
       setFractionPartIndex(partIndex);
     }
   };
- 
+
   function completeFunction() {
     setErrorMessage("👍🏻" + wellDone[languageIndex]);
     setFormulaFocusedIndex((prevState) => prevState + 1); // formulaFocusedIndex + 1);
@@ -1211,8 +1240,9 @@ export const FractionMultiplyDivide = ({
     setTimeout(() => {
       setOpenAlert(true);
     }, timeDelay);
-    let numberOfHalfMinute = (Date.now() - startTime) / (30 * 1000);
-    if (numberOfHalfMinute > 10) { numberOfHalfMinute = 10;}
+    let numberOfHalfMinute = (Date.now() - startTime) / (15 * 1000);
+    console.log("numberOfHalfMinute:" + numberOfHalfMinute)
+    if (numberOfHalfMinute > 10) { numberOfHalfMinute = 10; }
     let marksFromTime = (11 - numberOfHalfMinute) * 2;
     let marksFromNumberOfHints = (10 - errorMessageTimes) * 2;
     let marksFromThisQuestion = 20 + marksFromTime + marksFromNumberOfHints;
@@ -1233,7 +1263,7 @@ export const FractionMultiplyDivide = ({
     if (isLogined) {
       console.log(loginQuestionData.questions[0][0]);
       //setLoginQuestionTypeArray(loginQuestionData.types);
-      setStageOrder({ stage: -2, order: 0 });//0
+      setStageOrder({ stage: -2, order: 5 });//0
       resetDefault();
       resetQuestion();
     }
@@ -1257,8 +1287,8 @@ export const FractionMultiplyDivide = ({
         }
       }
     }
-    console.log(scoreTotal);
-    setScoreTotalForUnit(scoreTotal);
+    console.log(Math.round(scoreTotal));
+    setScoreTotalForUnit(Math.round(scoreTotal));
   }
 
   function textQuestionFormulaCheck() {
@@ -1338,7 +1368,7 @@ export const FractionMultiplyDivide = ({
   const classes = pagesStyles(); //
 
   return (
-    <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool}>
+    <MyFrame topic={topics[languageIndex] + topic} learningTool={learningTool} scoreTotalForUnit={scoreTotalForUnit} languageIndex={languageIndex}>
       <Grid className={classes.spaceGrid} />
       {questions[topicIndex][learningToolIndex].length > 0 && (
         <StageButtons
@@ -1350,15 +1380,32 @@ export const FractionMultiplyDivide = ({
           exam={exam[languageIndex]}
           leaderboard={leaderboard[languageIndex]}
           examIndex={examIndex}
+          uploadTotalScore={uploadTotalScore[languageIndex]}
         />
       )}
+      {isLogined && <Grid className={classes.centerRow}>        
+        <Button
+          variant="contained"
+          className={classes.logoutButton}
+          style={{ textTransform: 'capitalize' }}
+          onClick={() => { clickLogoutButton() }}
+        >
+          {logoutButtonStage === "unclick" ? logoutText[languageIndex] : sureText[languageIndex]}
+        </Button>
+      </Grid>}
       <Grid className={classes.spaceGrid} />
 
-      {isLogined && loginQuestionText.length > 1 && (
-        <TextQuestion textQuestion={loginQuestionText[languageIndex]} setIsLogined={setIsLogined} languageIndex={languageIndex} />
+      {isLogined && (
+        <TextQuestion
+          textQuestion={loginQuestionText[languageIndex]}
+          setIsLogined={setIsLogined}
+          languageIndex={languageIndex}
+          setErrorMessageArray={setErrorMessageArray}
+          setExamCompleted={setExamCompleted}
+        />
       )}
       {
-        !(loginType === "MC" && isLogined) &&
+        !((loginType === "MC" && isLogined) || [-3, -4].includes(stageOrder.stage)) &&
         <Grid className={classes.centerRow}>
           {stageOrder.stage === -2 && !isLogined ? (
             <Grid className={classes.formulaColumn}>
@@ -1371,7 +1418,7 @@ export const FractionMultiplyDivide = ({
               />
             </Grid>
           ) : (
-            <Grid className={classes.formulaColumn}>
+            (stageOrder.stage === -2 && !examCompleted) || stageOrder.stage > -1 && <Grid className={classes.formulaColumn}>
               {fractionLinesArray.map((formula, index) => {
                 return (
                   (index === formulaFocusedIndex ||
@@ -1414,8 +1461,6 @@ export const FractionMultiplyDivide = ({
                             bracketArray={bracketArray}
                             setBracketArray={setBracketArray}
                             fractionIndexInProcess={fractionIndexInProcess}
-                            fractionLength={fractionLinesArray.length} //
-                            formulaFocusedIndex={formulaFocusedIndex} //
                             okButtonStage={okButtonStage}
                           />
                         </Box>
@@ -1456,7 +1501,7 @@ export const FractionMultiplyDivide = ({
         </Grid>
       }
       {
-        isLogined && loginType === "MC" && completed &&
+        isLogined && loginType === "MC" && completed && !examCompleted &&
         <Grid className={classes.centerRow}>
           <Button
             className={classes.okButton}
@@ -1470,6 +1515,33 @@ export const FractionMultiplyDivide = ({
             />
           </Button>
         </Grid>
+      }
+      {stageOrder.stage === -3 &&
+        <Leaderboard
+          languageIndex={languageIndex}
+          handleSetError={handleSetError}
+          unitTitle={unitTitle[unitIndex]}
+        />
+      }
+      {stageOrder.stage === -4 &&
+        <UploadScore
+          languageIndex={languageIndex}
+          scoreTotalForUnit={scoreTotalForUnit}
+          setStageOrder={setStageOrder}
+          handleSetError={handleSetError}
+          unitTitle={unitTitle[unitIndex]}
+          setScoreTotalForUnit={setScoreTotalForUnit}
+        />
+      }
+      {stageOrder.stage === -2 && isLogined && examCompleted &&
+        <ExamCompleteTable
+          scoreTotalForUnit={scoreTotalForUnit}
+          errorMessageArray={errorMessageArray}
+          setErrorMessageArray={setErrorMessageArray}
+          setIsLogined={setIsLogined}
+          languageIndex={languageIndex}
+          setExamCompleted={setExamCompleted}
+        />
       }
       <MyKeypad
         handleClick={handleKeypadClick}

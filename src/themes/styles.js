@@ -1,4 +1,5 @@
 import { makeStyles} from "@material-ui/core/styles";
+import { theme as myTheme } from "../themes/theme";
 
 export const pagesStyles = makeStyles((theme) => ({
   centerRow: {
@@ -75,17 +76,24 @@ export const pagesStyles = makeStyles((theme) => ({
     },
   },
   resetArrow: {
-    fontSize: "6vw",
-    //lineHeight: "5vw",
-    //padding: 0,
-    //display: "flex",
-    //alignContent: "center",
-    //alignItems: "center",
-    //alignSelf: "center",
+    fontSize: "6vw",    
     height: "2.5vw",
     [theme.breakpoints.down("xs")]: {
       fontSize: "12vw",
       height: "5.0vw"
     },
+  },
+  logoutButton: {
+    color: myTheme.color.myWhite,
+    backgroundColor: myTheme.color.myBlue,    
+    marginTop: "1vw",
+    height: "4vw",
+    width: "7vw",
+    fontSize: "1.3vw",
+    [theme.breakpoints.down("xs")]: {
+      height: "8vw",
+      width: "14vw",
+      fontSize: "2.6vw",
+    }
   },
 }));

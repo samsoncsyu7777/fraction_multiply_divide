@@ -8,13 +8,15 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "axios": "0.21.1",
+    "html2canvas": "^1.0.0-rc.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-katex": "2.0.2",
     "react-public-ip": "1.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
-    "react-share": "4.4.0"
+    "react-share": "4.4.0",
+    "use-react-screenshot": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

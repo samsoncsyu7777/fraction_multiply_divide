@@ -44,7 +44,8 @@ export const StageButtons = ({
   manual,
   exam,
   leaderboard,
-  examIndex
+  examIndex,
+  uploadTotalScore,
 }) => {
   const classes = stageButtonsStyles();
   const buttonsInLine = 7;
@@ -121,6 +122,20 @@ export const StageButtons = ({
           onClick={() => handleStageClick(-3)}
         >
           {leaderboard}
+        </Button>}
+        {examIndex === 1 && <Button
+          size="small"
+          variant="outlined"
+          className={classes.buttonText}
+          color={stageState === -4 ? "secondary" : "primary"}
+          style={{
+            backgroundColor: stageState === -4 ? myTheme.color.myYellow : "",
+            textTransform: 'capitalize'
+            //height: 45
+          }}
+          onClick={() => handleStageClick(-4)}
+        >
+          {uploadTotalScore}
         </Button>}
       </Grid>
     </Grid>

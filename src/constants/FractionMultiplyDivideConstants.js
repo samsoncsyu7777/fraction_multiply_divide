@@ -565,7 +565,14 @@ const constants = {
   ],
   uploadTotalScore: [
     "遞交單元總分", "递交单元总分", "Submit unit total score", "Soumettre le score total de l'unité"
-  ]
+  ],
+  unitTitle: [
+    ["分數乘法和除法", "分数乘法和除法", "Fraction Multiplication and Division", "Multiplication et division de fractions"],
+    ["分數加法和減法", "分数加法和减法", "Fraction Addition and Subtraction", "Addition et soustraction de fractions"],
+    ["分數四則混合計算", "分数四则混合计算", "Four mixed calculations for fractions", "Quatre calculs mixtes pour les fractions"]
+  ],
+  logoutText: ["登出", "登出", "Logout", "Logout"],
+  sureText: ["確定?", "确定?", "Sure?", "Sûre?"],
 };
 
 export default constants;
