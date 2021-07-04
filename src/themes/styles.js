@@ -25,7 +25,7 @@ export const pagesStyles = makeStyles((theme) => ({
     },
   },
   formulaColumn: {
-    width: "80vw",
+    width: "88vw",
     alignSelf: "center",
     [theme.breakpoints.down("xs")]: {
       width: "94vw",

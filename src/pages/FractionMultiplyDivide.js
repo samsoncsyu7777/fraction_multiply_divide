@@ -10,12 +10,24 @@ import { TextQuestion } from "../components/TextQuestionComponents";
 import { UploadScore } from "../components/UploadScoreComponents";
 import { Leaderboard } from "../components/LeaderboardComponents";
 import { ExamCompleteTable } from "../components/ExamCompleteTableComponents";
-import questions0 from "../questions/Questions0";
-import brackets0 from "../questions/Brackets0";
-import questions1 from "../questions/Questions1";
-import brackets1 from "../questions/Brackets1";
-import questions2 from "../questions/Questions2";
-import brackets2 from "../questions/Brackets2";
+import answers0 from "../questionData/answers/Answers0";
+//import brackets0 from "../questionData/Brackets0";
+import answers1 from "../questionData/answers/Answers1";
+//import brackets1 from "../questionData/Brackets1";
+import answers2 from "../questionData/answers/Answers2";
+//import brackets2 from "../questionData/Brackets2";
+import questions0 from "../questionData/questions/Questions0";
+import questions1 from "../questionData/questions/Questions1";
+import questions2 from "../questionData/questions/Questions2";
+import responses0 from "../questionData/responses/Responses0";
+import responses1 from "../questionData/responses/Responses1";
+import responses2 from "../questionData/responses/Responses2";
+import types0 from "../questionData/types/Types0";
+import types1 from "../questionData/types/Types1";
+import types2 from "../questionData/types/Types2";
+import wrongAnswers0 from "../questionData/wrongAnswers/WrongAnswers0";
+import wrongAnswers1 from "../questionData/wrongAnswers/WrongAnswers1";
+import wrongAnswers2 from "../questionData/wrongAnswers/WrongAnswers2";
 import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";
 import {
   timeDelay,
@@ -115,22 +127,22 @@ export const FractionMultiplyDivide = ({
   const [startEndIndexLastLine, setStartEndIndexLastLine] = useState([0, 0]);
   //let questions = questions0;
   //let brackets = brackets0;
-  const [questions, setQuestions] = useState(questions0);
-  const [brackets, setBrackets] = useState(brackets0);
-  const questionsFilesArray = [
-    [...questions0],
-    [...questions1],
-    [...questions2]
-  ];
-  const bracketsFilesArray = [[...brackets0], [...brackets1], [...brackets2]];
+  const [questions, setQuestions] = useState(answers0);
+  //const [brackets, setBrackets] = useState(brackets0);
+  const questionsFilesArray = [[...questions0], [...questions1], [...questions2]];
+  const answersFilesArray = [[...answers0], [...answers1], [...answers2]];
+  const responsesFilesArray = [[...responses0], [...responses1], [...responses2]];
+  const typesFilesArray = [[...types0], [...types1], [...types2]];
+  const wrongAnswersFilesArray = [[...wrongAnswers0], [...wrongAnswers1], [...wrongAnswers2]];
+  //const bracketsFilesArray = [[...brackets0], [...brackets1], [...brackets2]];
   const [loginQuestionData, setLoginQuestionData] = useState({});
   //const [loginQuestionTypeArray, setLoginQuestionTypeArray] = useState([]);
-  const [loginQuestionText, setLoginQuestionText] = useState(["", "", "", ""]);
-  const [loginFormulaAnswerArray, setLoginFormulaAnswerArray] = useState([]);
-  const [loginBracketAnswerArray, setLoginBracketAnswerArray] = useState([]);
-  const [loginType, setLoginType] = useState("");
-  const [loginResponseArray, setLoginResponseArray] = useState([]);
-  const [loginWrongAnswerArray, setLoginWrongAnswerArray] = useState([]);
+  const [questionTextForAnyStage, setQuestionTextForAnyStage] = useState(["", "", "", ""]);//
+  const [fractionFormulaAnswerArrayForAnyStage, setFractionFormulaAnswerArrayForAnyStage] = useState([]);//
+  //const [loginBracketAnswerArray, setLoginBracketAnswerArray] = useState([]);
+  const [typeOfQForAnyStage, setTypeOfQForAnyStage] = useState("");//
+  const [responseArrayForAnyStage, setResponseArrayForAnyStage] = useState([]);//
+  const [wrongFractionAnswerArrayForAnyStage, setWrongFractionAnswerArrayForAnyStage] = useState([]);//
   const [errorMessageArray, setErrorMessageArray] = useState([]);
   const [scoreArray, setScoreArray] = useState({ exam: 0, topic0: { tool0: { stage0: 0 } } });
   const [scoreTotalForUnit, setScoreTotalForUnit] = useState(0);
@@ -294,7 +306,7 @@ export const FractionMultiplyDivide = ({
     setQuestions(questionsFilesArray[unitIndex]);
     //console.log("questions:"+questions)
     //brackets = [...bracketsFilesArray[unitIndex]];
-    setBrackets(bracketsFilesArray[unitIndex]);
+    //setBrackets(bracketsFilesArray[unitIndex]);
     resetDefault();
     setScoreArray({ exam: 0, topic0: { tool0: { stage0: 0 } } });
     setScoreTotalForUnit(0);
@@ -318,7 +330,7 @@ export const FractionMultiplyDivide = ({
     console.log("fractionLinesArray.length:" + fractionLinesArray.length);
     console.log("completed:" + completed);
     if (
-      (stageOrder.stage > -1 || (stageOrder.stage === -2 && isLogined && loginType === "fractionFormula")) &&
+      ((stageOrder.stage > -1 && typeOfQForAnyStage === "fractionFormula") || (stageOrder.stage === -2 && isLogined && typeOfQForAnyStage === "fractionFormula")) &&
       formulaFocusedIndex === 0 &&
       fractionLinesArray[0][1][0] != "" &&
       calculationStage < 2 &&
@@ -337,7 +349,7 @@ export const FractionMultiplyDivide = ({
   };
 
   //both versions equal and need to get brackets
-  const setQuestion = (stage, order) => {
+  /*const setQuestion = (stage, order) => {
     //console.log("questions:"+questions)
     let tmpArray = [...questions[topicIndex][learningToolIndex][stage][order]];
     tmpArray.push(["", 0, 0, 0, 0, 0]);
@@ -348,7 +360,7 @@ export const FractionMultiplyDivide = ({
     setBracketArray(tmpArray3);
     console.log("get from file:" + tmpArray2);
     console.log("tmpArray3:" + tmpArray3);
-  };
+  };*/
 
   const clickLogoutButton = () => {
     if (logoutButtonStage === "unclick") {
@@ -491,10 +503,11 @@ export const FractionMultiplyDivide = ({
   };
 
   function resetQuestion() {
-    if (stageOrder.stage > -1) {
+    /*if (stageOrder.stage > -1) {
       setQuestion(stageOrder.stage, stageOrder.order);
       //setBracketArray([[]]); //get from const
-    } else if (stageOrder.stage === -1) {
+    } else */
+    if (stageOrder.stage === -1) {
       setFractionLinesArray([
         [
           ["", 0, 0, 0, 0, 0],
@@ -502,24 +515,43 @@ export const FractionMultiplyDivide = ({
         ]
       ]);
       setBracketArray([[]]);
-    } else if (stageOrder.stage === -2 && isLogined) {
+    } else if ((stageOrder.stage === -2 && isLogined) || stageOrder.stage > -1) {
+      let tmpType = "";
+      let tmpFormula = [[[]]];
+      if (stageOrder.stage === -2) {
+        setQuestionTextForAnyStage(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
+        setResponseArrayForAnyStage(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
+        tmpType = loginQuestionData.types[stageOrder.order].stringValue;
+        setTypeOfQForAnyStage(tmpType);
+        tmpFormula = [...getValues3LayerArray(loginQuestionData.answers[stageOrder.order])];
+        setFractionFormulaAnswerArrayForAnyStage(tmpFormula);
+        setWrongFractionAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));
+      } else {
+        setQuestionTextForAnyStage(questionsFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
+        setResponseArrayForAnyStage(responsesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
+        tmpType = typesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]
+        setTypeOfQForAnyStage(tmpType);
+        tmpFormula = [...answersFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]];
+        setFractionFormulaAnswerArrayForAnyStage(tmpFormula);
+        setWrongFractionAnswerArrayForAnyStage(wrongAnswersFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
+      }
       //get from server
       //set question text
-      console.log(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
-      setLoginQuestionText(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
+      /*console.log(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
+      setQuestionTextForAnyStage(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
       //set response
       console.log(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
-      setLoginResponseArray(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
+      setResponseArrayForAnyStage(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
       //set type
-      setLoginType(loginQuestionData.types[stageOrder.order].stringValue);
+      setTypeOfQForAnyStage(loginQuestionData.types[stageOrder.order].stringValue);
       //set answer
       console.log(getValues3LayerArray(loginQuestionData.answers[stageOrder.order]));
-      setLoginFormulaAnswerArray(getValues3LayerArray(loginQuestionData.answers[stageOrder.order]));
+      setFractionFormulaAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.answers[stageOrder.order]));
       //set wrong answer
       console.log(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));
-      setLoginWrongAnswerArray(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));
+      setWrongFractionAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));*/
 
-      switch (loginQuestionData.types[stageOrder.order].stringValue) {
+      switch (tmpType) { //loginQuestionData.types[stageOrder.order].stringValue) {
         case "fractionText": {
           //set formula line 0
           setFractionLinesArray([
@@ -532,13 +564,14 @@ export const FractionMultiplyDivide = ({
           break;
         };
         case "fractionFormula": {
-          let tmpFormula = [...getValues3LayerArray(loginQuestionData.answers[stageOrder.order])];
+          //let tmpFormula = [...getValues3LayerArray(loginQuestionData.answers[stageOrder.order])];
           console.log(tmpFormula[0])
           let tmpArray = [];
           let i;
           for (i = 0; i < tmpFormula[0].length - 1; i++) {
             tmpArray.push(tmpFormula[0][i]);
           }
+          tmpArray.push(["", 0, 0, 0, 0, 0]);
           setBracketArray([tmpFormula[0][tmpFormula[0].length - 1]]);
           setFractionLinesArray([tmpArray]);
           break;
@@ -594,8 +627,8 @@ export const FractionMultiplyDivide = ({
           });
         } else {
           //complete mock exam paper
-          setLoginQuestionText(["", "", "", ""]);
-          setLoginType("");
+          setQuestionTextForAnyStage(["", "", "", ""]);
+          setTypeOfQForAnyStage("");
           setExamCompleted(true);
         }
       } else {
@@ -870,7 +903,7 @@ export const FractionMultiplyDivide = ({
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     setIsNewStep(false);
     let isNewStepTmp = false;
-    if (isLogined && loginType === "fractionText" && formulaFocusedIndex === 0) {
+    if (typeOfQForAnyStage === "fractionText" && formulaFocusedIndex === 0) {
       if (!textQuestionFormulaCheck()) {
         return;
       }
@@ -1089,7 +1122,7 @@ export const FractionMultiplyDivide = ({
 
   //need mixed version
   const handleKeypadClick = (e, key) => {
-    if (stageOrder.stage === -2 && isLogined && loginType === "MC") {
+    if (typeOfQForAnyStage === "MC") {
       checkMCAnswer(key);
       return;
     }
@@ -1098,7 +1131,7 @@ export const FractionMultiplyDivide = ({
     if (
       formulaFocusedIndex == fractionLinesArray.length - 1 &&
       (stageOrder.stage === -1 ||
-        (stageOrder.stage === -2 && loginType === "fractionText") ||
+        ((stageOrder.stage === -2 || stageOrder.stage > -1) && typeOfQForAnyStage === "fractionText") ||
         formulaFocusedIndex > 0 ||
         [2, 5].includes(fractionPartIndex))
     ) {
@@ -1247,7 +1280,7 @@ export const FractionMultiplyDivide = ({
     let marksFromNumberOfHints = (10 - errorMessageTimes) * 2;
     let marksFromThisQuestion = 20 + marksFromTime + marksFromNumberOfHints;
     if (examIndex === 1 && isLogined && stageOrder.stage === -2) {
-      if (loginType === "fractionText") {
+      if (typeOfQForAnyStage === "fractionText") {
         marksFromThisQuestion *= 3;
       } else {
         marksFromThisQuestion *= 2;
@@ -1263,7 +1296,7 @@ export const FractionMultiplyDivide = ({
     if (isLogined) {
       console.log(loginQuestionData.questions[0][0]);
       //setLoginQuestionTypeArray(loginQuestionData.types);
-      setStageOrder({ stage: -2, order: 5 });//0
+      setStageOrder({ stage: -2, order: 0 });//0
       resetDefault();
       resetQuestion();
     }
@@ -1300,10 +1333,12 @@ export const FractionMultiplyDivide = ({
     tmpArray.push(bracketArray[0]);
     console.log(tmpArray);
     let formulaIsCorrect = false;
-    loginFormulaAnswerArray.forEach(formula => {
-      console.log(formula);
-      console.log(compare2LayerArray(tmpArray, formula))
-      if (compare2LayerArray(tmpArray, formula)) {
+    fractionFormulaAnswerArrayForAnyStage.forEach(formula => {
+      let tmpFormula = [...formula];
+      tmpFormula.splice(formula.length - 1, 0, ["", 0, 0, 0, 0, 0]);
+      console.log("tmpFormula:" + tmpFormula);
+      console.log(compare2LayerArray(tmpArray, tmpFormula))
+      if (compare2LayerArray(tmpArray, tmpFormula)) {
         console.log("correct")
         formulaIsCorrect = true;
         return formulaIsCorrect;
@@ -1312,17 +1347,16 @@ export const FractionMultiplyDivide = ({
     if (formulaIsCorrect) {
       return formulaIsCorrect;
     }
-    let formulaErrorMessage = loginResponseArray[loginResponseArray.length - 1][languageIndex];
-    for (i = 0; i < loginWrongAnswerArray.length; i++) {
-      console.log(loginWrongAnswerArray[i])
-      if (compare2LayerArray(tmpArray, loginWrongAnswerArray[i])) {
-        formulaErrorMessage = loginResponseArray[i][languageIndex];
+    let formulaErrorMessage = responseArrayForAnyStage[responseArrayForAnyStage.length - 1][languageIndex];
+    for (i = 0; i < wrongFractionAnswerArrayForAnyStage.length; i++) {
+      let tmpFormula = [...wrongFractionAnswerArrayForAnyStage[i]];
+      tmpFormula.splice(wrongFractionAnswerArrayForAnyStage[i].length - 1, 0, ["", 0, 0, 0, 0, 0]);
+      console.log(wrongFractionAnswerArrayForAnyStage[i])
+      if (compare2LayerArray(tmpArray, tmpFormula)) {
+        formulaErrorMessage = responseArrayForAnyStage[i][languageIndex];
       }
     }
     handleSetError(formulaErrorMessage);
-    /*setTimeout(() => {
-      setOpenAlert(true);
-    }, timeDelay);*/
   }
 
   function compare2LayerArray(arrayA, arrayB) {
@@ -1349,14 +1383,14 @@ export const FractionMultiplyDivide = ({
 
   function checkMCAnswer(key) {
     console.log(key);
-    console.log(loginFormulaAnswerArray[0][0][0]);
-    if (key === loginFormulaAnswerArray[0][0][0]) {
+    console.log(fractionFormulaAnswerArrayForAnyStage[0][0][0]);
+    if (key === fractionFormulaAnswerArrayForAnyStage[0][0][0]) {
       completeFunction();
     } else {
       let i;
-      for (i = 0; i < loginWrongAnswerArray[0][0].length; i++) {
-        if (key === loginWrongAnswerArray[0][0][i]) {
-          handleSetError(loginResponseArray[i][languageIndex]);
+      for (i = 0; i < wrongFractionAnswerArrayForAnyStage[0][0].length; i++) {
+        if (key === wrongFractionAnswerArrayForAnyStage[0][0][i]) {
+          handleSetError(responseArrayForAnyStage[i][languageIndex]);
           /*setTimeout(() => {
             setOpenAlert(true);
           }, timeDelay);*/
@@ -1383,7 +1417,7 @@ export const FractionMultiplyDivide = ({
           uploadTotalScore={uploadTotalScore[languageIndex]}
         />
       )}
-      {isLogined && <Grid className={classes.centerRow}>        
+      {isLogined && <Grid className={classes.centerRow}>
         <Button
           variant="contained"
           className={classes.logoutButton}
@@ -1395,17 +1429,35 @@ export const FractionMultiplyDivide = ({
       </Grid>}
       <Grid className={classes.spaceGrid} />
 
-      {isLogined && (
+      {["fractionText", "integerText", "decimalText", "MC"].includes(typeOfQForAnyStage) && 
+      !((stageOrder.stage === -2 & !isLogined) || [-3, -4].includes(stageOrder.stage) ) && (
         <TextQuestion
-          textQuestion={loginQuestionText[languageIndex]}
+          textQuestion={questionTextForAnyStage[languageIndex]}
           setIsLogined={setIsLogined}
           languageIndex={languageIndex}
           setErrorMessageArray={setErrorMessageArray}
           setExamCompleted={setExamCompleted}
         />
       )}
+      {stageOrder.stage === -2 && !isLogined &&
+        <Grid className={classes.centerRow}>
+          <Grid className={classes.formulaColumn}>
+            <Login
+              languageIndex={languageIndex}
+              bibleVersionIndex={bibleVersionIndex}
+              isLogined={isLogined}
+              setIsLogined={setIsLogined}
+              setLoginQuestionData={setLoginQuestionData}
+            />
+          </Grid>
+        </Grid>
+      }
       {
-        !((loginType === "MC" && isLogined) || [-3, -4].includes(stageOrder.stage)) &&
+        ["fractionFormula", "fractionText"].includes(typeOfQForAnyStage) &&
+        ![-3, -4].includes(stageOrder.stage) &&
+        !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
+        /*
+        !((typeOfQForAnyStage === "MC" && isLogined) || [-3, -4].includes(stageOrder.stage)) &&
         <Grid className={classes.centerRow}>
           {stageOrder.stage === -2 && !isLogined ? (
             <Grid className={classes.formulaColumn}>
@@ -1418,8 +1470,11 @@ export const FractionMultiplyDivide = ({
               />
             </Grid>
           ) : (
-            (stageOrder.stage === -2 && !examCompleted) || stageOrder.stage > -1 && <Grid className={classes.formulaColumn}>
-              {fractionLinesArray.map((formula, index) => {
+          (stageOrder.stage === -2 && !examCompleted) || stageOrder.stage > -1 && */
+        <Grid className={classes.centerRow}>
+          <Grid className={classes.formulaColumn}>
+            {
+              fractionLinesArray.map((formula, index) => {
                 return (
                   (index === formulaFocusedIndex ||
                     index < formulaFocusedIndex) && ( //
@@ -1495,13 +1550,16 @@ export const FractionMultiplyDivide = ({
                     </Grid>
                   )
                 );
-              })}
-            </Grid>
-          )}
+              }
+                // )
+                //}
+                //</Grid>
+              )}
+          </Grid>
         </Grid>
       }
       {
-        isLogined && loginType === "MC" && completed && !examCompleted &&
+        typeOfQForAnyStage === "MC" && completed && !examCompleted &&
         <Grid className={classes.centerRow}>
           <Button
             className={classes.okButton}
@@ -1547,7 +1605,7 @@ export const FractionMultiplyDivide = ({
         handleClick={handleKeypadClick}
         topicIndex={topicIndex}
         formulaFocusedIndex={formulaFocusedIndex}
-        isMC={loginType === "MC"}
+        isMC={typeOfQForAnyStage === "MC"}
       />
       <AlertSnackbar
         open={openAlert}
