@@ -49,3 +49,21 @@ export function compare2LayerArray(arrayA, arrayB) {//common function
     return tmpCorrect;
   } else { return false; }
 }
+
+export function calculateTotalScoreForUnit(tmpObject, setScoreTotalForUnit) {//a
+  console.log("calculateTotalScoreForUnit");
+  let scoreTotal = 0;
+  for (let x in tmpObject) {
+    if (x === "exam") {
+      scoreTotal += tmpObject[x];
+    } else {
+      for (let y in tmpObject[x]) {
+        for (let z in tmpObject[x][y]) {
+          scoreTotal += tmpObject[x][y][z];
+        }
+      }
+    }
+  }
+  console.log(Math.round(scoreTotal));
+  setScoreTotalForUnit(Math.round(scoreTotal));
+}

@@ -14,6 +14,7 @@ import {
   getValues1LayerArray,
   getValues2LayerArray,
   getValues3LayerArray,
+  calculateTotalScoreForUnit,
 
 } from "../functions/CommonFunctions";
 import answers0 from "../questionData/answers/Answers0";//a
@@ -54,7 +55,7 @@ export const MainController = ({
   topicToolIndex,
   unitIndex,
   examIndex,
-  indexArray  
+  indexArray
 }) => {
   const [openAlert, setOpenAlert] = useState(false);//a->b
   const [errorMessage, setErrorMessage] = useState("");//a->b
@@ -86,6 +87,7 @@ export const MainController = ({
   const [callResetDefault, setCallResetDefault] = useState(true);//a
   const [callResetClickForOtherPurpose, setCallResetClickForOtherPurpose] = useState(true);//a
   const [callKeypadClick, setCallKeypadClick] = useState([true, ""]);//a
+  const [callIncreaseFormulaIndex, setCallIncreaseFormulaIndex] = useState(true);//a
 
   const {
     stageText,//a
@@ -94,7 +96,7 @@ export const MainController = ({
     leaderboard,
     topics,
     wellDone,//a
-    
+
     noMixedBeforeReduction,//b(a call be functions)
     noDivisionBeforeReduction,//b    
     uploadTotalScore,//a
@@ -106,18 +108,21 @@ export const MainController = ({
 
   //both versions equal
   useEffect(() => {//a
-    console.log("change topicToolIndex")    
+    console.log("change topicToolIndex")
     if (!isLogined) {
       if (questions[topicIndex][learningToolIndex].length === 0) {
-        if (stageOrder === { stage: -1, order: 0 }) {
+        if (stageOrder.stage === -1 && stageOrder.order === 0) {//stageOrder === { stage: -1, order: 0 }) {
           resetDefault();
         } else {
           setStageOrder({ stage: -1, order: 0 });
         }
       } else {
-        if (stageOrder === { stage: 0, order: 0 }) {
+        console.log("stageOrder in callback: "+ stageOrder.stage+ stageOrder.order)
+        if (stageOrder.stage === 0 && stageOrder.order ===0) {//stageOrder === { stage: 0, order: 0 }) {
+          console.log("reset in callback")
           resetDefault();
         } else {
+          console.log("set stageOrder in callback")
           setStageOrder({ stage: 0, order: 0 });
         }
       }
@@ -129,11 +134,11 @@ export const MainController = ({
   }, [indexArray[2], indexArray[3], indexArray[4], stageOrder.stage]);
 
   useEffect(() => {   //a
-    setQuestions(questionsFilesArray[unitIndex]);   
+    setQuestions(questionsFilesArray[unitIndex]);
     resetDefault();
     setScoreArray({ exam: 0, topic0: { tool0: { stage0: 0 } } });
     setScoreTotalForUnit(0);
-  }, [unitIndex]);  
+  }, [unitIndex]);
 
   //both versions equal
   useEffect(() => {//a
@@ -206,9 +211,9 @@ export const MainController = ({
       }
       console.log(tmpObject);
       setScoreArray(tmpObject);
-      calculateTotalScoreForUnit(tmpObject);
+      calculateTotalScoreForUnit(tmpObject, setScoreTotalForUnit);
     }
-  }  
+  }
 
   //equal
   async function resetDefault() {//a and a call function b
@@ -219,12 +224,13 @@ export const MainController = ({
     console.log(Date.now())
     setStartTime(Date.now());//a    
 
-    setCallResetDefault((prev) => !prev);    
-  }  
+    setCallResetDefault((prev) => !prev);
+  }
 
   function resetQuestion() {//a    
+    console.log("resetQ in controller2")
     if (stageOrder.stage === -1) {
-      setClearFirstLineForSelfLearning((prev) => !prev);      
+      setClearFirstLineForSelfLearning((prev) => !prev);
     } else if ((stageOrder.stage === -2 && isLogined) || stageOrder.stage > -1) {//a resetQuestion B
       let tmpType = "";
       let tmpFormula = [[[]]];
@@ -232,32 +238,30 @@ export const MainController = ({
         setQuestionTextForAnyStage(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));//a->b
         setResponseArrayForAnyStage(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
         tmpType = loginQuestionData.types[stageOrder.order].stringValue;
-        setTypeOfQForAnyStage(tmpType);
+        //setTypeOfQForAnyStage(tmpType);
         tmpFormula = [...getValues3LayerArray(loginQuestionData.answers[stageOrder.order])];
-        setFractionFormulaAnswerArrayForAnyStage(tmpFormula);//change state callback at unitController
+        //setFractionFormulaAnswerArrayForAnyStage(tmpFormula);//change state callback at unitController
         setTypeAndFormulaAnswerArrayForAnyStage([tmpType, tmpFormula]);
         setWrongFractionAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));
       } else {
         setQuestionTextForAnyStage(questionsFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
         setResponseArrayForAnyStage(responsesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
         tmpType = typesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]
-        setTypeOfQForAnyStage(tmpType);//a->b
+        //setTypeOfQForAnyStage(tmpType);//a->b
         tmpFormula = [...answersFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]];
-        setFractionFormulaAnswerArrayForAnyStage(tmpFormula);//change state callback at unitController
+        //setFractionFormulaAnswerArrayForAnyStage(tmpFormula);//change state callback at unitController
         setTypeAndFormulaAnswerArrayForAnyStage([tmpType, tmpFormula]);
         setWrongFractionAnswerArrayForAnyStage(wrongAnswersFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
-      }            
+      }
     }
   }
 
   //completed part equal. not completed part needs mixed version and go to next mixed stage
   const resetClick = (e) => {//a
     console.log("completed: " + completed);
-    console.log("startEndIndexLastLine:" + startEndIndexLastLine);
-    console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     if (completed) {
       if (stageOrder.stage > -1) {
-        resetDefault(); 
+        resetDefault();
         if (
           stageOrder.order <
           questions[topicIndex][learningToolIndex][stageOrder.stage].length - 1
@@ -300,7 +304,7 @@ export const MainController = ({
     } else {
       setCallResetClickForOtherPurpose((prev) => !prev);
     }
-  };     
+  };
 
   //need mixed version
   const handleKeypadClick = (e, key) => {//a
@@ -308,12 +312,12 @@ export const MainController = ({
       checkMCAnswer(key);
       return;
     }
-    setCallKeypadClick((prev) => [!prev[0], key]);    
-  };   
+    setCallKeypadClick((prev) => [!prev[0], key]);
+  };
 
   function completeFunction() {//a
     setErrorMessage("👍🏻" + wellDone[languageIndex]);
-    setFormulaFocusedIndex((prevState) => prevState + 1); 
+    setCallIncreaseFormulaIndex((prev) => !prev);
     setCompleted(true);
     setSeverity("success");
     setTimeout(() => {
@@ -346,7 +350,7 @@ export const MainController = ({
       resetQuestion();
     }
     setErrorMessageArray([]);
-  }, [isLogined]);  
+  }, [isLogined]);
 
   function checkMCAnswer(key) {//a
     console.log(key);
@@ -357,7 +361,7 @@ export const MainController = ({
       let i;
       for (i = 0; i < wrongFractionAnswerArrayForAnyStage[0][0].length; i++) {
         if (key === wrongFractionAnswerArrayForAnyStage[0][0][i]) {
-          handleSetError(responseArrayForAnyStage[i][languageIndex]);          
+          handleSetError(responseArrayForAnyStage[i][languageIndex]);
         }
       }
     }
@@ -393,16 +397,16 @@ export const MainController = ({
       </Grid>}
       <Grid className={classes.spaceGrid} />
 
-      {["fractionText", "integerText", "decimalText", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) && 
-      !((stageOrder.stage === -2 & !isLogined) || [-3, -4].includes(stageOrder.stage) ) && (
-        <TextQuestion
-          textQuestion={questionTextForAnyStage[languageIndex]}
-          setIsLogined={setIsLogined}
-          languageIndex={languageIndex}
-          setErrorMessageArray={setErrorMessageArray}
-          setExamCompleted={setExamCompleted}
-        />
-      )}
+      {["fractionText", "integerText", "decimalText", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
+        !((stageOrder.stage === -2 & !isLogined) || [-3, -4].includes(stageOrder.stage)) && (
+          <TextQuestion
+            textQuestion={questionTextForAnyStage[languageIndex]}
+            setIsLogined={setIsLogined}
+            languageIndex={languageIndex}
+            setErrorMessageArray={setErrorMessageArray}
+            setExamCompleted={setExamCompleted}
+          />
+        )}
       {stageOrder.stage === -2 && !isLogined &&
         <Grid className={classes.centerRow}>
           <Grid className={classes.formulaColumn}>
@@ -419,8 +423,25 @@ export const MainController = ({
       {
         ["fractionFormula", "fractionText"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
         ![-3, -4].includes(stageOrder.stage) &&
-        !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&        
-        <FractionUnitController 
+        !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
+        <FractionUnitController
+          languageIndex={languageIndex}
+          topicToolIndex={topicToolIndex}
+          completed={completed}
+          setCompleted={setCompleted}
+          stageOrder={stageOrder}
+          isLogined={isLogined}
+          handleSetError={handleSetError}
+          clearFirstLineForSelfLearning={clearFirstLineForSelfLearning}
+          callResetDefault={callResetDefault}
+          typeAndFormulaAnswerArrayForAnyStage={typeAndFormulaAnswerArrayForAnyStage}
+          callResetClickForOtherPurpose={callResetClickForOtherPurpose}
+          callKeypadClick={callKeypadClick}
+          completeFunction={completeFunction}
+          responseArrayForAnyStage={responseArrayForAnyStage}
+          wrongFractionAnswerArrayForAnyStage={wrongFractionAnswerArrayForAnyStage}
+          resetClick={resetClick}
+          callIncreaseFormulaIndex={callIncreaseFormulaIndex}
         />
       }
       {
@@ -468,8 +489,6 @@ export const MainController = ({
       }
       <MyKeypad
         handleClick={handleKeypadClick}
-        topicIndex={topicIndex}
-        formulaFocusedIndex={formulaFocusedIndex}
         isMC={typeAndFormulaAnswerArrayForAnyStage[0] === "MC"}
       />
       <AlertSnackbar

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Link } from "@material-ui/core";
 import { HeadingSelect } from "../components/MathsLearningComponents";
-import { MainController } from "./MainController";
+import { MainController } from "./MainController2";
 import { withStyles } from "@material-ui/core/styles";
 import { theme as myTheme } from "../themes/theme";
 import constants from "../constants/MathsLearningConstants";

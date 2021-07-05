@@ -47,7 +47,8 @@ export const FractionUnitController = ({
   completeFunction,
   responseArrayForAnyStage,
   wrongFractionAnswerArrayForAnyStage,
-  resetClick
+  resetClick,
+  callIncreaseFormulaIndex
 }) => {
   const [formulaFocusedIndex, setFormulaFocusedIndex] = useState(0);//b
   const [fractionLinesArray, setFractionLinesArray] = useState([//b
@@ -189,6 +190,10 @@ export const FractionUnitController = ({
       okClick();
     }
   }, [fractionLinesArray]);
+
+  useEffect(() => {
+    setFormulaFocusedIndex((prevState) => prevState + 1); //b
+  }, [callIncreaseFormulaIndex]);
 
   //equal
   useEffect(() => {//a and a call function b    
