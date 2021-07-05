@@ -94,13 +94,12 @@ const {
 export const timeDelay = 200;
 
 //A&S only. Need both A&S and mixed versions -> This version can serve both
-export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, handleSetError, languageIndex, setOpenAlert) {
+export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, handleSetError, languageIndex) {
     /*console.log("positiveResultCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);*/
-    //setStartEndIndexLastStage([startIndex, endIndex]);
     var result = 0.0;
     var sumOfDenominators = 0;
     let expression = "";
@@ -207,7 +206,7 @@ export const stepMessage2 = (startIndex, endIndex, issue, decrease, languageInde
 
 //A&S only
 export function noVariousDenominatorCheck2(
-    index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, setOpenAlert, languageIndex, handleSetError, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
+    index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, languageIndex, handleSetError, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
 ) {
     console.log("noVariousDenominatorCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -234,7 +233,6 @@ export function noVariousDenominatorCheck2(
         setCalculationStage(1);
         //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
 
-        //*** */setStartEndIndexLastStage([startIndex, endIndex]);
         noNegativeNumeratorResultCheck(index, false, startIndex, endIndex);
         return true;
     } else {
@@ -355,7 +353,6 @@ export function noVariousDenominatorCheck2(
         addLine();
         //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
 
-        //*** */setStartEndIndexLastStage([startIndex, endIndex]);
         noNegativeNumeratorResultCheck(index, false, startIndex, endIndex);
         return true;
     }
@@ -363,7 +360,7 @@ export function noVariousDenominatorCheck2(
 
 //A&S only. need both A&S and mixed versions
 export function noNegativeNumeratorResultCheck2(
-    index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, setOpenAlert, languageIndex, handleSetError, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine
+    index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, languageIndex, handleSetError, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine
 ) {
     console.log("noNegativeNumeratorResultCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -391,9 +388,7 @@ export function noNegativeNumeratorResultCheck2(
         if (numeratorResult >= 0) {
             setIndexDecreasedByLastStage(endIndex - startIndex);
 
-            setStartEndIndexLastStage([startIndex, endIndex]);
             setCalculationStage(2);
-            setStartEndIndexLastStage([startIndex, startIndex]); //
             console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
             setFractionIndexInProcess([startIndex, startIndex]); //
             return true;
@@ -488,27 +483,24 @@ export function noNegativeNumeratorResultCheck2(
         }
         setIndexDecreasedByLastStage(endIndex - startIndex);
 
-        //*** */setStartEndIndexLastStage([startIndex, endIndex]);
         setCalculationStage(2);
         console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
         setFractionIndexInProcess([startIndex, startIndex]);
         setStartEndIndexLastLine([startIndex, endIndex]); //*** */
         addLine();
-        //*** */setStartEndIndexLastStage([startIndex, startIndex]);//
         //*** */setFractionIndexInProcess([startIndex, startIndex]);//
         return true;
     }
 }
 
 //A&S only
-export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, setOpenAlert, languageIndex, handleSetError, startEndIndexLastStage, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setStartEndIndexLastStage, setFractionIndexInProcess) {
+export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, languageIndex, handleSetError, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setFractionIndexInProcess) {
     console.log("addToOneFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     //check other fractions
-    //*** */if (!otherFractionsCheck(index, startEndIndexLastStage[0], startEndIndexLastStage[0], indexDecreasedByLastStage)) {
     if (
         !otherFractionsCheck(
             index,
@@ -588,21 +580,21 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
     }
     if (numeratorResult > 0) {
         if (
-            fractionLinesArray[index][startEndIndexLastStage[0]][4] != calculatedLcm
+            fractionLinesArray[index][startEndIndexLastLine[0]][4] != calculatedLcm
         ) {
             //position: [0]
             handleSetError(sameDenominatorInAddToOne[languageIndex]);            
             return false;
         }
     } else {
-        if (fractionLinesArray[index][startEndIndexLastStage[0]][4] != 0) {
+        if (fractionLinesArray[index][startEndIndexLastLine[0]][4] != 0) {
             //position: [0]
             handleSetError(wholeWithoutFraction[languageIndex]);            
             return false;
         }
     }
     if (
-        fractionLinesArray[index][startEndIndexLastStage[0]][3] != numeratorResult
+    fractionLinesArray[index][startEndIndexLastLine[0]][3] != numeratorResult
     ) {
         //position: [0]
         if (negativeInNumeratorProcess) {
@@ -613,7 +605,7 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
         return false;
     }
     if (
-        fractionLinesArray[index][startEndIndexLastStage[0]][1] != wholeResult
+        fractionLinesArray[index][startEndIndexLastLine[0]][1] != wholeResult
     ) {
         //position: [0]
         if (negativeInWholeProcess) {
@@ -628,13 +620,12 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
     setOkButtonStage(1);
     //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
     console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
-    setStartEndIndexLastStage([startIndex, startIndex]);
     setFractionIndexInProcess([startIndex, startIndex]);
     return true;
 }
 
 //equal //for whole formula
-export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert, handleSetError, languageIndex) {
+export function fractionOrIntegerCheck2(index, fractionLinesArray, handleSetError, languageIndex) {
     var i;
     for (i = 0; i < fractionLinesArray[index].length - 1; i++) {
         if (i > 0 && fractionLinesArray[index][i][0] == "") {
@@ -663,7 +654,7 @@ export function fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert,
 }
 
 //equal //for question whole formula only
-export function singleNumberCheck2(index, fractionLinesArray, languageIndex, handleSetError, setOpenAlert) {
+export function singleNumberCheck2(index, fractionLinesArray, languageIndex, handleSetError) {
     if (fractionLinesArray[index].length == 2) {
         if (index == 0) {
             handleSetError(singleNumber[languageIndex]);            
@@ -675,7 +666,7 @@ export function singleNumberCheck2(index, fractionLinesArray, languageIndex, han
 
 //little bit differ, fix it for mixed final stage //for whole formula?
 export function noImproperFractionCheck2(
-    completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, handleSetError, mixedStage, setStartEndIndexLastStage, nextNewStep, setSeverity, typeOfCalculation, setOpenAlert, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
+    completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, handleSetError, mixedStage, nextNewStep, typeOfCalculation, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
 ) {
     console.log("noImproperFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -817,7 +808,6 @@ export function noImproperFractionCheck2(
         }
         //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
         console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
-        setStartEndIndexLastStage([startIndex, endIndex]);
         //***setFractionIndexInProcess([startIndex, endIndex]);//*** */
         return true;
     } else {
@@ -852,14 +842,13 @@ export function noImproperFractionCheck2(
         }
         //}
         //setIndexDecreasedByLastStage(endIndex - startIndex);
-        //setStartEndIndexLastStage([startIndex, endIndex]);
         return true;
     }
 }
 
 //M&D only
 export function noMixedFractionCheck2(
-    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setStartEndIndexLastStage
+    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine
 ) {
     console.log("noMixedFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -876,7 +865,6 @@ export function noMixedFractionCheck2(
     var i;
     for (i = startIndex; i < endIndex + 1; i++) {
         if (fractionLinesArray[index][i][1] != "") {
-            //*** */if (index != 0 && !isNewStep && calculationStage == 0) {
             if (index !== 0 && !isNewStepTmp && calculationStage === 0) {
                 //newStep
                 if (
@@ -911,7 +899,6 @@ export function noMixedFractionCheck2(
         //good
         console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
         setFractionIndexInProcess([startIndex, endIndex]); //*** */
-        setStartEndIndexLastStage([startIndex, endIndex]);
         noDivisionCheck(index, false, startIndex, endIndex, isNewStepTmp);
         return true;
     } else if (checkValueNeeded) {
@@ -984,7 +971,6 @@ export function noMixedFractionCheck2(
         setCalculationStage(1);
         //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
         console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
-        setStartEndIndexLastStage([startIndex, endIndex]);
         setFractionIndexInProcess([startIndex, endIndex]);
         console.log(endIndex);
         noDivisionCheck(index, false, startIndex, endIndex, isNewStepTmp);
@@ -996,7 +982,7 @@ export function noMixedFractionCheck2(
 
 //M&D only
 export function noDivisionCheck2(
-    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setStartEndIndexLastStage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
+    index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
 ) {
     console.log("noDivisionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -1015,7 +1001,6 @@ export function noDivisionCheck2(
     var i;
     for (i = startIndex + 1; i < endIndex + 1; i++) {
         if (fractionLinesArray[index][i][0] == "÷") {
-            //*** */if (index != 0 && !isNewStep && calculationStage == 1) {
             if (index !== 0 && !isNewStepTmp && calculationStage === 1) {
                 //newStep
                 handleSetError(noDivision[languageIndex]);                
@@ -1039,7 +1024,6 @@ export function noDivisionCheck2(
         setOkButtonStage(1);
         //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
         //bad
-        setStartEndIndexLastStage([startIndex, endIndex]);
         //addLine();
         //simplifiedCheck(index, false);
         return true;
@@ -1101,7 +1085,6 @@ export function noDivisionCheck2(
         }
         //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
 
-        setStartEndIndexLastStage([startIndex, endIndex]);
         setCalculationStage(2);
         console.log("noDivi call setOkButtonStage(1)");
         setOkButtonStage(1);
@@ -1113,7 +1096,7 @@ export function noDivisionCheck2(
 
 //M&D only
 export function noMultiplicationCheck2(
-    index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, setStartEndIndexLastStage, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, handleSetError, primeNumbers, setOpenAlert, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
+    index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, handleSetError, primeNumbers, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
 ) {
     console.log("noMultiplicationCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
@@ -1220,7 +1203,6 @@ export function noMultiplicationCheck2(
         setOkButtonStage(1);
         //*** setIndexDecreasedByLastStage(endIndex - startIndex);
         console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
-        setStartEndIndexLastStage([startIndex, startIndex]);
         setFractionIndexInProcess([startIndex, startIndex]);
         noImproperFractionCheck(index, false, startIndex, startIndex);*/
         if (//*** */
@@ -1235,7 +1217,6 @@ export function noMultiplicationCheck2(
             setOkButtonStage(1);
             //*** */setIndexDecreasedByLastStage(endIndex - startIndex);
             console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
-            setStartEndIndexLastStage([startIndex, startIndex]);
             setFractionIndexInProcess([startIndex, startIndex]);
             noImproperFractionCheck(index, false, startIndex, startIndex);
         } //*** */
@@ -1244,13 +1225,12 @@ export function noMultiplicationCheck2(
     }
     setCalculationStage(4);
     setIndexDecreasedByLastStage(endIndex - startIndex);
-    setStartEndIndexLastStage([startIndex, startIndex]);
     setStartEndIndexLastLine([startIndex, startIndex]); //*** */
     noImproperFractionCheck(index, false, startIndex, startIndex);
     return true;
 }
 
-export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, handleSetError, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setOpenAlert) {
+export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, handleSetError, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage) {
     console.log("otherFractionsCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1317,7 +1297,7 @@ export function otherFractionsCheck2(index, startIndex, endIndex, decrease, issu
     }
 }
 
-export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, handleSetError, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex, setOpenAlert) {
+export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, handleSetError, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex) {
     console.log("oneSectionFractionCheck");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1365,7 +1345,7 @@ export function oneSectionFractionCheck2(index, startIndex, endIndex, decrease, 
     return true;
 }
 
-export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, setStartEndIndexLastStage, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, handleSetError, languageIndex, setOpenAlert) {
+export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, handleSetError, languageIndex) {
     console.log("noBracketCheck");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
@@ -1390,7 +1370,6 @@ export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCa
                 });
             } else {
                 console.log("set start index to 0");
-                setStartEndIndexLastStage([0, fractionLinesArray[index].length - 2]);
                 //***set some index? */
                 noMixedCalCheck(
                     index,
@@ -1414,11 +1393,7 @@ export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCa
                 "setFractionIndexInProcess with: " +
                 bracketArray[index][0] +
                 bracketArray[index][1]
-            );
-            setStartEndIndexLastStage([
-                bracketArray[index][0],
-                bracketArray[index][1]
-            ]);
+            );            
             setFractionIndexInProcess([
                 bracketArray[index][0],
                 bracketArray[index][1]
@@ -1440,7 +1415,7 @@ export function noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCa
     }
 }
 
-export function callbackOfBracketStage2(typeOfCal, startIndex, endIndex, formulaFocusedIndex, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, noMixedFractionCheck, addLine, noVariousDenominatorCheck) {
+export function callbackOfBracketStage2(typeOfCal, startIndex, endIndex, formulaFocusedIndex, setFractionIndexInProcess, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, noMixedFractionCheck, addLine, noVariousDenominatorCheck) {
     console.log("callback");
     console.log("typeOfCal:" + typeOfCal);
     console.log("bracketStage callback");
@@ -1448,7 +1423,6 @@ export function callbackOfBracketStage2(typeOfCal, startIndex, endIndex, formula
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
-    setStartEndIndexLastStage([startIndex, endIndex]);
     console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
     setFractionIndexInProcess([startIndex, endIndex]); //*** */
     //if (stageOrder.stage === -1 || formulaFocusedIndex > 0) {//stage !==-1
@@ -1477,7 +1451,7 @@ export function callbackOfBracketStage2(typeOfCal, startIndex, endIndex, formula
 }
 
 export async function noMixedCalCheck2(
-    index, checkValueNeeded, startIndex, endIndex, callbackOfBracketStage, mixedStage, setBracketStage, setBracketStageArray, bracketStage, setFractionIndexInProcess, startEndIndexLastLine, setIndexDecreasedByLastStage, setStartEndIndexLastStage, calculationStage, setTypeOfCalculation, setStartEndIndexLastLine, setMixedStageArray, setMixedStage, setCalculationStage, mixedStageArray, typeOfCalculation, stageOrder, okButtonStage, fractionLinesArray, formulaFocusedIndex, indexDecreasedByLastStage, fractionIndexInProcess, lastMixBrackArray, completed, setOkButtonStage
+    index, checkValueNeeded, startIndex, endIndex, callbackOfBracketStage, mixedStage, setBracketStage, setBracketStageArray, bracketStage, setFractionIndexInProcess, startEndIndexLastLine, setIndexDecreasedByLastStage, calculationStage, setTypeOfCalculation, setStartEndIndexLastLine, setMixedStageArray, setMixedStage, setCalculationStage, mixedStageArray, typeOfCalculation, stageOrder, okButtonStage, fractionLinesArray, formulaFocusedIndex, indexDecreasedByLastStage, fractionIndexInProcess, lastMixBrackArray, completed, setOkButtonStage
 ) {
     console.log("index:" + index);
     console.log("call noMixedCalCheck");
@@ -1530,7 +1504,6 @@ export async function noMixedCalCheck2(
             console.log("M_D_endIndex:" + M_D_endIndex);
             console.log("mixedStage:" + mixedStage);
             console.log("bracketStage:" + bracketStage);
-            setStartEndIndexLastStage([M_D_startIndex, M_D_endIndex]);
             console.log(
                 "setFractionIndexInProcess with: " + M_D_startIndex + M_D_endIndex
             );
@@ -1581,18 +1554,11 @@ export async function noMixedCalCheck2(
             console.log("startIndex:" + startIndex);
             console.log("endIndex:" + endIndex);
             if (calculationStage === 2) {
-                //
-                //*** setStartEndIndexLastStage([startEndIndexLastLine[0], startEndIndexLastLine[0]]); //***
-                setStartEndIndexLastStage([
-                    startEndIndexLastLine[0],
-                    startEndIndexLastLine[1]
-                ]); //
+                //                
                 //*** */setFractionIndexInProcess([startEndIndexLastLine[0], startEndIndexLastLine[0]]);//
                 //*** */setFractionIndexInProcess(startIndex, endIndex);
             } else {
-                //
-                //*** */setStartEndIndexLastStage([startIndex, endIndex]);
-                //*** */setFractionIndexInProcess([startIndex, endIndex]);
+                //                
             } //
             if (mixedStage === "hasBracket") {
                 //setBracketStage("noMixedCal");
@@ -1679,11 +1645,6 @@ export async function noMixedCalCheck2(
                     startEndIndexLastLine[0] +
                     startEndIndexLastLine[0]
                 );
-
-                setStartEndIndexLastStage([
-                    startEndIndexLastLine[0],
-                    startEndIndexLastLine[0]
-                ]); //
                 setFractionIndexInProcess([
                     startEndIndexLastLine[0],
                     startEndIndexLastLine[0]
@@ -1693,7 +1654,6 @@ export async function noMixedCalCheck2(
                 ); //*** */
             } else {
                 //
-                //*** */setStartEndIndexLastStage([startIndex, endIndex]);
                 console.log(
                     "setFractionIndexInProcess with: " + startIndex + endIndex
                 );
@@ -1745,7 +1705,7 @@ export async function noMixedCalCheck2(
     }
 }
 
-export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setStartEndIndexLastStage, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, setOpenAlert, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck) {
+export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck) {
     console.log("checkSimplifyValue");
     console.log("startIndex+endIndex:" + startIndex + endIndex);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
@@ -1837,7 +1797,6 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
     setIndexDecreasedByLastStage(endIndex - startIndex);
     console.log("endIndex:" + endIndex); //bad
     console.log("startIndex:" + startIndex);
-    setStartEndIndexLastStage([startIndex, endIndex]);
     setOkButtonStage(0);
     if (checkValue) {
       //noMultiplicationCheck(index, false);
@@ -1847,7 +1806,6 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
     if (typeOfCalculation === "M&D") {
       console.log("setFractionIndexInProcess with: " + startIndex + endIndex);
       setCalculationStage(3);
-      setStartEndIndexLastStage([startIndex, startIndex]); //
       setFractionIndexInProcess([startIndex, startIndex]); //
       setStartEndIndexLastLine([startIndex, endIndex]); //***
       addLine();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Link } from "@material-ui/core";
 import { HeadingSelect } from "../components/MathsLearningComponents";
-import { FractionMultiplyDivide } from "./FractionMultiplyDivide";
+import { MainController } from "./MainController";
 import { withStyles } from "@material-ui/core/styles";
 import { theme as myTheme } from "../themes/theme";
 import constants from "../constants/MathsLearningConstants";
@@ -259,7 +259,7 @@ function MathsLearning(props) {
         </Grid>
       </Grid>
       {indexArray[5] > -1 && ( //*** */
-        <FractionMultiplyDivide
+        <MainController
           languageIndex={indexArray[0]} //*** */languageIndex}
           bibleVersionIndex={indexArray[1]} //*** */bibleVersionIndex}
           topic={

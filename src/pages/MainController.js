@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
-import { AlertSnackbar } from "../components/AlertComponents";
-import { MyFrame } from "../components/HeadingComponents";
-import { MyKeypad } from "../components/KeypadComponents";
-import { FractionFormula } from "../components/FractionFormulaComponents";
-import { StageButtons } from "../components/StageComponents";
-import { Login } from "../components/LoginComponents";
-import { TextQuestion } from "../components/TextQuestionComponents";
-import { UploadScore } from "../components/UploadScoreComponents";
-import { Leaderboard } from "../components/LeaderboardComponents";
-import { ExamCompleteTable } from "../components/ExamCompleteTableComponents";
-import answers0 from "../questionData/answers/Answers0";
-//import brackets0 from "../questionData/Brackets0";
+import { AlertSnackbar } from "../components/AlertComponents";//a
+import { MyFrame } from "../components/HeadingComponents";//a
+import { MyKeypad } from "../components/KeypadComponents";//a
+import { FractionFormula } from "../components/FractionFormulaComponents";//b
+import { StageButtons } from "../components/StageComponents";//a
+import { Login } from "../components/LoginComponents";//a
+import { TextQuestion } from "../components/TextQuestionComponents";//a
+import { UploadScore } from "../components/UploadScoreComponents";//a
+import { Leaderboard } from "../components/LeaderboardComponents";//a
+import { ExamCompleteTable } from "../components/ExamCompleteTableComponents";//a
+import { FractionUnitController } from "../unitControllers/FractionUnitController";
+import answers0 from "../questionData/answers/Answers0";//a
 import answers1 from "../questionData/answers/Answers1";
-//import brackets1 from "../questionData/Brackets1";
 import answers2 from "../questionData/answers/Answers2";
-//import brackets2 from "../questionData/Brackets2";
 import questions0 from "../questionData/questions/Questions0";
 import questions1 from "../questionData/questions/Questions1";
 import questions2 from "../questionData/questions/Questions2";
@@ -27,11 +25,11 @@ import types1 from "../questionData/types/Types1";
 import types2 from "../questionData/types/Types2";
 import wrongAnswers0 from "../questionData/wrongAnswers/WrongAnswers0";
 import wrongAnswers1 from "../questionData/wrongAnswers/WrongAnswers1";
-import wrongAnswers2 from "../questionData/wrongAnswers/WrongAnswers2";
-import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";
+import wrongAnswers2 from "../questionData/wrongAnswers/WrongAnswers2";//a
+import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";//b
 import {
-  timeDelay,
-  positiveResultCheck2,
+  timeDelay,//a,b
+  positiveResultCheck2,//b
   parenthesesMessage2,
   stepMessage2,
   noVariousDenominatorCheck2,
@@ -48,16 +46,15 @@ import {
   noBracketCheck2,
   callbackOfBracketStage2,
   noMixedCalCheck2,
-  checkSimplifyValue2,
+  checkSimplifyValue2,//b
 
 } from "../functions/FractionMultiplyDivideFunctions";
-import constants from "../constants/FractionMultiplyDivideConstants";
-import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";
-import { pagesStyles } from "../themes/styles";
-import { theme as myTheme } from "../themes/theme";
-import { ContactSupportOutlined } from "@material-ui/icons";
+import constants from "../constants/FractionMultiplyDivideConstants";//a,b
+import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";//a,b
+import { pagesStyles } from "../themes/styles";//a,b
+import { theme as myTheme } from "../themes/theme";//a,b
 
-const style = {
+const style = {//a
   background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
   borderRadius: 3,
   border: 0,
@@ -67,7 +64,7 @@ const style = {
 };
 
 //×÷👍👍🏻
-export const FractionMultiplyDivide = ({
+export const MainController = ({
   languageIndex,
   bibleVersionIndex,
   topic,
@@ -75,108 +72,82 @@ export const FractionMultiplyDivide = ({
   topicToolIndex,
   unitIndex,
   examIndex,
-  indexArray
-  //isLogined,
-  //setIsLogined
+  indexArray  
 }) => {
-  const [openAlert, setOpenAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [severity, setSeverity] = useState("error");
-  const [formulaFocusedIndex, setFormulaFocusedIndex] = useState(0);
-  const [completed, setCompleted] = useState(false);
-  const [fractionLinesArray, setFractionLinesArray] = useState([
+  const [openAlert, setOpenAlert] = useState(false);//a->b
+  const [errorMessage, setErrorMessage] = useState("");//a->b
+  const [severity, setSeverity] = useState("error");//a->b
+  const [formulaFocusedIndex, setFormulaFocusedIndex] = useState(0);//b
+  const [completed, setCompleted] = useState(false);//a->b
+  const [fractionLinesArray, setFractionLinesArray] = useState([//b
     [
       ["", 0, 0, 0, 0, 0],
       ["", 0, 0, 0, 0, 0]
     ]
   ]);
-  const [bracketArray, setBracketArray] = useState([[]]);
-  const [fractionPositionIndex, setFractionPositionIndex] = useState(0);
-  const [fractionPartIndex, setFractionPartIndex] = useState(3);
-  const [okButtonStage, setOkButtonStage] = useState(0); //"Enter", "Reduce?", "Completed"
-  const [calculationStage, setCalculationStage] = useState(0); //0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
-  const [calculatedLcm, setCalculatedLcm] = useState(1);
-  const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });//stage: 0-20common stages, -1self-design, -2exam, -3leaderboard, -4submitTotal
-  const [isLogined, setIsLogined] = useState(false); //FALSE
-  const { topicIndex, learningToolIndex } = topicToolIndex;
+  const [bracketArray, setBracketArray] = useState([[]]);//b
+  const [fractionPositionIndex, setFractionPositionIndex] = useState(0);//b
+  const [fractionPartIndex, setFractionPartIndex] = useState(3);//b
+  const [okButtonStage, setOkButtonStage] = useState(0);//b //"Enter", "Reduce?", "Completed"
+  const [calculationStage, setCalculationStage] = useState(0);//b //0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
+  const [calculatedLcm, setCalculatedLcm] = useState(1);//b
+  const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });//a //stage: 0-20common stages, -1self-design, -2exam, -3leaderboard, -4submitTotal
+  const [isLogined, setIsLogined] = useState(false);//a //FALSE
+  const { topicIndex, learningToolIndex } = topicToolIndex;//a
   //const timeDelay = 200;
-  const primeNumbers = getPrimeNumbers();
-  const [indexDecreasedByLastStage, setIndexDecreasedByLastStage] = useState(0);
-  const [typeOfCalculation, setTypeOfCalculation] = useState(""); //"A&S" or "M&D"
-  const [mixedStage, setMixedStage] = useState("hasBracket"); //"hasMixedCal" or "noMixedCal"
-  const [fractionIndexInProcess, setFractionIndexInProcess] = useState([0, 1]); //need to change
-  const [bracketStage, setBracketStage] = useState(""); //"hasMixedCal" or "noMixedCal"
-  const [startEndIndexLastStage, setStartEndIndexLastStage] = useState([0, 0]);
-  const [isNewStep, setIsNewStep] = useState(true);
-  const [bracketStageArray, setBracketStageArray] = useState({
+  const primeNumbers = getPrimeNumbers();//b
+  const [indexDecreasedByLastStage, setIndexDecreasedByLastStage] = useState(0);//b
+  const [typeOfCalculation, setTypeOfCalculation] = useState("");//b //"A&S" or "M&D"
+  const [mixedStage, setMixedStage] = useState("hasBracket");//b //"hasMixedCal" or "noMixedCal"
+  const [fractionIndexInProcess, setFractionIndexInProcess] = useState([0, 1]);//b //need to change
+  const [bracketStage, setBracketStage] = useState("");//b //"hasMixedCal" or "noMixedCal"
+  const [bracketStageArray, setBracketStageArray] = useState({//b
     bracketStage: "",
     type: "",
     startIndex: 0,
     endIndex: 1
   });
-  const [mixedStageArray, setMixedStageArray] = useState({
+  const [mixedStageArray, setMixedStageArray] = useState({//b
     mixedStage: "hasBracket",
     type: "",
     startIndex: 0,
     endIndex: 1
   });
-  const [lastMixBrackArray, setLastMixBrackArray] = useState({
+  const [lastMixBrackArray, setLastMixBrackArray] = useState({//b
     lastMix: "",
     lastBrack: ""
   });
-  const [startEndIndexLastLine, setStartEndIndexLastLine] = useState([0, 0]);
-  //let questions = questions0;
-  //let brackets = brackets0;
-  const [questions, setQuestions] = useState(answers0);
-  //const [brackets, setBrackets] = useState(brackets0);
-  const questionsFilesArray = [[...questions0], [...questions1], [...questions2]];
+  const [startEndIndexLastLine, setStartEndIndexLastLine] = useState([0, 0]); //b
+  const [questions, setQuestions] = useState(answers0);//a
+  const questionsFilesArray = [[...questions0], [...questions1], [...questions2]];//a
   const answersFilesArray = [[...answers0], [...answers1], [...answers2]];
   const responsesFilesArray = [[...responses0], [...responses1], [...responses2]];
   const typesFilesArray = [[...types0], [...types1], [...types2]];
-  const wrongAnswersFilesArray = [[...wrongAnswers0], [...wrongAnswers1], [...wrongAnswers2]];
-  //const bracketsFilesArray = [[...brackets0], [...brackets1], [...brackets2]];
-  const [loginQuestionData, setLoginQuestionData] = useState({});
-  //const [loginQuestionTypeArray, setLoginQuestionTypeArray] = useState([]);
-  const [questionTextForAnyStage, setQuestionTextForAnyStage] = useState(["", "", "", ""]);//
-  const [fractionFormulaAnswerArrayForAnyStage, setFractionFormulaAnswerArrayForAnyStage] = useState([]);//
-  //const [loginBracketAnswerArray, setLoginBracketAnswerArray] = useState([]);
-  const [typeOfQForAnyStage, setTypeOfQForAnyStage] = useState("");//
-  const [responseArrayForAnyStage, setResponseArrayForAnyStage] = useState([]);//
-  const [wrongFractionAnswerArrayForAnyStage, setWrongFractionAnswerArrayForAnyStage] = useState([]);//
-  const [errorMessageArray, setErrorMessageArray] = useState([]);
-  const [scoreArray, setScoreArray] = useState({ exam: 0, topic0: { tool0: { stage0: 0 } } });
-  const [scoreTotalForUnit, setScoreTotalForUnit] = useState(0);
-  const [errorMessageTimes, setErrorMessageTimes] = useState(0);
-  const [stageScore, setStageScore] = useState(0);//0
-  const [startTime, setStartTime] = useState(0);
-  const [examCompleted, setExamCompleted] = useState(false);
-  const [logoutButtonStage, setLogoutButtonStage] = useState("unclick");
-
-  //use calculationStage for both A&S and M&D
-  /*let mixedStage; //= "hasBracket";
-  const setMixedStage = (stage) => {
-    mixedStage = stage;
-  };
-  let bracketStage; //= "";
-  console.log("let again")
-  const setBracketStage = (stage) => {
-    console.log("bracket stage: "+stage)
-    bracketStage = stage;
-  };*/
-  /*let typeOfCalculation = "";
-  const setTypeOfCalculation = (type) => {
-    typeOfCalculation = type;
-  };*/
+  const wrongAnswersFilesArray = [[...wrongAnswers0], [...wrongAnswers1], [...wrongAnswers2]];//a
+  const [loginQuestionData, setLoginQuestionData] = useState({});//a
+  const [questionTextForAnyStage, setQuestionTextForAnyStage] = useState(["", "", "", ""]);//a
+  const [fractionFormulaAnswerArrayForAnyStage, setFractionFormulaAnswerArrayForAnyStage] = useState([]);//a
+  const [typeOfQForAnyStage, setTypeOfQForAnyStage] = useState("");//a
+  const [responseArrayForAnyStage, setResponseArrayForAnyStage] = useState([]);//a
+  const [wrongFractionAnswerArrayForAnyStage, setWrongFractionAnswerArrayForAnyStage] = useState([]);//a
+  const [errorMessageArray, setErrorMessageArray] = useState([]);//a->b
+  const [scoreArray, setScoreArray] = useState({ exam: 0, topic0: { tool0: { stage0: 0 } } });//a
+  const [scoreTotalForUnit, setScoreTotalForUnit] = useState(0);//a
+  const [errorMessageTimes, setErrorMessageTimes] = useState(0);//a
+  const [stageScore, setStageScore] = useState(0);//0//a
+  const [startTime, setStartTime] = useState(0);//a
+  const [examCompleted, setExamCompleted] = useState(false);//a
+  const [logoutButtonStage, setLogoutButtonStage] = useState("unclick");//a  
 
   const {
-    stageText,
+    stageText,//a
     manual,
     exam,
     leaderboard,
     okButtonText,
     topics,
-    wellDone,
-    noOperator,
+    wellDone,//a
+    noOperator,//b
     singleNumber,
     noNumber,
     fractionHasBoth,
@@ -215,11 +186,11 @@ export const FractionMultiplyDivide = ({
     beAFactorOfDenominator,
     sameFactorInReduction,
     furtherReduceFactorLeft,
-    furtherReduceFactorRight,
-    noMixedBeforeReduction,
-    noDivisionBeforeReduction,
+    furtherReduceFactorRight,//b
+    noMixedBeforeReduction,//b(a call be functions)
+    noDivisionBeforeReduction,//b
     //a&s
-    atLeastOneFraction,
+    atLeastOneFraction,//b
     negativeResult,
     sameWholeNumbers,
     sameWholeNumbersInNoVarDenom,
@@ -256,29 +227,17 @@ export const FractionMultiplyDivide = ({
     improperToMix,
     noMixedIssue,
     noDivisionIssue,
-    noMultipleIssue,
-    uploadTotalScore,
+    noMultipleIssue,//b
+    uploadTotalScore,//a
     unitTitle,
     logoutText,
-    sureText,
+    sureText,//a
   } = constants;
 
-  useEffect(() => {
-    //arrange all setSeverity before setOpenAlert
-    if (severity === "error") {
-      //.push errorMessage
-    }
-  }, [openAlert]);
-
   //both versions equal
-  useEffect(() => {
-    console.log("change topicToolIndex")
-    if (examIndex === 1) {
-
-    }
-    if (isLogined) {
-      //setStageOrder({ stage: -2, order: 2 });//0
-    } else {
+  useEffect(() => {//a
+    console.log("change topicToolIndex")    
+    if (!isLogined) {
       if (questions[topicIndex][learningToolIndex].length === 0) {
         if (stageOrder === { stage: -1, order: 0 }) {
           resetDefault();
@@ -293,39 +252,28 @@ export const FractionMultiplyDivide = ({
         }
       }
     }
-  }, [indexArray]); //[topicToolIndex]);
+  }, [indexArray]);
 
-  useEffect(() => {
+  useEffect(() => {//a
     setStageScore(0);
   }, [indexArray[2], indexArray[3], indexArray[4], stageOrder.stage]);
 
-  useEffect(() => {
-    //console.log("unitIndex:"+unitIndex)
-    //console.log("questionsFilesArray[0]:"+questionsFilesArray[0])
-    //questions = [...questionsFilesArray[unitIndex]];
-    setQuestions(questionsFilesArray[unitIndex]);
-    //console.log("questions:"+questions)
-    //brackets = [...bracketsFilesArray[unitIndex]];
-    //setBrackets(bracketsFilesArray[unitIndex]);
+  useEffect(() => {   //a
+    setQuestions(questionsFilesArray[unitIndex]);   
     resetDefault();
     setScoreArray({ exam: 0, topic0: { tool0: { stage0: 0 } } });
     setScoreTotalForUnit(0);
-  }, [unitIndex]);
-
-  /*useEffect(() => {
-    console.log("score change")
-    calculateTotalScoreForUnit();
-  }, [scoreArray])*/
+  }, [unitIndex]);  
 
   //both versions equal
-  useEffect(() => {
+  useEffect(() => {//a
     console.log("stageOrder change: " + stageOrder.stage + stageOrder.order);
     resetDefault();
     resetQuestion();
   }, [stageOrder]);
 
   //both versions equal and need to get answers, brackets and responses
-  useEffect(() => {
+  useEffect(() => {//b
     console.log(fractionLinesArray[0]);
     console.log("fractionLinesArray.length:" + fractionLinesArray.length);
     console.log("completed:" + completed);
@@ -342,27 +290,13 @@ export const FractionMultiplyDivide = ({
   }, [fractionLinesArray]);
 
   //both versions equal
-  const handleStageClick = (stage) => {
+  const handleStageClick = (stage) => {//a
     if (!isLogined) {
       setStageOrder({ stage: stage, order: 0 });
     }
   };
 
-  //both versions equal and need to get brackets
-  /*const setQuestion = (stage, order) => {
-    //console.log("questions:"+questions)
-    let tmpArray = [...questions[topicIndex][learningToolIndex][stage][order]];
-    tmpArray.push(["", 0, 0, 0, 0, 0]);
-    setFractionLinesArray([tmpArray]);
-    let tmpArray2 = [...brackets[topicIndex][learningToolIndex][stage][order]];
-    let tmpArray3 = [];
-    tmpArray3.push(tmpArray2);
-    setBracketArray(tmpArray3);
-    console.log("get from file:" + tmpArray2);
-    console.log("tmpArray3:" + tmpArray3);
-  };*/
-
-  const clickLogoutButton = () => {
+  const clickLogoutButton = () => {//a
     if (logoutButtonStage === "unclick") {
       setLogoutButtonStage("clicked");
     } else if (logoutButtonStage === "clicked") {
@@ -372,7 +306,7 @@ export const FractionMultiplyDivide = ({
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {//a
     const timer = setTimeout(() => {
       if (logoutButtonStage === "clicked") {
         setLogoutButtonStage("unclick");
@@ -382,11 +316,11 @@ export const FractionMultiplyDivide = ({
   }, [logoutButtonStage]);
 
   //equal
-  const closeAlert = (e) => {
+  const closeAlert = (e) => {//a
     setOpenAlert(false);
   };
 
-  function handleSetError(errorMsg) {
+  function handleSetError(errorMsg) {//a->b
     setSeverity("error");
     setErrorMessage(errorMsg);
     setTimeout(() => {
@@ -400,7 +334,7 @@ export const FractionMultiplyDivide = ({
     }
   }
 
-  function pushScoreInArray(newScore) {
+  function pushScoreInArray(newScore) {//a
     if (examIndex === 1) {
       let tmpObject = scoreArray;
       if (stageOrder.stage === -2) {
@@ -421,58 +355,32 @@ export const FractionMultiplyDivide = ({
       setScoreArray(tmpObject);
       calculateTotalScoreForUnit(tmpObject);
     }
-  }
-
-  useEffect(() => {
-    console.log(errorMessageArray)
-  }, [errorMessageArray])//
+  }  
 
   //equal
-  function resetDefault() {
-    setSeverity("error");
+  async function resetDefault() {//a and a call function b
+    setSeverity("error")
     console.log("reset");
-    setFormulaFocusedIndex(0);
-    setCompleted(false);
-    setOkButtonStage(0);
-    setCalculationStage(0);
-    setIndexDecreasedByLastStage(0);
-    setTypeOfCalculation("");
-    setMixedStage("hasBracket");
-    //*** */setMixedStageArray({mixedStage: "hasBracket", type: "", startIndex: 0, endIndex: 1});
-    console.log("setFractionIndexInProcess with: 01");
-    setFractionIndexInProcess([0, 1]);
-    setBracketStage("");
-    setStartEndIndexLastStage([0, 0]);
-    setStartEndIndexLastLine([0, 0]); //***
-    //***setBracketStageArray({bracketStage: "", type: "", startIndex: 0, endIndex: 1});//*** */
-    setLastMixBrackArray({ lastMix: "", lastBrack: "" }); //*** */
-    setErrorMessageTimes(0);
+    setCompleted(false)//a    
+    setErrorMessageTimes(0);//a
     console.log(Date.now())
-    setStartTime(Date.now());
-    /*** if (stageOrder.stage > -1) {
-      setQuestion(stageOrder.stage, stageOrder.order);
-      //setBracketArray([[]]); //get from const
-    } else if (stageOrder.stage === -1) {
-      setFractionLinesArray([
-        [
-          ["", 0, 0, 0, 0, 0],
-          ["", 0, 0, 0, 0, 0]
-        ]
-      ]);
-      setBracketArray([[]]);
-    } else if (stageOrder.stage === -2) {
-      //get from server
-      setFractionLinesArray([
-        [
-          ["", 0, 0, 0, 0, 0],
-          ["", 0, 0, 0, 0, 0]
-        ]
-      ]);
-      setBracketArray([[]]);
-    }***/
+    setStartTime(Date.now());//a    
+
+    //delete
+    setFormulaFocusedIndex(0);//b
+    setOkButtonStage(0);//b
+    setCalculationStage(0);//b
+    setIndexDecreasedByLastStage(0);//b
+    setTypeOfCalculation("");//b
+    setMixedStage("hasBracket");//b
+    console.log("setFractionIndexInProcess with: 01");
+    setFractionIndexInProcess([0, 1]);//b
+    setBracketStage("");//b
+    setStartEndIndexLastLine([0, 0]);//b //***
+    setLastMixBrackArray({ lastMix: "", lastBrack: "" });//b //*** */
   }
 
-  function getValues1LayerArray(array1Layer) {
+  function getValues1LayerArray(array1Layer) {//common function
     console.log(array1Layer)
     let tmp1Layer = [];
     array1Layer.forEach(element => {
@@ -486,7 +394,7 @@ export const FractionMultiplyDivide = ({
     return tmp1Layer;
   };
 
-  function getValues2LayerArray(array2Layer) {
+  function getValues2LayerArray(array2Layer) {//common function
     let tmp2Layer = [];
     array2Layer.forEach(element => {
       tmp2Layer.push(getValues1LayerArray(element));
@@ -494,7 +402,7 @@ export const FractionMultiplyDivide = ({
     return tmp2Layer;
   };
 
-  function getValues3LayerArray(array3Layer) {
+  function getValues3LayerArray(array3Layer) {//common function
     let tmp3Layer = [];
     array3Layer.forEach(element => {
       tmp3Layer.push(getValues2LayerArray(element));
@@ -502,57 +410,37 @@ export const FractionMultiplyDivide = ({
     return tmp3Layer;
   };
 
-  function resetQuestion() {
-    /*if (stageOrder.stage > -1) {
-      setQuestion(stageOrder.stage, stageOrder.order);
-      //setBracketArray([[]]); //get from const
-    } else */
+  function resetQuestion() {//a    
     if (stageOrder.stage === -1) {
-      setFractionLinesArray([
+      setFractionLinesArray([//call function b
         [
           ["", 0, 0, 0, 0, 0],
           ["", 0, 0, 0, 0, 0]
         ]
       ]);
       setBracketArray([[]]);
-    } else if ((stageOrder.stage === -2 && isLogined) || stageOrder.stage > -1) {
+    } else if ((stageOrder.stage === -2 && isLogined) || stageOrder.stage > -1) {//b call commone function
       let tmpType = "";
       let tmpFormula = [[[]]];
       if (stageOrder.stage === -2) {
-        setQuestionTextForAnyStage(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
-        setResponseArrayForAnyStage(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
+        setQuestionTextForAnyStage(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));//a
+        setResponseArrayForAnyStage(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));//b
         tmpType = loginQuestionData.types[stageOrder.order].stringValue;
-        setTypeOfQForAnyStage(tmpType);
+        setTypeOfQForAnyStage(tmpType);//a -> b
         tmpFormula = [...getValues3LayerArray(loginQuestionData.answers[stageOrder.order])];
         setFractionFormulaAnswerArrayForAnyStage(tmpFormula);
         setWrongFractionAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));
       } else {
-        setQuestionTextForAnyStage(questionsFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
-        setResponseArrayForAnyStage(responsesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
+        setQuestionTextForAnyStage(questionsFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);//a
+        setResponseArrayForAnyStage(responsesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);//b
         tmpType = typesFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]
-        setTypeOfQForAnyStage(tmpType);
+        setTypeOfQForAnyStage(tmpType);//a->b
         tmpFormula = [...answersFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]];
         setFractionFormulaAnswerArrayForAnyStage(tmpFormula);
         setWrongFractionAnswerArrayForAnyStage(wrongAnswersFilesArray[unitIndex][topicIndex][learningToolIndex][stageOrder.stage][stageOrder.order]);
-      }
-      //get from server
-      //set question text
-      /*console.log(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
-      setQuestionTextForAnyStage(getValues1LayerArray(loginQuestionData.questions[stageOrder.order]));
-      //set response
-      console.log(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
-      setResponseArrayForAnyStage(getValues2LayerArray(loginQuestionData.responses[stageOrder.order]));
-      //set type
-      setTypeOfQForAnyStage(loginQuestionData.types[stageOrder.order].stringValue);
-      //set answer
-      console.log(getValues3LayerArray(loginQuestionData.answers[stageOrder.order]));
-      setFractionFormulaAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.answers[stageOrder.order]));
-      //set wrong answer
-      console.log(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));
-      setWrongFractionAnswerArrayForAnyStage(getValues3LayerArray(loginQuestionData.wrongAnswers[stageOrder.order]));*/
-
-      switch (tmpType) { //loginQuestionData.types[stageOrder.order].stringValue) {
-        case "fractionText": {
+      }      
+      switch (tmpType) { 
+        case "fractionText": {//b
           //set formula line 0
           setFractionLinesArray([
             [
@@ -564,7 +452,6 @@ export const FractionMultiplyDivide = ({
           break;
         };
         case "fractionFormula": {
-          //let tmpFormula = [...getValues3LayerArray(loginQuestionData.answers[stageOrder.order])];
           console.log(tmpFormula[0])
           let tmpArray = [];
           let i;
@@ -588,14 +475,13 @@ export const FractionMultiplyDivide = ({
   }
 
   //completed part equal. not completed part needs mixed version and go to next mixed stage
-  const resetClick = (e) => {
+  const resetClick = (e) => {//a
     console.log("completed: " + completed);
-    console.log("startEndIndexLastStage:" + startEndIndexLastStage);
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     if (completed) {
       if (stageOrder.stage > -1) {
-        resetDefault(); //*** */
+        resetDefault(); 
         if (
           stageOrder.order <
           questions[topicIndex][learningToolIndex][stageOrder.stage].length - 1
@@ -619,7 +505,6 @@ export const FractionMultiplyDivide = ({
       } else if (stageOrder.stage === -2 && isLogined) {
         console.log("loginQuestionData.questions.length:" + loginQuestionData.questions.length)
         if (stageOrder.order < loginQuestionData.questions.length - 1) {
-          //setStageOrder({stage: (prev) => prev, order: (prev) => prev + 1});
           console.log("order+1")
           setStageOrder({
             stage: stageOrder.stage,
@@ -636,17 +521,16 @@ export const FractionMultiplyDivide = ({
         resetDefault();
         resetQuestion();
       }
-    } else if (okButtonStage > 0) {
+    } else if (okButtonStage > 0) {//call b
       if (typeOfCalculation === "M&D") {
         if (calculationStage == 2) {
           checkSimplifyValue(
             formulaFocusedIndex,
             false,
-            fractionIndexInProcess[0], //*** */startEndIndexLastStage[0],
-            fractionIndexInProcess[1] //*** */startEndIndexLastStage[1]
-          ); //or index = 1?
+            fractionIndexInProcess[0],
+            fractionIndexInProcess[1] 
+          ); 
         } else {
-          //*** */setFractionIndexInProcess(startEndIndexLastStage);
           addLine();
         }
       } else if (typeOfCalculation === "A&S") {
@@ -654,17 +538,17 @@ export const FractionMultiplyDivide = ({
           var checkValue = false;
           if (
             fractionLinesArray[formulaFocusedIndex][
-            startEndIndexLastStage[0]
+            startEndIndexLastLine[0]
             ][4] > 0
           ) {
-            //position[0]
+            //lastLinePosition[0]
             checkValue = true;
           }
           checkSimplifyValue(
             formulaFocusedIndex,
             checkValue,
-            fractionIndexInProcess[0], //*** */startEndIndexLastStage[0],
-            fractionIndexInProcess[0] //*** */startEndIndexLastStage[0]
+            fractionIndexInProcess[0], 
+            fractionIndexInProcess[0] 
           );
         } else {
           // addLine();
@@ -673,36 +557,30 @@ export const FractionMultiplyDivide = ({
     }
   };
 
-  useEffect(() => {
-    console.log(formulaFocusedIndex);
-  }, [formulaFocusedIndex]);
-
   //equal
-  async function addLine() {
+  async function addLine() {//b
     console.log("addLine");
     console.log("fractionLinesArray.length:" + fractionLinesArray.length);
     setLastMixBrackArray({ lastMix: mixedStage, lastBrack: bracketStage });
-    //*** */let tmpIndex = [...startEndIndexLastStage];
     let tmpIndex = [...fractionIndexInProcess];
-    //*** */setStartEndIndexLastLine(tmpIndex);
     let bracketFormula = [...bracketArray];
     bracketFormula.push([]);
     setBracketArray(bracketFormula);
     setPartValue(0, -1, -1, true, false, false);
-    setFormulaFocusedIndex((prevState) => prevState + 1); // formulaFocusedIndex + 1);
+    setFormulaFocusedIndex((prevState) => prevState + 1); 
     setOkButtonStage(0);
   }
 
   //A&S only. Need both A&S and mixed versions -> This version can serve both
   function positiveResultCheck(index, startIndex, endIndex) {
-    return positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, handleSetError, languageIndex, setOpenAlert);
+    return positiveResultCheck2(index, startIndex, endIndex, bracketArray, fractionLinesArray, handleSetError, languageIndex);
   }
 
   const parenthesesMessage = (newLength, lastLength) => {
     return parenthesesMessage2(newLength, lastLength, languageIndex);
   }
 
-  const stepMessage = (startIndex, endIndex, issue, decrease) => {
+  const stepMessage = (startIndex, endIndex, issue, decrease) => {//b
     return stepMessage2(startIndex, endIndex, issue, decrease, languageIndex, fractionLinesArray, formulaFocusedIndex);
   }
 
@@ -714,7 +592,7 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return noVariousDenominatorCheck2(
-      index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, setOpenAlert, languageIndex, handleSetError, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
+      index, checkValueNeeded, startIndex, endIndex, setFractionIndexInProcess, setCalculationStage, setCalculatedLcm, languageIndex, handleSetError, primeNumbers, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, otherFractionsCheck, noNegativeNumeratorResultCheck, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setStartEndIndexLastLine, addLine
     );
   }
 
@@ -725,22 +603,22 @@ export const FractionMultiplyDivide = ({
     startIndex,
     endIndex
   ) {
-    return noNegativeNumeratorResultCheck2(index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, setOpenAlert, languageIndex, handleSetError, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine);
+    return noNegativeNumeratorResultCheck2(index, checkValueNeeded, startIndex, endIndex, setCalculationStage, setIndexDecreasedByLastStage, languageIndex, handleSetError, calculatedLcm, fractionLinesArray, bracketArray, stepMessage, parenthesesMessage, setFractionIndexInProcess, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, otherFractionsCheck, setStartEndIndexLastLine, addLine);
   }
 
   //A&S only
   function addToOneFractionCheck(index, startIndex, endIndex) {
-    return addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, setOpenAlert, languageIndex, handleSetError, startEndIndexLastStage, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setStartEndIndexLastStage, setFractionIndexInProcess);
+    return addToOneFractionCheck2(index, startIndex, endIndex, setCalculationStage, languageIndex, handleSetError, fractionLinesArray, calculatedLcm, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, otherFractionsCheck, fractionIndexInProcess, setOkButtonStage, setFractionIndexInProcess);
   }
 
   //equal //for whole formula
   function fractionOrIntegerCheck(index) {
-    return fractionOrIntegerCheck2(index, fractionLinesArray, setOpenAlert, handleSetError, languageIndex);
+    return fractionOrIntegerCheck2(index, fractionLinesArray, handleSetError, languageIndex);
   }
 
   //equal //for question whole formula only
   function singleNumberCheck(index) {
-    return singleNumberCheck2(index, fractionLinesArray, languageIndex, handleSetError, setOpenAlert);
+    return singleNumberCheck2(index, fractionLinesArray, languageIndex, handleSetError);
   }
 
   //little bit differ, fix it for mixed final stage //for whole formula?
@@ -751,28 +629,25 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return noImproperFractionCheck2(
-      completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, handleSetError, mixedStage, setStartEndIndexLastStage, nextNewStep, setSeverity, typeOfCalculation, setOpenAlert, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
+      completeFunction, index, checkValueNeeded, startIndex, endIndex, setCompleted, setFormulaFocusedIndex, languageIndex, handleSetError, mixedStage, nextNewStep, typeOfCalculation, fractionLinesArray, parenthesesMessage, bracketArray, setFractionIndexInProcess, formulaFocusedIndex, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setStartEndIndexLastLine, addLine, calculationStage
     )
   }
 
-  function nextNewStep(index) {
+  function nextNewStep(index) {//b
     console.log("nextNewStep");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
-    setIsNewStep(true);
     setCalculationStage(0);
     setOkButtonStage(0);
     if (mixedStage === "hasBracket") {
       noBracketCheck(index, false);
     } else {
-      //mixedStage === "hasMixedCal"
       console.log("set start to 0 in nextnewStep");
-      setStartEndIndexLastStage([0, fractionLinesArray[index].length - 2]);
       setStartEndIndexLastLine([
         fractionIndexInProcess[0],
         fractionIndexInProcess[1]
-      ]); //*** */
+      ]); 
       noMixedCalCheck(index, false, 0, fractionLinesArray[index].length - 2);
     }
   }
@@ -783,10 +658,10 @@ export const FractionMultiplyDivide = ({
     checkValueNeeded,
     startIndex,
     endIndex,
-    isNewStepTmp /*** */
+    isNewStepTmp 
   ) {
     return noMixedFractionCheck2(
-      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setStartEndIndexLastStage
+      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setCalculationStage, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, noDivisionCheck, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine
     )
   }
 
@@ -796,10 +671,10 @@ export const FractionMultiplyDivide = ({
     checkValueNeeded,
     startIndex,
     endIndex,
-    isNewStepTmp /*** */
+    isNewStepTmp 
   ) {
     return noDivisionCheck2(
-      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, setOpenAlert, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setStartEndIndexLastStage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
+      index, checkValueNeeded, startIndex, endIndex, isNewStepTmp, languageIndex, handleSetError, fractionLinesArray, stepMessage, bracketArray, parenthesesMessage, setCalculationStage, setStartEndIndexLastLine, setFractionIndexInProcess, calculationStage, otherFractionsCheck, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, addLine, setOkButtonStage
     );
   }
 
@@ -811,26 +686,25 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return noMultiplicationCheck2(
-      index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, setStartEndIndexLastStage, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, handleSetError, primeNumbers, setOpenAlert, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
+      index, checkValueNeeded, startIndex, endIndex, setIndexDecreasedByLastStage, setCalculationStage, noImproperFractionCheck, nextNewStep, fractionLinesArray, setOkButtonStage, languageIndex, handleSetError, primeNumbers, startEndIndexLastLine, bracketArray, parenthesesMessage, bracketStage, mixedStage, indexDecreasedByLastStage, lastMixBrackArray, fractionIndexInProcess, otherFractionsCheck, setFractionIndexInProcess, setStartEndIndexLastLine
     );
   }
 
   function otherFractionsCheck(index, startIndex, endIndex, decrease, issue) {
-    return otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, handleSetError, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage, setOpenAlert);
+    return otherFractionsCheck2(index, startIndex, endIndex, decrease, issue, fractionLinesArray, languageIndex, handleSetError, oneSectionFractionCheck, stepMessage, fractionIndexInProcess, startEndIndexLastLine, indexDecreasedByLastStage);
   }
 
   function oneSectionFractionCheck(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd) {
-    return oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, handleSetError, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex, setOpenAlert);
+    return oneSectionFractionCheck2(index, startIndex, endIndex, decrease, withLeft, withRight, issue, orginalStart, orginalEnd, handleSetError, stepMessage, fractionLinesArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, languageIndex);
   }
 
-  useEffect(() => {
+  useEffect(() => {//b
     console.log("mixedStageArray callback");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     console.log("mixedStageArray:" + mixedStageArray);
     if (mixedStageArray.mixedStage === "hasMixedCal") {
-      //if (stageOrder.stage !== -1 || formulaFocusedIndex > 0) {
       if (fractionLinesArray[0].length > 2 || formulaFocusedIndex > 0) {
         console.log("call noMix in hasMixed");
         noMixedCalCheck(
@@ -851,10 +725,10 @@ export const FractionMultiplyDivide = ({
   }, [mixedStageArray]);
 
   function noBracketCheck(index, checkValueNeeded) {
-    return noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, setStartEndIndexLastStage, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, handleSetError, languageIndex, setOpenAlert);
+    return noBracketCheck2(index, checkValueNeeded, bracketArray, noMixedCalCheck, setFractionIndexInProcess, bracketStage, mixedStage, fractionLinesArray, setMixedStageArray, setMixedStage, lastMixBrackArray, mixedStageArray, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, handleSetError, languageIndex);
   }
 
-  useEffect(() => {
+  useEffect(() => {//b
     console.log("bracketStage callback");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
@@ -881,7 +755,7 @@ export const FractionMultiplyDivide = ({
   }, [bracketStageArray]);
 
   function callbackOfBracketStage(typeOfCal, startIndex, endIndex) {
-    return callbackOfBracketStage2(typeOfCal, startIndex, endIndex, formulaFocusedIndex, setFractionIndexInProcess, setStartEndIndexLastStage, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, noMixedFractionCheck, addLine, noVariousDenominatorCheck);
+    return callbackOfBracketStage2(typeOfCal, startIndex, endIndex, formulaFocusedIndex, setFractionIndexInProcess, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, noMixedFractionCheck, addLine, noVariousDenominatorCheck);
   }
 
   async function noMixedCalCheck(
@@ -891,17 +765,16 @@ export const FractionMultiplyDivide = ({
     endIndex
   ) {
     return await noMixedCalCheck2(
-      index, checkValueNeeded, startIndex, endIndex, callbackOfBracketStage, mixedStage, setBracketStage, setBracketStageArray, bracketStage, setFractionIndexInProcess, startEndIndexLastLine, setIndexDecreasedByLastStage, setStartEndIndexLastStage, calculationStage, setTypeOfCalculation, setStartEndIndexLastLine, setMixedStageArray, setMixedStage, setCalculationStage, mixedStageArray, typeOfCalculation, stageOrder, okButtonStage, fractionLinesArray, formulaFocusedIndex, indexDecreasedByLastStage, fractionIndexInProcess, lastMixBrackArray, completed, setOkButtonStage
+      index, checkValueNeeded, startIndex, endIndex, callbackOfBracketStage, mixedStage, setBracketStage, setBracketStageArray, bracketStage, setFractionIndexInProcess, startEndIndexLastLine, setIndexDecreasedByLastStage, calculationStage, setTypeOfCalculation, setStartEndIndexLastLine, setMixedStageArray, setMixedStage, setCalculationStage, mixedStageArray, typeOfCalculation, stageOrder, okButtonStage, fractionLinesArray, formulaFocusedIndex, indexDecreasedByLastStage, fractionIndexInProcess, lastMixBrackArray, completed, setOkButtonStage
     )
   }
 
   //both versions differ, also need mixed version. So, it needs 3 versions
-  function enterCheck() {
+  function enterCheck() {//b
     console.log("enterCheck");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
-    setIsNewStep(false);
     let isNewStepTmp = false;
     if (typeOfQForAnyStage === "fractionText" && formulaFocusedIndex === 0) {
       if (!textQuestionFormulaCheck()) {
@@ -934,145 +807,110 @@ export const FractionMultiplyDivide = ({
       ) {
         return;
       }
-      //addLine();
       noBracketCheck(formulaFocusedIndex, false);
-      if (typeOfCalculation === "A&S") {
-        console.log(
-          "call noVarious in enterCheck, startEndIndex:" +
-          startEndIndexLastStage
-        );
+      if (typeOfCalculation === "A&S") {        
         if (
           !noVariousDenominatorCheck(
             formulaFocusedIndex,
             false,
-            startEndIndexLastStage[0],
-            startEndIndexLastStage[1]
+            fractionIndexInProcess[0],
+            fractionIndexInProcess[1]
           )
         ) {
           return;
         }
-      }
-      //noMixedFractionCheck(formulaFocusedIndex, false);//M&D
-      //setOkButtonStage(1);
+      }      
     } else {
       if (typeOfCalculation === "M&D") {
         switch (calculationStage) {
           case 0:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
-            //console.log(startEndIndexLastStage);
             noMixedFractionCheck(
               formulaFocusedIndex,
               true,
-              fractionIndexInProcess[0], //*** */startEndIndexLastStage[0],
-              fractionIndexInProcess[1], //*** */startEndIndexLastStage[1]
-              isNewStepTmp //*** */
-            );
-            //}
+              fractionIndexInProcess[0], 
+              fractionIndexInProcess[1], 
+              isNewStepTmp 
+            );            
             break;
           case 1:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
-            console.log(startEndIndexLastStage);
             noDivisionCheck(
               formulaFocusedIndex,
               true,
-              fractionIndexInProcess[0], //*** */startEndIndexLastStage[0],
-              fractionIndexInProcess[1], //*** */startEndIndexLastStage[1]
-              isNewStepTmp //*** */
+              fractionIndexInProcess[0], 
+              fractionIndexInProcess[1], 
+              isNewStepTmp 
             );
-            //}
+            
             break;
-          case 2:
-            //simplifiedCheck(formulaFocusedIndex, true);
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
+          case 2:            
             console.log("enterCheck call setOkButtonStage(1)");
-            setOkButtonStage(1);
-            //noMultiplicationCheck(formulaFocusedIndex, true);
-            // }
+            setOkButtonStage(1);            
             break;
           case 3:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
             console.log("fractionIndexInProcess:" + fractionIndexInProcess);
             console.log("startEndIndexLastLine:" + startEndIndexLastLine);
             noMultiplicationCheck(
               formulaFocusedIndex,
               true,
-              startEndIndexLastLine[0], //*** */startEndIndexLastStage[0],
-              startEndIndexLastLine[0] //*** */startEndIndexLastStage[1]
-            );
-            //}
+              startEndIndexLastLine[0], 
+              startEndIndexLastLine[0] 
+            );            
             break;
           case 4:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
             noImproperFractionCheck(
               formulaFocusedIndex,
               true,
-              startEndIndexLastLine[0], //*** */startEndIndexLastStage[0],
-              startEndIndexLastLine[0] //*** */startEndIndexLastStage[0]
-            );
-            //}
+              startEndIndexLastLine[0], 
+              startEndIndexLastLine[0] 
+            );            
             break;
         }
       } else if (typeOfCalculation === "A&S") {
         switch (calculationStage) {
           case 0:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
-            console.log(
-              "call noVarious in enterCheck, startEndIndex:" +
-              startEndIndexLastStage
-            );
             noVariousDenominatorCheck(
               formulaFocusedIndex,
               true,
-              fractionIndexInProcess[0], //*** */startEndIndexLastStage[0],
-              fractionIndexInProcess[1] //*** */startEndIndexLastStage[1]
-            );
-            //}
+              fractionIndexInProcess[0], 
+              fractionIndexInProcess[1] 
+            );            
             break;
           case 1:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
             noNegativeNumeratorResultCheck(
               formulaFocusedIndex,
               true,
-              fractionIndexInProcess[0], //*** */startEndIndexLastStage[0],
-              fractionIndexInProcess[1] //*** */startEndIndexLastStage[1]
-            );
-            //}
+              fractionIndexInProcess[0], 
+              fractionIndexInProcess[1] 
+            );            
             break;
           case 2:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
             addToOneFractionCheck(
               formulaFocusedIndex,
-              fractionIndexInProcess[0], //***startEndIndexLastLine[0],//*** */startEndIndexLastStage[0],
-              fractionIndexInProcess[0] //***startEndIndexLastLine[0]//*** */startEndIndexLastStage[0]
-            );
-            //}
+              fractionIndexInProcess[0], 
+              fractionIndexInProcess[0] 
+            );            
             break;
           case 3:
             break;
           case 4:
-            //if (fractionOrIntegerCheck(formulaFocusedIndex)) {
             noImproperFractionCheck(
               formulaFocusedIndex,
               true,
-              startEndIndexLastLine[0], //*** */startEndIndexLastStage[0],
-              startEndIndexLastLine[0] //*** */startEndIndexLastStage[0]
+              startEndIndexLastLine[0], 
+              startEndIndexLastLine[0] 
             );
-            //}
+            
             break;
         }
       }
     }
   }
 
-  function checkSimplifyValue(index, checkValue, startIndex, endIndex) {
-    return checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setStartEndIndexLastStage, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, setOpenAlert, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck);
+  function checkSimplifyValue(index, checkValue, startIndex, endIndex) {//b
+    return checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck);
   }
 
-  const okClick = (e) => {
-    /*console.log("okButtonStage:" + okButtonStage)
-    console.log("calculationStage:" + calculationStage)
-    console.log("mixedStage:" + mixedStage)
-    console.log("typeOfCalculation:" + typeOfCalculation)*/
+  const okClick = (e) => {//switch a stage to call b functions    
     console.log("okclick");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
@@ -1093,35 +931,25 @@ export const FractionMultiplyDivide = ({
               handleSetError(noMixedBeforeReduction[languageIndex]);
             } else {
               handleSetError(noDivisionBeforeReduction[languageIndex]);
-            }
-            /*setTimeout(() => {
-              setOpenAlert(true);
-            }, timeDelay);*/
+            }            
           }
         }
         break;
       case 2:
         //use it instead
-        var checkValue = true;
-        if (
-          typeOfCalculation == "A&S" &&
-          fractionLinesArray[formulaFocusedIndex][0][4] > 0
-        ) {
-          checkValue = false;
-        }
-        console.log(startEndIndexLastStage);
+        var checkValue = true;        
         checkSimplifyValue(
           formulaFocusedIndex,
           checkValue,
-          startEndIndexLastStage[0],
-          startEndIndexLastStage[1]
+          fractionIndexInProcess[0],
+          fractionIndexInProcess[1]
         );
         break;
     }
   };
 
   //need mixed version
-  const handleKeypadClick = (e, key) => {
+  const handleKeypadClick = (e, key) => {//a
     if (typeOfQForAnyStage === "MC") {
       checkMCAnswer(key);
       return;
@@ -1168,11 +996,9 @@ export const FractionMultiplyDivide = ({
             if (prevValue != "") {
               prevValue = parseInt(prevValue / 10);
               if (prevValue == 0) {
-                //prevValue = "";
               }
             }
           }
-          //prevValue = prevValue.slice(0, -1);
         } else {
           prevValue += key;
         }
@@ -1193,7 +1019,7 @@ export const FractionMultiplyDivide = ({
   };
 
   //both versions equal
-  function setPartValue(
+  function setPartValue(//b
     value,
     positionIndex,
     partIndex,
@@ -1254,7 +1080,7 @@ export const FractionMultiplyDivide = ({
   }
 
   //both versions equal
-  const handlePartClick = (e, positionIndex, partIndex) => {
+  const handlePartClick = (e, positionIndex, partIndex) => {//b
     //in simplification, only small boxes can be focused
     if (
       (okButtonStage == 2 && (partIndex == 2 || partIndex == 5)) ||
@@ -1265,9 +1091,9 @@ export const FractionMultiplyDivide = ({
     }
   };
 
-  function completeFunction() {
+  function completeFunction() {//a
     setErrorMessage("👍🏻" + wellDone[languageIndex]);
-    setFormulaFocusedIndex((prevState) => prevState + 1); // formulaFocusedIndex + 1);
+    setFormulaFocusedIndex((prevState) => prevState + 1); 
     setCompleted(true);
     setSeverity("success");
     setTimeout(() => {
@@ -1279,7 +1105,7 @@ export const FractionMultiplyDivide = ({
     let marksFromTime = (11 - numberOfHalfMinute) * 2;
     let marksFromNumberOfHints = (10 - errorMessageTimes) * 2;
     let marksFromThisQuestion = 20 + marksFromTime + marksFromNumberOfHints;
-    if (examIndex === 1 && isLogined && stageOrder.stage === -2) {
+    if (isLogined && stageOrder.stage === -2) {
       if (typeOfQForAnyStage === "fractionText") {
         marksFromThisQuestion *= 3;
       } else {
@@ -1292,10 +1118,9 @@ export const FractionMultiplyDivide = ({
     setStageScore((prev) => prev + marksFromThisQuestion);
   }
 
-  useEffect(() => {
+  useEffect(() => {//a
     if (isLogined) {
       console.log(loginQuestionData.questions[0][0]);
-      //setLoginQuestionTypeArray(loginQuestionData.types);
       setStageOrder({ stage: -2, order: 0 });//0
       resetDefault();
       resetQuestion();
@@ -1303,18 +1128,15 @@ export const FractionMultiplyDivide = ({
     setErrorMessageArray([]);
   }, [isLogined]);
 
-  function calculateTotalScoreForUnit(tmpObject) {
+  function calculateTotalScoreForUnit(tmpObject) {//a
     console.log("calculateTotalScoreForUnit");
     let scoreTotal = 0;
     for (let x in tmpObject) {
       if (x === "exam") {
         scoreTotal += tmpObject[x];
       } else {
-        //if (scoreArray[x] === undefined) {return}
         for (let y in tmpObject[x]) {
-          //if (scoreArray[x][y] === undefined) {return}
           for (let z in tmpObject[x][y]) {
-            //if (scoreArray[x][y][z] === undefined) {return}
             scoreTotal += tmpObject[x][y][z];
           }
         }
@@ -1324,7 +1146,7 @@ export const FractionMultiplyDivide = ({
     setScoreTotalForUnit(Math.round(scoreTotal));
   }
 
-  function textQuestionFormulaCheck() {
+  function textQuestionFormulaCheck() {//b
     let tmpArray = [];
     let i;
     for (i = 0; i < fractionLinesArray[0].length; i++) {
@@ -1359,7 +1181,7 @@ export const FractionMultiplyDivide = ({
     handleSetError(formulaErrorMessage);
   }
 
-  function compare2LayerArray(arrayA, arrayB) {
+  function compare2LayerArray(arrayA, arrayB) {//common function
     let tmpCorrect = true;
     if (arrayA.length === arrayB.length) {
       let i;
@@ -1381,7 +1203,7 @@ export const FractionMultiplyDivide = ({
     } else { return false; }
   }
 
-  function checkMCAnswer(key) {
+  function checkMCAnswer(key) {//a
     console.log(key);
     console.log(fractionFormulaAnswerArrayForAnyStage[0][0][0]);
     if (key === fractionFormulaAnswerArrayForAnyStage[0][0][0]) {
@@ -1390,10 +1212,7 @@ export const FractionMultiplyDivide = ({
       let i;
       for (i = 0; i < wrongFractionAnswerArrayForAnyStage[0][0].length; i++) {
         if (key === wrongFractionAnswerArrayForAnyStage[0][0][i]) {
-          handleSetError(responseArrayForAnyStage[i][languageIndex]);
-          /*setTimeout(() => {
-            setOpenAlert(true);
-          }, timeDelay);*/
+          handleSetError(responseArrayForAnyStage[i][languageIndex]);          
         }
       }
     }
@@ -1455,22 +1274,7 @@ export const FractionMultiplyDivide = ({
       {
         ["fractionFormula", "fractionText"].includes(typeOfQForAnyStage) &&
         ![-3, -4].includes(stageOrder.stage) &&
-        !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
-        /*
-        !((typeOfQForAnyStage === "MC" && isLogined) || [-3, -4].includes(stageOrder.stage)) &&
-        <Grid className={classes.centerRow}>
-          {stageOrder.stage === -2 && !isLogined ? (
-            <Grid className={classes.formulaColumn}>
-              <Login
-                languageIndex={languageIndex}
-                bibleVersionIndex={bibleVersionIndex}
-                isLogined={isLogined}
-                setIsLogined={setIsLogined}
-                setLoginQuestionData={setLoginQuestionData}
-              />
-            </Grid>
-          ) : (
-          (stageOrder.stage === -2 && !examCompleted) || stageOrder.stage > -1 && */
+        !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&        
         <Grid className={classes.centerRow}>
           <Grid className={classes.formulaColumn}>
             {
@@ -1550,10 +1354,7 @@ export const FractionMultiplyDivide = ({
                     </Grid>
                   )
                 );
-              }
-                // )
-                //}
-                //</Grid>
+              }                
               )}
           </Grid>
         </Grid>
@@ -1616,57 +1417,3 @@ export const FractionMultiplyDivide = ({
     </MyFrame>
   );
 };
-
-/***
-  useEffect(() => {
-    console.log("bracketStage callback")
-    console.log("startEndIndexLastLine:"+startEndIndexLastLine)
-    console.log("fractionIndexInProcess:"+fractionIndexInProcess);
-    console.log("indexDecreasedByLastStage:"+indexDecreasedByLastStage);
-    console.log("mixedStageArray:"+mixedStageArray.mixedStage+mixedStageArray.startIndex+mixedStageArray.endIndex)
-    callbackOfBracketStage(
-      typeOfCalculation,
-      fractionIndexInProcess[0],
-      fractionIndexInProcess[1]
-    );
-    /*if (stageOrder.stage !== -1 || formulaFocusedIndex > 0) {
-      if (typeOfCalculation === "M&D") {
-        noMixedFractionCheck(formulaFocusedIndex, false, startEndIndexLastStage[0], startEndIndexLastStage[1]);
-      } else if (typeOfCalculation === "A&S") {
-        addLine();
-        if (
-          !noVariousDenominatorCheck(
-            formulaFocusedIndex,
-            false,
-            startEndIndexLastStage[0],
-            startEndIndexLastStage[1]
-          )
-        ) {
-          return;
-        }
-      }
-    }
-  }, [bracketStage]);*/
-
-/*useEffect(() => {
-  console.log("startEndIndexLastStage:"+startEndIndexLastStage)
-  if (mixedStage === "hasMixedCal") {
-    //if (stageOrder.stage !== -1 || formulaFocusedIndex > 0) {
-    if (fractionLinesArray[0].length > 2 || formulaFocusedIndex > 0) {
-      console.log("call noMix in hasMixed")
-      noMixedCalCheck(
-        formulaFocusedIndex,
-        false,
-        0,
-        fractionLinesArray[formulaFocusedIndex].length - 2
-      ); //with start index and end index
-    }
-  } else if (mixedStage === "noMixedCal") {
-    console.log("call callback in noMixed")
-    callbackOfBracketStage(
-      typeOfCalculation,
-      startEndIndexLastStage[0],
-      startEndIndexLastStage[1]
-    );
-  }
-}, [mixedStage]);*/

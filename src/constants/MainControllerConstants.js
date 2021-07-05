@@ -573,6 +573,8 @@ const constants = {
   ],
   logoutText: ["登出", "登出", "Logout", "Logout"],//a
   sureText: ["確定?", "确定?", "Sure?", "Sûre?"],//a
+  timeDelay: 200,
+
 };
 
 export default constants;

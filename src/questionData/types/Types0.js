@@ -6,6 +6,8 @@ const types0 = [
       //stage 0
       [
         //"fractionText",//test
+        //"MC",//test
+
         //order 0
         "fractionFormula",
         "fractionFormula",
