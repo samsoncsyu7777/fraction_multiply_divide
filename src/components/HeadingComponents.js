@@ -4,7 +4,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import constants from "../constants/FractionMultiplyDivideConstants";
+import constants from "../constants/MainControllerConstants";
 
 import { theme as myTheme } from "../themes/theme";
 
@@ -41,13 +41,13 @@ const myFrameStyles = makeStyles((theme) => ({
 
 export const MyFrame = (props) => {
   const classes = myFrameStyles();
-  const { children, topic, learningTool, scoreTotalForUnit, languageIndex, ...otherProps } = props;
+  const { children, topic, learningTool, scoreTotalForUnit, languageIndex, unitTitle, unitIndex, ...otherProps } = props;
   const { totalScoreForUnit } = constants;
 
   return (
     <Grid className={classes.frame} {...otherProps}>
       <Grid className={classes.centerRow}>
-        <Typography className={classes.totalScore}>{totalScoreForUnit[languageIndex] + ": " + scoreTotalForUnit}</Typography>
+        <Typography className={classes.totalScore}>{unitTitle[unitIndex][languageIndex] + " " + totalScoreForUnit[languageIndex] + ": " + scoreTotalForUnit}</Typography>
       </Grid>
       <Grid className={classes.centerRow}>
         <Typography className={classes.topic}>{topic}</Typography>

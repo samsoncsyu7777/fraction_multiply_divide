@@ -1,15 +1,15 @@
 const constants = {
-   languages: ["繁體中文", "简体中文", "English", "Française"],
-   bibleVersions: ["天主教", "基督教", "天主教", "基督教", "Catholic", "Christian", "Catholique", "Chrétienne"],
-   bibleVersionsQuestion: ["經文版本", "经文版本", "Scripture version", "Version biblique"],
-   topics: [
-     [
-    "分數乘法", "分數除法", "分數乘除混合",
-    "分数乘法", "分数除法", "分数乘除混合",
-    "Fractional Multiplication", "Fractional Division", "Fractional Multiplication and Division Mixed",
-    "Multiplication fractionnaire", "Division fractionnaire", "Multiplication fractionnaire et division mixte"
-     ],
-     [
+  languages: ["繁體中文", "简体中文", "English", "Française"],
+  bibleVersions: ["天主教", "基督教", "天主教", "基督教", "Catholic", "Christian", "Catholique", "Chrétienne"],
+  bibleVersionsQuestion: ["經文版本", "经文版本", "Scripture version", "Version biblique"],
+  topics: [
+    [
+      "分數乘法", "分數除法", "分數乘除混合",
+      "分数乘法", "分数除法", "分数乘除混合",
+      "Fractional Multiplication", "Fractional Division", "Fractional Multiplication and Division Mixed",
+      "Multiplication fractionnaire", "Division fractionnaire", "Multiplication fractionnaire et division mixte"
+    ],
+    [
       "分數加法", "分數減法", "分數加減混合",
       "分数加法", "分数减法", "分数加减混合",
       "Addition of Fractions", "Subtraction of Fractions", "Mixed Addition and Subtraction of Fractions",
@@ -25,21 +25,21 @@ const constants = {
   topicsQuestion: ["主題", "主题", "Topic", "Sujet"],
   learningTools: [
     [//unit 0
-      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
+      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",
       "真分数计算", "带分数计算", "真分数计算", "带分数计算", "真分数计算", "带分数计算",
-      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction",
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
     ],
     [//unit 1
-      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
+      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",
       "真分数计算", "带分数计算", "真分数计算", "带分数计算", "真分数计算", "带分数计算",
-      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction",
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
     ],
     [//unit 2
-      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",    
+      "真分數計算", "帶分數計算", "真分數計算", "帶分數計算",
       "真分数计算", "带分数计算", "真分数计算", "带分数计算",
-      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction", 
+      "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction",
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
     ],
   ],
@@ -84,14 +84,14 @@ const constants = {
     "'Pharaoh should take action and appoint supervisors for the country, and impose a tax of one-fifth on Egypt during the seven years of plenty.'Genesis41:34",
     "While he was still speaking some people arrived from the house of the president of the synagogue to say, 'Your daughter is dead; why put the Master to any further trouble?' But Jesus overheard what they said and he said to the president of the synagogue, 'Do not be afraid; only have faith.'Mark5:35-36",
     "Instead, love your enemies and do good to them, and lend without any hope of return. You will have a great reward, and you will be children of the Most High, for he himself is kind to the ungrateful and the wicked.Luke6:35",
-    
+
     "I will take the Lord to be my God, And this stone which I have put up for a pillar will be God's house: and of all you give me, I will give a tenth part to you.Genesis28:21-22",
     "And every tenth part of the land, of the seed planted, or of the fruit of trees, is holy to the Lord.Leviticus27:30",
     "And he, answering, said, Have love for the Lord your God with all your heart and with all your soul and with all your strength and with all your mind; and for your neighbour as for yourself.Luke10:27",
     "'Let Pharaoh do this, and let him put overseers over the land of Egypt to put in store a fifth part of the produce of the land in the good years.'Genesis41:34",
     "And while he was still talking, they came from the ruler of the Synagogue's house, saying, Your daughter is dead: why are you still troubling the Master? But Jesus, giving no attention to their words, said to the ruler of the Synagogue, Have no fear, only have faith.Mark5:35-36",
     "But be loving to those who are against you and do them good, and give them your money, not giving up hope, and your reward will be great and you will be the sons of the Most High: for he is kind to evil men, and to those who have hard hearts.Luke6:35",
-    
+
     //french
     "'Yahweh sera mon Dieu; cette pierre que j'ai dressée pour monument sera une maison de Dieu, et je vous paierai la dîme de tout ce que vous me donnerez.'Genèse28:21-22",
     "Toute dime de la terre, prélevée soit sur les semences de la terre, soit sur les fruits des arbres, appartient à Yahweh c'est une chose consacrée à Yahweh.Lévitique27:30",
@@ -113,18 +113,28 @@ const constants = {
     "Lord Jesus, please give me a heart that is willing to give, so that I can love my Father in heaven with all my heart and with all my soul!",
     "Seigneur Jésus, s'il te plaît, donne-moi un cœur prêt à donner, afin que je puisse aimer mon Père céleste de tout mon cœur et de toute mon âme!"
   ],
-   noticificationText: [
+  noticificationText: [
     "開啟通知，計算過程會顯示提示。",
     "开启通知，计算过程会显示提示。",
     "Turn on the notification, prompts will be displayed during the calculation.",
     "Activez la notification, des invites seront affichées pendant le calcul."
   ],
-   applicationHint: [
-    "使用方法：先按空格，再輸入數字或運算符號，按長空格可輸入或清除括號。",
-    "使用方法：先按空格，再输入数字或运算符号，按长空格可输入或清除括号。",
-    "How to use: Press the space first, then enter a number or an operator. Press the long space to enter or clear the parentheses.",
-    "Comment utiliser: appuyez d'abord sur l'espace, puis entrez un nombre ou un opérateur. Appuyez sur l'espace long pour entrer ou effacer les parenthèses."
+  applicationHint: [
+    [
+      "使用方法：先按空格，再輸入數字或運算符號，按長空格可輸入或清除括號。",
+      "使用方法：先按空格，再输入数字或运算符号，按长空格可输入或清除括号。",
+      "How to use: Press the space first, then enter a number or an operator. Press the long space to enter or clear the parentheses.",
+      "Comment utiliser: appuyez d'abord sur l'espace, puis entrez un nombre ou un opérateur. Appuyez sur l'espace long pour entrer ou effacer les parenthèses."
+    ]
   ],
+  applicationHintIndex: [0, 0, 0],
+  topicIntroduction: [
+    "請選擇不同的主題和類型，各主題和類型皆有不同的階段練習。",
+    "请选择不同的主题和类型，各主题和类型皆有不同的阶段练习。",
+    "Please choose different topics and types, each topic and type have different stages of practice.",
+    "Veuillez choisir différents sujets et types, chaque sujet et type ont différentes étapes de pratique."
+  ]
+
 };
 
 export default constants;

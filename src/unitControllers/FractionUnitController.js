@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
 import { FractionFormula } from "../components/FractionFormulaComponents";//b
@@ -23,8 +22,8 @@ import {
   callbackOfBracketStage2,
   noMixedCalCheck2,
   checkSimplifyValue2,//b
-} from "../functions/FractionMultiplyDivideFunctions";
-import constants from "../constants/FractionMultiplyDivideConstants";//a,b
+} from "../functions/FractionFunctions";
+import constants from "../constants/FractionConstants";//a,b
 import { timeDelay } from "../constants/MainControllerConstants";
 import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";//a,b
 import { pagesStyles } from "../themes/styles";//a,b
@@ -89,87 +88,9 @@ export const FractionUnitController = ({
   });
 
   const {
-    noOperator,//b
-    singleNumber,
-    noNumber,
-    fractionHasBoth,
-    noImproper,
-    noImproperAfterA_S,
-    oneFractionOnly,
-    incorrectWhole,
-    wholeNoFraction,
-    sameDenominator,
-    sameDenominatorInNoMixFract,
-    sameDenominatorInNoImproper,
-    sameDenominatorInAddToOne,
-    numeratorFromImproper,
-    noMixed,
-    sameNumberOfFractions1,
-    sameNumberOfFractions2,
-    sameNumberOfFractions3,
-    sameNumberOfFractions4,
-    sameNumberOfFractions5,
-    sameNumberOfFractions6Left,
-    sameNumberOfFractions6Right,
-    sameNumberOfFractions6LeftRight,
-    sameNumberOfFractions6None,
-    sameOperators,
-    sameOperatorsInNoMixFract,
-    sameOperatorsInNoVarDenom,
-    sameOperatorsInNoNegNum,
-    wholeToNumerator,
-    mixedToNumerator,
-    noDivision,
-    sameMultipliers,
-    divisorsUpDown,
-    simplifyIt,
-    productOfFractions,
-    beAFactorOfNumerator,
-    beAFactorOfDenominator,
-    sameFactorInReduction,
-    furtherReduceFactorLeft,
-    furtherReduceFactorRight,//b
     noMixedBeforeReduction,//b(a call be functions)
     noDivisionBeforeReduction,//b
-    //a&s
-    atLeastOneFraction,//b
-    negativeResult,
-    sameWholeNumbers,
-    sameWholeNumbersInNoVarDenom,
-    onlyWholeNumbers,
-    newDenominatorBeCM,
-    sameDenominatorHint,
-    multiplyWithSameInteger,
-    CMToLCMHint,
-    denominatorInvolvedBeLCM,
-    wholeNotInvolvedKeepSame,
-    fractionNotInvolvedKeepSame,
-    abdicatedNumerator,
-    abdicateTooMuch,
-    abdicateTooLittle,
-    wholeWithoutFraction,
-    numeratorAvoidNegative,
-    incorrectNumerator,
-    wholeAvoidNegative,
-    incorrectCalculatedWhole,
-    parentheses,
-    parenthesesExtra,
-    parenthesesLack,
-    parenthesesPosition,
-    operatorBeforeStep,
-    decreaseMessage,
-    keepOthers1,
-    keepOthers2,
-    keepOthers3,
-    noIntegerAfterMulti,
-    oddBrackets,
-    noVarDenom,
-    noNegNum,
-    addToOne,
-    improperToMix,
-    noMixedIssue,
-    noDivisionIssue,
-    noMultipleIssue,//b    
+    //a&s    
     okButtonText,
 
   } = constants;
@@ -180,7 +101,7 @@ export const FractionUnitController = ({
     console.log("fractionLinesArray.length:" + fractionLinesArray.length);
     console.log("completed:" + completed);
     if (
-      ((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula") || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula")) &&
+      ((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula"))) && //((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula") || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula")) &&
       formulaFocusedIndex === 0 &&
       fractionLinesArray[0][1][0] != "" &&
       calculationStage < 2 &&
@@ -221,33 +142,25 @@ export const FractionUnitController = ({
   }, [clearFirstLineForSelfLearning]);
 
   useEffect(() => {//resetQuestionC
-    switch (typeAndFormulaAnswerArrayForAnyStage[0]) {
-      case "fractionText": {//call function b
-        //set formula line 0
-        setFractionLinesArray([
-          [
-            ["", 0, 0, 0, 0, 0],
-            ["", 0, 0, 0, 0, 0]
-          ]
-        ]);
-        setBracketArray([[]]);
-        break;
-      };
-      case "fractionFormula": {
-        console.log(typeAndFormulaAnswerArrayForAnyStage[1][0])
-        let tmpArray = [];
-        let i;
-        for (i = 0; i < typeAndFormulaAnswerArrayForAnyStage[1][0].length - 1; i++) {
-          tmpArray.push(typeAndFormulaAnswerArrayForAnyStage[1][0][i]);
-        }
-        tmpArray.push(["", 0, 0, 0, 0, 0]);
-        setBracketArray([typeAndFormulaAnswerArrayForAnyStage[1][0][typeAndFormulaAnswerArrayForAnyStage[1][0].length - 1]]);
-        setFractionLinesArray([tmpArray]);
-        break;
-      };
-      default: {
-        break;
+    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) {
+      //set formula line 0
+      setFractionLinesArray([
+        [
+          ["", 0, 0, 0, 0, 0],
+          ["", 0, 0, 0, 0, 0]
+        ]
+      ]);
+      setBracketArray([[]]);
+    } else if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) {
+      console.log(typeAndFormulaAnswerArrayForAnyStage[1][0])
+      let tmpArray = [];
+      let i;
+      for (i = 0; i < typeAndFormulaAnswerArrayForAnyStage[1][0].length - 1; i++) {
+        tmpArray.push(typeAndFormulaAnswerArrayForAnyStage[1][0][i]);
       }
+      tmpArray.push(["", 0, 0, 0, 0, 0]);
+      setBracketArray([typeAndFormulaAnswerArrayForAnyStage[1][0][typeAndFormulaAnswerArrayForAnyStage[1][0].length - 1]]);
+      setFractionLinesArray([tmpArray]);
     }
   }, [typeAndFormulaAnswerArrayForAnyStage]);
 
@@ -507,7 +420,7 @@ export const FractionUnitController = ({
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     let isNewStepTmp = false;
-    if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText" && formulaFocusedIndex === 0) {
+    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") && formulaFocusedIndex === 0) {//if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText" && formulaFocusedIndex === 0) {
       if (!textQuestionFormulaCheck()) {
         return;
       }
@@ -686,7 +599,8 @@ export const FractionUnitController = ({
     if (
       formulaFocusedIndex == fractionLinesArray.length - 1 &&
       (stageOrder.stage === -1 ||
-        ((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") ||
+        ((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) || //((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") ||
+
         formulaFocusedIndex > 0 ||
         [2, 5].includes(fractionPartIndex))
     ) {
@@ -851,7 +765,7 @@ export const FractionUnitController = ({
       }
     }
     handleSetError(formulaErrorMessage);
-  }  
+  }
 
   const classes = pagesStyles(); //
 

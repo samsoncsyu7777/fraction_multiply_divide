@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Link } from "@material-ui/core";
 import { HeadingSelect } from "../components/MathsLearningComponents";
-import { MainController } from "./MainController2";
+import { MainController } from "./MainController";
 import { withStyles } from "@material-ui/core/styles";
 import { theme as myTheme } from "../themes/theme";
 import constants from "../constants/MathsLearningConstants";
@@ -104,8 +104,8 @@ const mathsLearningStyle = (theme) => ({
 function MathsLearning(props) {
   const [languageIndex, setLanguageIndex] = useState(-1); //0:繁體中文
   const [bibleVersionIndex, setBibleVersionIndex] = useState(-1); //0:catholic,1:christian
-  const [topicIndex, setTopicIndex] = useState(0); //*** */
-  const [learningToolIndex, setLearningToolIndex] = useState(0);
+  const [topicIndex, setTopicIndex] = useState(-1); //*** */
+  const [learningToolIndex, setLearningToolIndex] = useState(-1);
   const [scriptureVerseIndex, setScriptureVerseIndex] = useState(0);
   const [isLogined, setIsLogined] = useState(false);
   const [unitIndex, setUnitIndex] = useState(0); //(0:M&D, 1:A&S, 2:MixWithBrackets)
@@ -114,7 +114,7 @@ function MathsLearning(props) {
 
   const numberOfBibleVersions = 2;
   const numberOfTopics = [3, 3, 2];
-  const numberOfLearningTools = 2;
+  const numberOfLearningTools = [2, 2, 2];
   const numberOfScriptureVerses = 6;
   const numberOfUnits = 3;
   const scriptureImages = [pic1, pic2, pic3, pic4, pic5, pic6];
@@ -130,7 +130,9 @@ function MathsLearning(props) {
     scriptureVerses,
     prayers,
     noticificationText,
-    applicationHint
+    applicationHint,
+    applicationHintIndex,
+    topicIntroduction
   } = constants;
 
   useEffect(() => {//*** */
@@ -194,6 +196,24 @@ function MathsLearning(props) {
       //*** */setExamIndex(parseInt(urlParams.get("exam")));
       exam = parseInt(urlParams.get("exam"), 10);
     }
+    if (
+      urlParams.get("topic") != null &&
+      urlParams.get("topic") != "" &&
+      urlParams.get("topic") >= 0 &&
+      urlParams.get("topic") < numberOfTopics[unit]
+    ) {
+      //*** */setLanguageIndex(parseInt(urlParams.get("lang")));
+      topic = parseInt(urlParams.get("topic"), 10);
+    }
+    if (
+      urlParams.get("tool") != null &&
+      urlParams.get("tool") != "" &&
+      urlParams.get("tool") >= 0 &&
+      urlParams.get("tool") < numberOfLearningTools[unit]
+    ) {
+      //*** */setBibleVersionIndex(parseInt(urlParams.get("ver")));
+      tool = parseInt(urlParams.get("tool"), 10);
+    }
     setIndexArray([lang, ver, topic, tool, unit, exam]);
     setScriptureVerseIndex(Math.floor(Math.random() * numberOfScriptureVerses));
   }, []);
@@ -220,7 +240,7 @@ function MathsLearning(props) {
         />
         <HeadingSelect
           selectLabel={topicsQuestion[indexArray[0]]} //*** */languageIndex]}
-          selectIndex={topicIndex}
+          selectIndex={indexArray[2]}
           setItemIndex={setTopicIndex}
           itemsArray={topics[indexArray[4]].slice(
             /*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]],
@@ -230,13 +250,13 @@ function MathsLearning(props) {
         />
         {indexArray[5] > -1 && <HeadingSelect
           selectLabel={learningToolsQuestion[indexArray[0]]}//*** */languageIndex]}
-          selectIndex={learningToolIndex}
+          selectIndex={indexArray[3]}
           setItemIndex={setLearningToolIndex}
           itemsArray={learningTools[indexArray[4]].slice(
-            (/*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]] + topicIndex) *
-              numberOfLearningTools,
-            (/*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]] + topicIndex + 1) *
-              numberOfLearningTools
+            (/*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]] + indexArray[2]) *
+              numberOfLearningTools[indexArray[4]],
+            (/*languageIndex*/indexArray[0] * numberOfTopics[indexArray[4]] + indexArray[2] + 1) *
+              numberOfLearningTools[indexArray[4]]
           )}
         />}
       </Grid>
@@ -270,7 +290,7 @@ function MathsLearning(props) {
           learningTool={
             learningTools[indexArray[4]][
               (indexArray[0] * numberOfTopics[indexArray[4]] + indexArray[2]) * //*** */(languageIndex * numberOfTopics[unitIndex] + topicIndex) *
-                numberOfLearningTools +
+                numberOfLearningTools[indexArray[4]] +
                 indexArray[3] //*** */learningToolIndex
             ]
           }
@@ -293,7 +313,12 @@ function MathsLearning(props) {
       </Grid>
       <Grid className={classes.prayerRow}>
         <Typography className={classes.commonText}>
-          {applicationHint[indexArray[0]]}
+          {applicationHint[applicationHintIndex[indexArray[4]]][indexArray[0]]}
+        </Typography>
+      </Grid>
+      <Grid className={classes.prayerRow}>
+        <Typography className={classes.commonText}>
+          {topicIntroduction[indexArray[0]]}
         </Typography>
       </Grid>
       <Grid className={classes.prayerRow}>
