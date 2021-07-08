@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button } from "@material-ui/core";
+import { InlineMath, /*BlockMath*/ } from "react-katex";
 //import { useSelector, RootStateOrAny } from "react-redux";
 //import { AlertSnackbar } from "../components/AlertComponents";
 //import { MyFrame } from "../components/HeadingComponents";
@@ -32,6 +33,8 @@ export const DecimalUnitController = ({
   callIncreaseFormulaIndex,
   errorMessage,
   setErrorMessage,
+  decimalFractionStage,
+  setDecimalFractionStage
 }) => {
   const { topicIndex, learningToolIndex } = topicToolIndex;//a, b
   const [formulaLinesArray, setFormulaLinesArray] = useState([""]);
@@ -135,8 +138,12 @@ export const DecimalUnitController = ({
     //first formula
     if (formulaFocusedIndex == 0) {
       //check answer is a positive integer
+      let removeFractionString = replacedString.replace("^\\frac{", "(");
+      removeFractionString = removeFractionString.replace("}{", ")/(");
+      removeFractionString = removeFractionString.replace("}^", ")");
+      console.log(removeFractionString)
       let tmpValue =
-        Math.round(eval(replacedString) * 10 ** (numberOfDecimal + 2)) /
+        Math.round(eval(removeFractionString) * 10 ** (numberOfDecimal + 2)) /
         10 ** (numberOfDecimal + 2);
       if (
         ((Number.isInteger(tmpValue) && !acceptDecimal) ||
@@ -217,7 +224,39 @@ export const DecimalUnitController = ({
     }
   }
 
+  function checkStringContainsElement(thisString, thisArray) {
+    let isContain = false;
+    thisArray.forEach(element => {
+      if (thisString.includes(element)) {
+        isContain = true;
+      }
+    })
+    return isContain;
+  }
+
+  function checkExcceedMaxOperators(thisString, maximum) {
+    const {
+      operatorsStringArray,
+      operatorsIndexArray,
+    } = createIndexArrays(thisString);
+    if (
+      operatorsStringArray.length > maximum + 10 || //without + 10
+      operatorsIndexArray.length == 0
+    ) {
+      let message = numberOfOperatorsHintLeft[languageIndex] +
+        maximum +
+        numberOfOperatorsHintRight[languageIndex];
+      handleSetError(message);
+      return false;
+    } else { return true; }
+  }
+
   function generateAnswersArray(replacedStringOriginal) {
+    //check no more than maximumOperators
+    if (!checkExcceedMaxOperators(replacedStringOriginal, maximumOperators)) {
+      return ["false"];
+    }
+
     //if with () //at last add () if answer string with operators
     let endString = "";
     let startString = "";
@@ -233,24 +272,70 @@ export const DecimalUnitController = ({
       console.log("replacedString: " + replacedString)
       console.log("endString: " + endString)
     }
-    //create operatorsStringArray and operatorsIndexArray
-    const {
-      operatorsStringArray,
-      operatorsIndexArray,
-    } = createIndexArrays(replacedString);
+
     let thisAnswersArray = []; //["3+4*2", "4*2+3"]
 
-    //check no more than 3 operators
+    //check with fraction
     if (
-      operatorsStringArray.length > maximumOperators ||
-      operatorsIndexArray.length == 0
+      replacedString.includes("^")
     ) {
-      let message = numberOfOperatorsHintLeft[languageIndex] +
-        maximumOperators +
-        numberOfOperatorsHintRight[languageIndex];
-      handleSetError(message);
-      return ["false"];
+      let stringArray = replacedString.split("^");
+      //check any operators in denom or numer
+      let targetFractionString = ""
+      let noOperatorInFraction = true;
+      let thisStartString = "";
+      let thisEndString = "";
+      for (let i = 0; i < stringArray.length; i++) {
+        if (i % 2 === 1 && noOperatorInFraction === true && checkStringContainsElement(stringArray[i], ["+", "-", "*", "/"])) {
+          noOperatorInFraction = false;
+          let numerString = stringArray[i].slice(stringArray[i].indexOf("{") + 1, stringArray[i].indexOf("}"));
+          if (checkStringContainsElement(numerString, ["+", "-", "*", "/"])) {
+            thisAnswersArray = generateAnswersArray(numerString);
+            thisStartString += "\\frac{";
+            thisEndString = stringArray[i].slice(stringArray[i].indexOf("}"));
+          } else {
+            let denomString = stringArray[i].slice(stringArray[i].indexOf("}") + 2, -1);
+            thisAnswersArray = generateAnswersArray(denomString);
+            thisStartString += "\\frac{" + numerString + "}{";
+            thisEndString = "}";
+          }
+          //targetFractionString = stringArray[i];
+        } else if (noOperatorInFraction) {
+          thisStartString += stringArray[i] + "^";
+        } else if (!noOperatorInFraction) {
+          thisEndString += "^" + stringArray[i];
+        }
+      }
+      console.log("thisStartString"+thisStartString)
+      console.log("thisEndString"+ thisEndString)
+      console.log("thisAnswersArray"+thisAnswersArray)
+      if (noOperatorInFraction) {
+        thisStartString = replacedString.slice(0, replacedString.indexOf("^"));
+        let numerString = replacedString.slice(replacedString.indexOf("{") + 1, replacedString.indexOf("}"));
+        let denomString = replacedString.slice(replacedString.indexOf("}{") + 2, replacedString.indexOf("}^"));
+        let value = parseInt(eval(numerString + "/" + denomString) * 100) / 100;
+        let valueString = value.toString();
+        thisAnswersArray = [valueString];
+        thisEndString = replacedString.slice(replacedString.indexOf("}^") + 2);
+      }
+      if (withParentheses) {
+        startString += "(" + thisStartString;
+        endString = thisEndString + ")" + endString;
+      } else {
+        startString += thisStartString;
+        endString = thisEndString + endString;
+      }
+      console.log("startString"+startString)
+      console.log("endString"+endString)
     } else {
+      //without fraction
+
+      //create operatorsStringArray and operatorsIndexArray
+      const {
+        operatorsStringArray,
+        operatorsIndexArray,
+      } = createIndexArrays(replacedString);
+
       //go to generate answers array
       //check it has + or -
       if (
@@ -283,18 +368,18 @@ export const DecimalUnitController = ({
           operatorsIndexArray
         );
       }
-      //combine string outside () and add () when needed
-      let updatedArray = []
-      thisAnswersArray.forEach(element => {
-        if ((element.includes("+") || element.includes("-") || element.includes("*") || element.includes("/")) && withParentheses) {
-          updatedArray.push(startString + "(" + element + ")" + endString);
-        } else {
-          updatedArray.push(startString + element + endString);
-        }
-      })
-      console.log(updatedArray)
-      return updatedArray;
     }
+    //combine string outside () and add () when needed
+    let updatedArray = []
+    thisAnswersArray.forEach(element => {
+      if ((element.includes("+") || element.includes("-") || element.includes("*") || element.includes("/")) && withParentheses && !replacedString.includes("^")) {
+        updatedArray.push(startString + "(" + element + ")" + endString);
+      } else {
+        updatedArray.push(startString + element + endString);
+      }
+    })
+    console.log(updatedArray)
+    return updatedArray;
   }
 
   function fourMixedFunction(
@@ -747,28 +832,47 @@ export const DecimalUnitController = ({
   }
 
   useEffect(() => {
-    if (callKeypadClick[0] > 0) {
+    if (callKeypadClick[0] > 0 && !["1/?", "OK"].includes(callKeypadClick[1])) {
       let key = callKeypadClick[1];
+      if (key === "?/2") {
+        key = "^\\frac{|}{|}^";
+      }
       if (formulaFocusedIndex == formulaLinesArray.length - 1) {
         let tmpFormulaLinesArray = [...formulaLinesArray];
+        let tmpString = tmpFormulaLinesArray[formulaFocusedIndex];
         if (key == "<-") {
-          tmpFormulaLinesArray[formulaFocusedIndex] = tmpFormulaLinesArray[
-            formulaFocusedIndex
-          ].slice(0, -1);
-        } else {
-          let tmpString = tmpFormulaLinesArray[formulaFocusedIndex];
-          let lastChar = tmpString.slice(tmpString.length - 1);
+          if (tmpString.slice(-1) === "^") {
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, tmpString.lastIndexOf("^\\frac"));
+            setDecimalFractionStage(0);
+          } else {
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, -1);
+          }
+        } else {          
+          let lastCharIndex = tmpString.length - 1;
+          switch(decimalFractionStage) {
+            case 1: lastCharIndex = tmpString.lastIndexOf("}{") - 1; break;
+            case 2: lastCharIndex = tmpString.lastIndexOf("}") - 1; break;
+            default: lastCharIndex = tmpString.length - 1; break;
+          }
+          let lastChar = tmpString.substr(lastCharIndex, 1);
           if (
             !(
               (["+", "-", "×", "÷", ".", "(", ""].includes(lastChar) &&
                 ["+", "-", "×", "÷", ".", ")"].includes(key)) ||
               (!["+", "-", "×", "÷", "(", ""].includes(lastChar) &&
                 key === "(") ||
-              (lastChar === ")" &&
-                ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(key))
+              ((lastChar === ")" || lastChar === "^") &&
+                ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "^\\frac{|}{|}^"].includes(key)) ||
+              (lastChar === "^" &&
+                ["^\\frac{|}{|}^", "."].includes(key))
             )
           ) {
-            tmpFormulaLinesArray[formulaFocusedIndex] += key;
+            if (key === "^\\frac{|}{|}^") {
+              setDecimalFractionStage((prev) => prev + 1);
+            }
+            let removeCursor = 0;
+            if (lastChar === "|") { removeCursor = 1; }
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, lastCharIndex - removeCursor + 1) + key + tmpString.slice(lastCharIndex + 1, tmpString.length);
           }
         }
         console.log("call keypad click" + callKeypadClick[0])
@@ -783,6 +887,7 @@ export const DecimalUnitController = ({
     <Grid className={classes.centerRow}>
       <Grid className={classes.formulaColumn}>
         {formulaLinesArray.map((formula, index) => {
+          const formulaArray = (formula === "" ? [formaulaPlaceholder[languageIndex]] : formula.split("^")); //
           return (
             <Grid
               key={index}
@@ -803,9 +908,16 @@ export const DecimalUnitController = ({
                       ? myTheme.color.myMagenta
                       : myTheme.color.blue,
                   borderWidth: index == formulaFocusedIndex ? 3 : 1,
+                  whiteSpace: 'pre-line'
                 }}
               >
-                {formula == "" ? formaulaPlaceholder[languageIndex] : formula}
+                {formulaArray.map((text, index) => {
+                  return index % 2 === 0 ? (
+                    <span key={index}>{text}</span>
+                  ) : (
+                    <InlineMath key={index}>{text}</InlineMath>
+                  );
+                })}
               </Button>
               {index == formulaFocusedIndex && (
                 <Button

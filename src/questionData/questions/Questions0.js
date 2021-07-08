@@ -8,7 +8,7 @@ const questions0 = [
         //order 0
         //["a^\\frac{|}{-}^", "b", "c", "d"],//test
         //["... \n A. aaa　　B. bbb　　C. ccc　　D. ddd", "... \n A. aaa　　B. bbb　　C. ccc　　D. ddd", "... \n A. aaa　　B. bbb　　C. ccc　　D. ddd", "... \n A. aaa　　B. bbb　　C. ccc　　D. ddd"],//test
-        ["a", "b", "c", "d"],//
+        //["a", "b", "c", "d"],//
         ["", "", "", ""],//
 
         ["", "", "", ""],

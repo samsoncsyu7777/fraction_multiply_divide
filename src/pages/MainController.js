@@ -295,7 +295,7 @@ export const MainController = ({
       checkMCAnswer(key);
       return;
     }
-    if (["?/2", "1/?", "OK"].includes(key)) {
+    if (["1/?", "OK"].includes(key)) {
       setDecimalFractionStage((prev) => (prev + 1) % 3);
     }
     setCallKeypadClick((prev) => [prev[0] + 1, key]);
@@ -454,6 +454,8 @@ export const MainController = ({
           callIncreaseFormulaIndex={callIncreaseFormulaIndex}
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
+          decimalFractionStage={decimalFractionStage}
+          setDecimalFractionStage={setDecimalFractionStage}
         />
       }
       {
