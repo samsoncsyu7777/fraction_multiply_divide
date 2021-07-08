@@ -20,12 +20,12 @@ const fractionFormulaStyles = makeStyles((theme) => ({
     alignItems: "center"
   },
   integerInput: {
-    width: "3.0vw",
+    width: "3.8vw",
     height: "3.0vw",
-    fontSize: "2.0vw",
-    minWidth: "3.0vw",
+    fontSize: "1.8vw",
+    minWidth: "3.8vw",
     borderRadius: "0.4vw",
-    lineHeight: "160%", 
+    lineHeight: "175%", 
   },
   commonInput: {
     width: "4.2vw",
@@ -49,7 +49,7 @@ const fractionFormulaStyles = makeStyles((theme) => ({
     height: "2.8vw",
     minWidth: "2.8vw",
     fontSize: "1.7vw",
-    lineHeight: "160%", 
+    lineHeight: "170%", 
   },
   border: {
     borderColor: myTheme.color.myGrey,
@@ -75,20 +75,20 @@ const fractionFormulaStyles = makeStyles((theme) => ({
   },
   [theme.breakpoints.down("xs")]: {
     integerInput: {
-      width: "5vw",
+      width: "6vw",
       height: "6vw",
-      fontSize: "3.5vw",
-      minWidth: "5vw",
+      fontSize: "2.8vw",
+      minWidth: "6vw",
       borderRadius: "0.8vw",
-      lineHeight: "190%", 
+      lineHeight: "210%", 
     },
     commonInput: {
       width: "6.4vw",
       height: "6vw",
-      fontSize: "3.2vw",
+      fontSize: "2.8vw",
       minWidth: "6.4vw",
       borderRadius: "0.8vw", 
-      lineHeight: "200%", 
+      lineHeight: "210%", 
     },
     smallInput: {
       width: "5vw",
@@ -104,7 +104,7 @@ const fractionFormulaStyles = makeStyles((theme) => ({
       height: "5vw",
       minWidth: "5vw",
       fontSize: "3vw",
-      lineHeight: "180%", 
+      lineHeight: "170%", 
     },
     bracket: {
       borderRadius: "3vw",
@@ -196,8 +196,7 @@ export const FractionFormula = ({
               { bracketArray.length > lineIndex && bracketArray[lineIndex].indexOf(index) % 2 === 0 ? "(" : ""}
             </Typography>
 
-            {(learningToolIndex == 1 ||
-              (/*calculationStage > 0 &&*/ lineIndex > 0)) && (
+            
               <Typography
                 style={
                   isFocusedLine && positionIndex == index && partIndex == 1
@@ -215,9 +214,9 @@ export const FractionFormula = ({
                   handlePartClick(e, index, 1);
                 }}
               >
-                {fraction[1] == 0 ? "" : fraction[1]}
+                {fraction[1] === 0 ? "" : fraction[1]}
               </Typography>
-            )}
+            
             <Grid
               container
               direction="column"
@@ -241,7 +240,7 @@ export const FractionFormula = ({
                     handlePartClick(e, index, 2);
                   }}
                 >
-                  {fraction[2] == 0 ? "" : fraction[2]}
+                  {fraction[2] === 0 ? "" : fraction[2]}
                 </Typography>
               )}
               <Typography
@@ -261,7 +260,7 @@ export const FractionFormula = ({
                   handlePartClick(e, index, 3);
                 }}
               >
-                {fraction[3] == 0 ? "" : fraction[3]}
+                {fraction[3] === 0 ? "" : fraction[3]}
               </Typography>
               <Box borderBottom={3} className={classes.fractionLineBox} />
               <Typography
@@ -281,7 +280,7 @@ export const FractionFormula = ({
                   handlePartClick(e, index, 4);
                 }}
               >
-                {fraction[4] == 0 ? "" : fraction[4]}
+                {fraction[4] === 0 ? "" : fraction[4]}
               </Typography>
               {(showSmallInput && index >= fractionIndexInProcess[0] && index <= fractionIndexInProcess[1]) && (
                 <Typography
@@ -301,7 +300,7 @@ export const FractionFormula = ({
                     handlePartClick(e, index, 5);
                   }}
                 >
-                  {fraction[5] == 0 ? "" : fraction[5]}
+                  {fraction[5] === 0 ? "" : fraction[5]}
                 </Typography>
               )}
             </Grid>

@@ -67,6 +67,10 @@ export const MyKeypad = ({ handleClick, type, decimalFractionStage }) => {
       default: break;
     }
   }
+  if (type != undefined && (type.includes("decimal") || type.includes("integer"))) {
+    keypadTexts.push("(");
+    keypadTexts.push(")");
+  }
   keypadTexts.push("<-");
   if (type === "MC") {
     keypadTexts = ["A", "B", "C", "D"];

@@ -24,9 +24,10 @@ const constants = {
     "遞交單元總分", "递交单元总分", "Submit unit total score", "Soumettre le score total de l'unité"
   ],
   unitTitle: [//a
-    ["分數乘法和除法", "分数乘法和除法", "Fraction Multiplication and Division", "Multiplication et division de fractions"],
-    ["分數加法和減法", "分数加法和减法", "Fraction Addition and Subtraction", "Addition et soustraction de fractions"],
-    ["分數四則混合計算", "分数四则混合计算", "Four mixed calculations for fractions", "Quatre calculs mixtes pour les fractions"]
+    ["分數乘法和除法", "分数乘法和除法", "Fraction Multiplication and Division", "Multiplication et Division de Fractions"],
+    ["分數加法和減法", "分数加法和减法", "Fraction Addition and Subtraction", "Addition et Soustraction de Fractions"],
+    ["分數四則混合計算", "分数四则混合计算", "Four Mixed Calculations for Fractions", "Quatre Calculs Mixtes pour les Fractions"],
+    ["整數四則混合計算", "整数四则混合计算", "Four Mixed Calculations for Integers", "Quatre Calculs Mixtes pour les Nombres Entiers"]
   ],
   logoutText: ["登出", "登出", "Logout", "Logout"],//a
   sureText: ["確定?", "确定?", "Sure?", "Sûre?"],//a

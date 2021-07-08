@@ -113,10 +113,10 @@ function MathsLearning(props) {
   const [indexArray, setIndexArray] = useState([2, 0, 0, 0, 0, -1]); //[languageIndex, bibleVersionIndex, topicIndex, learningToolIndex, unitIndex, examIndex]
 
   const numberOfBibleVersions = 2;
-  const numberOfTopics = [3, 3, 2];
-  const numberOfLearningTools = [2, 2, 2];
+  const numberOfTopics = [3, 3, 2, 5];
+  const numberOfLearningTools = [2, 2, 2, 2];
   const numberOfScriptureVerses = 6;
-  const numberOfUnits = 3;
+  const numberOfUnits = 4;
   const scriptureImages = [pic1, pic2, pic3, pic4, pic5, pic6];
 
   const {

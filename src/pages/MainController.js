@@ -10,6 +10,8 @@ import { UploadScore } from "../components/UploadScoreComponents";//a
 import { Leaderboard } from "../components/LeaderboardComponents";//a
 import { ExamCompleteTable } from "../components/ExamCompleteTableComponents";//a
 import { FractionUnitController } from "../unitControllers/FractionUnitController";//a
+import { DecimalUnitController } from "../unitControllers/DecimalUnitController";//a
+
 import {
   getValues1LayerArray,
   getValues2LayerArray,
@@ -17,21 +19,7 @@ import {
   calculateTotalScoreForUnit,
 
 } from "../functions/CommonFunctions";
-import answers0 from "../questionData/answers/Answers0";//a
-import answers1 from "../questionData/answers/Answers1";
-import answers2 from "../questionData/answers/Answers2";
-import questions0 from "../questionData/questions/Questions0";
-import questions1 from "../questionData/questions/Questions1";
-import questions2 from "../questionData/questions/Questions2";
-import responses0 from "../questionData/responses/Responses0";
-import responses1 from "../questionData/responses/Responses1";
-import responses2 from "../questionData/responses/Responses2";
-import types0 from "../questionData/types/Types0";
-import types1 from "../questionData/types/Types1";
-import types2 from "../questionData/types/Types2";
-import wrongAnswers0 from "../questionData/wrongAnswers/WrongAnswers0";
-import wrongAnswers1 from "../questionData/wrongAnswers/WrongAnswers1";
-import wrongAnswers2 from "../questionData/wrongAnswers/WrongAnswers2";//a
+import { questionsFilesArray, answersFilesArray, responsesFilesArray, typesFilesArray, wrongAnswersFilesArray } from "../questionData/ArrayForAllQuestionFiles";
 import constants from "../constants/MainControllerConstants";//a,b
 import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";//a,b
 import { pagesStyles } from "../themes/styles";//a,b
@@ -64,12 +52,7 @@ export const MainController = ({
   const [stageOrder, setStageOrder] = useState({ stage: 0, order: 0 });//a //stage: 0-20common stages, -1self-design, -2exam, -3leaderboard, -4submitTotal
   const [isLogined, setIsLogined] = useState(false);//a //FALSE
   const { topicIndex, learningToolIndex } = topicToolIndex;//a 
-  const [questions, setQuestions] = useState(answers0);//a
-  const questionsFilesArray = [[...questions0], [...questions1], [...questions2]];//a
-  const answersFilesArray = [[...answers0], [...answers1], [...answers2]];
-  const responsesFilesArray = [[...responses0], [...responses1], [...responses2]];
-  const typesFilesArray = [[...types0], [...types1], [...types2]];
-  const wrongAnswersFilesArray = [[...wrongAnswers0], [...wrongAnswers1], [...wrongAnswers2]];//a
+  const [questions, setQuestions] = useState(answersFilesArray[0]);//a
   const [loginQuestionData, setLoginQuestionData] = useState({});//a
   const [questionTextForAnyStage, setQuestionTextForAnyStage] = useState(["", "", "", ""]);//a  
   const [typeAndFormulaAnswerArrayForAnyStage, setTypeAndFormulaAnswerArrayForAnyStage] = useState([]);//a
@@ -83,10 +66,10 @@ export const MainController = ({
   const [startTime, setStartTime] = useState(0);//a
   const [examCompleted, setExamCompleted] = useState(false);//a
   const [logoutButtonStage, setLogoutButtonStage] = useState("unclick");//a  
-  const [clearFirstLineForSelfLearning, setClearFirstLineForSelfLearning] = useState(true);//a
-  const [callResetDefault, setCallResetDefault] = useState(true);//a
+  const [clearFirstLineForSelfLearning, setClearFirstLineForSelfLearning] = useState(0);//a
+  const [callResetDefault, setCallResetDefault] = useState(0);//a
   const [callResetClickForOtherPurpose, setCallResetClickForOtherPurpose] = useState(true);//a
-  const [callKeypadClick, setCallKeypadClick] = useState([true, ""]);//a
+  const [callKeypadClick, setCallKeypadClick] = useState([0, ""]);//a
   const [callIncreaseFormulaIndex, setCallIncreaseFormulaIndex] = useState(true);//a
   const [decimalFractionStage, setDecimalFractionStage] = useState(0);//0: "?/2"; 1: "1/?"; 2: "OK"
 
@@ -223,13 +206,14 @@ export const MainController = ({
     console.log(Date.now())
     setStartTime(Date.now());//a    
 
-    setCallResetDefault((prev) => !prev);
+    setCallResetDefault((prev) => prev + 1);
   }
 
   function resetQuestion() {//a    
     console.log("resetQ in controller2")
     if (stageOrder.stage === -1) {
-      setClearFirstLineForSelfLearning((prev) => !prev);
+      console.log("set clear first line")
+      setClearFirstLineForSelfLearning((prev) => prev + 1);
     } else if ((stageOrder.stage === -2 && isLogined) || stageOrder.stage > -1) {//a resetQuestion B
       let tmpType = "";
       let tmpFormula = [[[]]];
@@ -314,7 +298,7 @@ export const MainController = ({
     if (["?/2", "1/?", "OK"].includes(key)) {
       setDecimalFractionStage((prev) => (prev + 1) % 3);
     }
-    setCallKeypadClick((prev) => [!prev[0], key]);
+    setCallKeypadClick((prev) => [prev[0] + 1, key]);
   };
 
   function completeFunction() {//a
@@ -398,7 +382,7 @@ export const MainController = ({
         </Button>
       </Grid>}
       <Grid className={classes.spaceGrid} />
-      { typeAndFormulaAnswerArrayForAnyStage[0] != undefined && (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") || typeAndFormulaAnswerArrayForAnyStage[0] === "MC") && //{["fractionText", "integerText", "decimalText", "decimalTextFraction", "fractionTextDecimal", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
+      {typeAndFormulaAnswerArrayForAnyStage[0] != undefined && (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") || typeAndFormulaAnswerArrayForAnyStage[0] === "MC") && //{["fractionText", "integerText", "decimalText", "decimalTextFraction", "fractionTextDecimal", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
         !((stageOrder.stage === -2 & !isLogined) || [-3, -4].includes(stageOrder.stage)) && (
           <TextQuestion
             textQuestion={questionTextForAnyStage[languageIndex]}
@@ -443,6 +427,33 @@ export const MainController = ({
           wrongFractionAnswerArrayForAnyStage={wrongFractionAnswerArrayForAnyStage}
           resetClick={resetClick}
           callIncreaseFormulaIndex={callIncreaseFormulaIndex}
+        />
+      }
+      {
+        typeAndFormulaAnswerArrayForAnyStage[0] != undefined && 
+        (typeAndFormulaAnswerArrayForAnyStage[0].includes("integer") || typeAndFormulaAnswerArrayForAnyStage[0].includes("decimal")) && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
+        ![-3, -4].includes(stageOrder.stage) &&
+        !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
+        <DecimalUnitController
+          languageIndex={languageIndex}
+          topicToolIndex={topicToolIndex}
+          completed={completed}
+          setCompleted={setCompleted}
+          stageOrder={stageOrder}
+          isLogined={isLogined}
+          handleSetError={handleSetError}
+          clearFirstLineForSelfLearning={clearFirstLineForSelfLearning}
+          callResetDefault={callResetDefault}
+          typeAndFormulaAnswerArrayForAnyStage={typeAndFormulaAnswerArrayForAnyStage}
+          callResetClickForOtherPurpose={callResetClickForOtherPurpose}
+          callKeypadClick={callKeypadClick}
+          completeFunction={completeFunction}
+          responseArrayForAnyStage={responseArrayForAnyStage}
+          wrongFractionAnswerArrayForAnyStage={wrongFractionAnswerArrayForAnyStage}
+          resetClick={resetClick}
+          callIncreaseFormulaIndex={callIncreaseFormulaIndex}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
         />
       }
       {
@@ -492,6 +503,7 @@ export const MainController = ({
         handleClick={handleKeypadClick}
         type={typeAndFormulaAnswerArrayForAnyStage[0]}
         decimalFractionStage={decimalFractionStage}
+
       />
       <AlertSnackbar
         open={openAlert}

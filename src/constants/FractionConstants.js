@@ -183,6 +183,13 @@ const constants = {
     "Dans cette étape de calcul, les opérateurs doivent rester inchangés."
   ],
 
+  sameOperatorsInDecToFract: [
+    "把小數化為分數時，運算符號需保持不變。",
+    "把小数化为分数时，运算符号需保持不变。",
+    "When converting decimals to fractions, the operators should remain unchanged.",
+    "Lors de la conversion de décimales en fractions, les opérateurs doivent rester inchangés."
+  ],
+
   sameOperatorsInNoMixFract: [
     "把帶分數化為假分數時，運算符號需保持不變。",
     "把带分数化为假分数时，运算符号需保持不变。",
@@ -356,6 +363,13 @@ const constants = {
     "在这通分母的步骤中，整数部份应保持不变。",
     "In the step of expansion of fractions to a common denominator, the integer part should remain unchanged.",
     "Dans l'étape d'expansion des fractions à un dénominateur commun, la partie entière doit rester inchangée."
+  ],
+
+  sameWholeNumbersInDecToFract: [
+    "把小數化為分數時，整數部份應保持不變。",
+    "把小数化为分数时，整数部份应保持不变。",
+    "When converting decimals into fractions, the whole number part should remain unchanged.",
+    "Lors de la conversion de nombres décimaux en fractions, la partie entière doit rester inchangée."
   ],
 
   onlyWholeNumbers: [
@@ -541,7 +555,44 @@ const constants = {
     "Enter", "Reduce?", "Completed",
     "Entrer", "Réduire?", "Terminé"
   ],
-  
+  decimalToFractionIssue: [
+    "把小數化為分數",
+    "把小数化为分数",
+    "the conversion of decimals into fractions ",
+    "la conversion des nombres décimaux en fractions "
+  ],
+  wrongNumerInDecToFract: [
+    "分子不正確。把小數化為分數時，分子應是這小數的小數部份，即",
+    "分子不正确。把小数化为分数时，分子应是这小数的小数部份，即",
+    "The numerator is incorrect. When converting a decimal to a fraction, the numerator should be the decimal part of the decimal, which is ",
+    "Le numérateur est incorrect. Lors de la conversion d'une décimale en fraction, le numérateur doit être la partie décimale de la décimale, qui est "
+  ],
+  wrongDenomInDecToFract1: [
+    "現在進行把小數化為分數，這分母不正確。這小數最後的數字是在",
+    "现在进行把小数化为分数，这分母不正确。这小数最后的数字是在",
+    "Now proceed to convert the decimal to a fraction. The denominator is incorrect. The last digit of this decimal is in the ",
+    "Procédez maintenant à la conversion du nombre décimal en fraction. Le dénominateur est incorrect. Le dernier chiffre de cette décimale est à "
+  ],
+  wrongDenomInDecToFract2: [
+    "，所以分母應是",
+    "，所以分母应是",
+    ", so the denominator should be ",
+    ", donc le dénominateur devrait être "
+  ],
+  fullStop: [
+    "。", "。", ".", "."
+  ],
+  decimalPlaces: [
+    ["十分位", "十分位", "tenths place", "la dixième place"],
+    ["百分位", "百分位", "hundredths place", "la place des centièmes"],
+    ["千分位", "千分位", "thousandths place", "la place des millièmes"],
+    ["萬分位", "万分位", "ten-thousandths place", "la place des dix millièmes"],
+    ["十萬分位", "十万分位", "hundred-thousandths place", "la place des cent millièmes"],
+    ["百萬分位", "百万分位", "millionths place", "la place des millionièmes"],
+    ["千萬分位", "千万分位", "ten-millionths place", "la place des dix millionièmes"],
+    ["億分位", "亿分位", "hundred-millionths place", "la place des cent millionièmes"],
+    ["十億分位", "十亿分位", "billionths place", "le lieu des milliardièmes"]
+  ],
 };
 
 export default constants;

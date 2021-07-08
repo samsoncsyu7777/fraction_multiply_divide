@@ -20,7 +20,13 @@ const constants = {
       "分数四则混合计算", "带括号的分数四则号混合计算",
       "Four mixed calculations for fractions", "Four mixed calculations for fractions with parentheses",
       "Quatre calculs mixtes pour les fractions", "Quatre calculs mixtes pour les fractions avec parenthèses"
-    ]
+    ],
+    [
+      "三步計算", "四步計算", "五步計算", "六步計算", "七步計算",
+      "三步计算", "四步计算", "五步计算", "六步计算", "七步计算",
+      "Three-step calculation", "Four-step calculation", "Five-step calculation", "Six-step calculation", "Seven-step calculation",
+      "Calcul en trois étapes", "Calcul en quatre étapes", "Calcul en cinq étapes", "Calcul en six étapes", "Calcul en sept étapes",
+    ],
   ],
   topicsQuestion: ["主題", "主题", "Topic", "Sujet"],
   learningTools: [
@@ -41,6 +47,12 @@ const constants = {
       "真分数计算", "带分数计算", "真分数计算", "带分数计算",
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction",
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
+    ],
+    [//unit 3
+      "整數計算", "小數計算", "整數計算", "小數計算", "整數計算", "小數計算", "整數計算", "小數計算", "整數計算", "小數計算",
+      "整数计算", "小数计算", "整数计算", "小数计算", "整数计算", "小数计算", "整数计算", "小数计算", "整数计算", "小数计算",
+      "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation",
+      "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal",       
     ],
   ],
   learningToolsQuestion: [
@@ -125,9 +137,15 @@ const constants = {
       "使用方法：先按空格，再输入数字或运算符号，按长空格可输入或清除括号。",
       "How to use: Press the space first, then enter a number or an operator. Press the long space to enter or clear the parentheses.",
       "Comment utiliser: appuyez d'abord sur l'espace, puis entrez un nombre ou un opérateur. Appuyez sur l'espace long pour entrer ou effacer les parenthèses."
-    ]
+    ],
+    [
+      "使用方法：輸入數字和運算符號。",
+      "使用方法：输入数字和运算符号。",
+      "How to use: Enter numbers and operators.",
+      "Mode d'emploi : saisissez les chiffres et les opérateurs."
+    ],
   ],
-  applicationHintIndex: [0, 0, 0],
+  applicationHintIndex: [0, 0, 0, 1],
   topicIntroduction: [
     "請選擇不同的主題和類型，各主題和類型皆有不同的階段練習。",
     "请选择不同的主题和类型，各主题和类型皆有不同的阶段练习。",

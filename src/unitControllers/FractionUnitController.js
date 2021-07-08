@@ -86,12 +86,21 @@ export const FractionUnitController = ({
     lastMix: "",
     lastBrack: ""
   });
-
+  const [reduceDecimalInProcess, setReduceDecimalInProcess] = useState(false);
+  const [reduceDecimalPositionArray, setReduceDecimalPositionArray] = useState([-1]);
   const {
     noMixedBeforeReduction,//b(a call be functions)
     noDivisionBeforeReduction,//b
     //a&s    
     okButtonText,
+    decimalToFractionIssue,
+    sameOperatorsInDecToFract,
+    sameWholeNumbersInDecToFract,
+    wrongNumerInDecToFract,
+    wrongDenomInDecToFract1,
+    wrongDenomInDecToFract2,
+    fullStop,
+    decimalPlaces,
 
   } = constants;
 
@@ -413,13 +422,64 @@ export const FractionUnitController = ({
     )
   }
 
+  /*function stringToNumber(formula) {
+    let newFormula = [];
+    for (let i = 0; i < formula.length - 1; i++) {
+      let newFraction = [];
+      newFraction.push(formula[i][0]);
+      for (let j = 1; j < formula[i].length; j++) {
+        if (typeof formula[i][j] === "string") {
+          newFraction.push(parseFloat(formula[i][j]));
+        } else {
+          newFraction.push(formula[i][j]);
+        }
+      }
+      newFormula.push(newFraction);
+    }
+    console.log("newFormula" + newFormula)
+    return newFormula;
+  }*/
+
+  function integerWithDotCheck(formula) {
+    for (let i = 0; i < formula.length - 1; i++) {
+      for (let j = 1; j < formula[i].length; j++) {
+        if (typeof formula[i][j] === "string" && formula[i][j].slice(-1) === ".") {
+          handleSetError("Remove dot after an integer");
+          return false;
+        }
+      }
+    }
+    return true
+  }
+
   //both versions differ, also need mixed version. So, it needs 3 versions
-  function enterCheck() {//b
+  async function enterCheck() {//b
     console.log("enterCheck");
     console.log("startEndIndexLastLine:" + startEndIndexLastLine);
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     let isNewStepTmp = false;
+    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) {
+      return false;
+    }
+    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && formulaFocusedIndex > 0) {
+      let checkDecimalDictionary = lastLineWithDecimalCheck();
+      console.log("checkDecimalDictionary.correctStep:" + checkDecimalDictionary.correctStep) //correctStep, withDecimal: withDecimal, decimalPositionArray:
+      console.log("checkDecimalDictionary.withDecimal:" + checkDecimalDictionary.withDecimal)
+      console.log("checkDecimalDictionary.decimalPositionArray:" + checkDecimalDictionary.decimalPositionArray)
+      if (!checkDecimalDictionary.correctStep) {
+        return false
+      }      
+      if (checkDecimalDictionary.withDecimal) {
+        let position = checkDecimalDictionary.decimalPositionArray[1];
+        setFractionIndexInProcess([position, position]);
+        setReduceDecimalInProcess(true);
+        setFractionPartIndex(2);
+        setOkButtonStage(2);
+        return true;
+      }
+    }
+
     if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") && formulaFocusedIndex === 0) {//if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText" && formulaFocusedIndex === 0) {
       if (!textQuestionFormulaCheck()) {
         return;
@@ -551,7 +611,7 @@ export const FractionUnitController = ({
   }
 
   function checkSimplifyValue(index, checkValue, startIndex, endIndex) {//b
-    return checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck);
+    return checkSimplifyValue2(index, checkValue, startIndex, endIndex, fractionLinesArray, typeOfCalculation, addLine, setStartEndIndexLastLine, setFractionIndexInProcess, setCalculationStage, setIndexDecreasedByLastStage, setPartValue, primeNumbers, languageIndex, handleSetError, indexDecreasedByLastStage, fractionIndexInProcess, startEndIndexLastLine, setOkButtonStage, nextNewStep, noImproperFractionCheck, okClick, reduceDecimalPositionArray, setReduceDecimalPositionArray, reduceDecimalInProcess, setReduceDecimalInProcess);
   }
 
   const okClick = (e) => {//b    
@@ -579,7 +639,7 @@ export const FractionUnitController = ({
           }
         }
         break;
-      case 2:
+      case 2:        
         //use it instead
         var checkValue = true;
         checkSimplifyValue(
@@ -600,9 +660,8 @@ export const FractionUnitController = ({
       formulaFocusedIndex == fractionLinesArray.length - 1 &&
       (stageOrder.stage === -1 ||
         ((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) || //((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") ||
-
         formulaFocusedIndex > 0 ||
-        [2, 5].includes(fractionPartIndex))
+        ([2, 5].includes(fractionPartIndex) && (okButtonStage === 2)))
     ) {
       if (
         (["+", "-", "×", "÷"].includes(key) &&
@@ -634,18 +693,19 @@ export const FractionUnitController = ({
           if (fractionPartIndex == 0) {
             prevValue = "";
           } else {
-            if (prevValue != "") {
-              prevValue = parseInt(prevValue / 10);
-              if (prevValue == 0) {
+            if (prevValue.toString() != "0") {
+              prevValue = prevValue.toString().slice(0, -1); //prevValue = parseInt(prevValue / 10);
+              if (prevValue === "") {
+                prevValue = "0";
               }
             }
           }
-        } else {
+        } else if ((key === "." && formulaFocusedIndex === 0 && fractionPartIndex === 1 && !prevValue.toString().includes(".")) || key != ".") {
           prevValue += key;
         }
-        if (fractionPartIndex != 0) {
+        if (fractionPartIndex != 0 && typeof prevValue === "string" && !prevValue.includes(".")) { //if (fractionPartIndex != 0) {
           //
-          prevValue = parseInt(prevValue); //
+          prevValue = parseFloat(prevValue); //revValue = parseInt(prevValue);
         }
         setPartValue(
           prevValue,
@@ -731,6 +791,67 @@ export const FractionUnitController = ({
       setFractionPartIndex(partIndex);
     }
   };
+
+  function decimalToFractionCheck(positionIndex) {
+    let originalDecimal = fractionLinesArray[formulaFocusedIndex - 1][positionIndex][1]
+    let numberOfDecimal = originalDecimal.toString().split(".")[1].length;
+    console.log("numberOfDecimal:" + numberOfDecimal)
+    let newDenom = Math.pow(10, numberOfDecimal);
+    let wholeNumber = parseInt(originalDecimal);
+    let newNumer = (originalDecimal - wholeNumber) * newDenom;
+    console.log(newNumer);
+    let newFraction = fractionLinesArray[formulaFocusedIndex][positionIndex]
+    if (newFraction[0] != fractionLinesArray[formulaFocusedIndex - 1][positionIndex][0]) {
+      handleSetError(sameOperatorsInDecToFract[languageIndex]);
+      return false;
+    }
+    if (newFraction[1] != wholeNumber) {
+      handleSetError(sameWholeNumbersInDecToFract[languageIndex]);
+      return false;
+    }
+    if (newFraction[3] != newNumer) {
+      handleSetError(wrongNumerInDecToFract[languageIndex] + newNumer + fullStop[languageIndex]);
+      return false;
+    }
+    if (newFraction[4] != newDenom) {
+      handleSetError(wrongDenomInDecToFract1[languageIndex] + decimalPlaces[numberOfDecimal - 1][languageIndex] + wrongDenomInDecToFract2[languageIndex] + newDenom + fullStop[languageIndex]);
+      return false;
+    }
+    return true;
+  }
+
+  function lastLineWithDecimalCheck() {
+    let decimalPositionArray = [-1];
+    let formula = fractionLinesArray[formulaFocusedIndex - 1];
+    let withDecimal = false;
+    let correctStep = true;
+    for (let i = 0; i < formula.length; i++) {
+      if (!Number.isInteger(formula[i][1])) {
+        //with decimal
+        let oneSectionCorrect = true;
+        withDecimal = true;
+        if (i > decimalPositionArray[decimalPositionArray.length - 1] + 1) {
+          //with one section check on the left
+          oneSectionCorrect = oneSectionFractionCheck(formulaFocusedIndex, decimalPositionArray[decimalPositionArray.length - 1] + 1, i - 1, 0, false, false, decimalToFractionIssue[languageIndex], decimalPositionArray[1], decimalPositionArray[1]);
+        }
+        decimalPositionArray.push(i);
+        if (!decimalToFractionCheck(i) || !oneSectionCorrect) {
+          correctStep = false;
+          i = formula.length;
+        }
+      }
+    }
+    console.log("decimalPositionArray:"+decimalPositionArray)
+    //one more oneSectionFractionCheck
+    if (decimalPositionArray.length > 1 && correctStep) {
+      let oneSectionCorrect = oneSectionFractionCheck(formulaFocusedIndex, decimalPositionArray[decimalPositionArray.length - 1] + 1, formula.length - 1, 0, false, false, decimalToFractionIssue[languageIndex], decimalPositionArray[1], decimalPositionArray[1]);
+      if (!oneSectionCorrect) {
+        correctStep = false;
+      }
+    }
+    setReduceDecimalPositionArray(decimalPositionArray);
+    return { correctStep: correctStep, withDecimal: withDecimal, decimalPositionArray: decimalPositionArray };
+  }
 
   function textQuestionFormulaCheck() {//b
     let tmpArray = [];

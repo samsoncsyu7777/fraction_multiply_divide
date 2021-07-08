@@ -9,7 +9,10 @@ const types0 = [
         //"MC",//test
 
         //order 0
-        "fractionFormulaDecimal",//"fractionFormula",
+        //"fractionTextDecimal",//
+        "fractionFormulaDecimal",//
+        
+        "fractionFormula",
         "fractionFormula",
         "fractionFormula",
       ],
