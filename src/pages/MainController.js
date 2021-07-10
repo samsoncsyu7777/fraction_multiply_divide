@@ -408,7 +408,7 @@ export const MainController = ({
       }
       {
         typeAndFormulaAnswerArrayForAnyStage[0] != undefined && includes(typeAndFormulaAnswerArrayForAnyStage[0], "fraction") && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
-        !includes([-3, -4],stageOrder.stage) &&
+        !includes([-3, -4], stageOrder.stage) &&
         !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
         <FractionUnitController
           languageIndex={languageIndex}
@@ -431,7 +431,7 @@ export const MainController = ({
         />
       }
       {
-        typeAndFormulaAnswerArrayForAnyStage[0] != undefined && 
+        typeAndFormulaAnswerArrayForAnyStage[0] != undefined &&
         (includes(typeAndFormulaAnswerArrayForAnyStage[0], "integer") || includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal")) && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
         !includes([-3, -4], stageOrder.stage) &&
         !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
@@ -506,8 +506,12 @@ export const MainController = ({
         handleClick={handleKeypadClick}
         type={typeAndFormulaAnswerArrayForAnyStage[0]}
         decimalFractionStage={decimalFractionStage}
-
       />
+      <Grid className={classes.centerRow}>
+        <Typography style={{ whiteSpace: 'pre-line' }} className={classes.typeHint}>
+          {"aaa\nbbb"}
+        </Typography>
+      </Grid>
       <AlertSnackbar
         open={openAlert}
         closeAlert={closeAlert}

@@ -32,6 +32,12 @@ const constants = {
   logoutText: ["登出", "登出", "Logout", "Logout"],//a
   sureText: ["確定?", "确定?", "Sure?", "Sûre?"],//a
   timeDelay: 200,
+  typeHint: {
+    MC: ["請按「A」、「B」、「C」或「D」。", "请按「A」、「B」、「C」或「D」。", 'Please press "A", "B", "C" or "D".', 'Veuillez appuyer sur "A", "B", "C" ou "D".'],
+    fractionFormula: [
+      "*計算法則是有括號的範圍比沒有括號的範圍先計算，然後先計算乘除法，再計算加減法。\n*計算分數乘除時，需把帶分數化為假分數，把除數化為乘數，並把各分子和各分母進行約簡。\n*計算分數加減時，需進行通分母，如果分子在減法中得到負數，需從整數進行退位。\n*如果計算結果得到一個假分數，把它化為帶分數。"
+    ],
+  }
 
 };
 

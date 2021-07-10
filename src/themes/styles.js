@@ -96,4 +96,11 @@ export const pagesStyles = makeStyles((theme) => ({
       fontSize: "2.6vw",
     }
   },
+  typeHint: {
+    color: myTheme.color.myDarkGreen,
+    fontSize: "1.7vw",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "3.4vw",
+    },
+  },
 }));
