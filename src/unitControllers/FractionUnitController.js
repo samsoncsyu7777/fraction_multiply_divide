@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
 import { FractionFormula } from "../components/FractionFormulaComponents";//b
 import { getPrimeNumbers } from "../functions/PrimeNumbersFunctions";//b
-import { compare2LayerArray } from "../functions/CommonFunctions";
+import { compare2LayerArray, includes } from "../functions/CommonFunctions";
 import {
   positiveResultCheck2,//b
   parenthesesMessage2,
@@ -110,7 +110,7 @@ export const FractionUnitController = ({
     console.log("fractionLinesArray.length:" + fractionLinesArray.length);
     console.log("completed:" + completed);
     if (
-      ((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula"))) && //((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula") || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula")) &&
+      ((stageOrder.stage > -1 && includes(typeAndFormulaAnswerArrayForAnyStage[0], "Formula")) || (stageOrder.stage === -2 && isLogined && includes(typeAndFormulaAnswerArrayForAnyStage[0], "Formula"))) && // ((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula"))) &&   //((stageOrder.stage > -1 && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula") || (stageOrder.stage === -2 && isLogined && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionFormula")) &&
       formulaFocusedIndex === 0 &&
       fractionLinesArray[0][1][0] != "" &&
       calculationStage < 2 &&
@@ -151,7 +151,7 @@ export const FractionUnitController = ({
   }, [clearFirstLineForSelfLearning]);
 
   useEffect(() => {//resetQuestionC
-    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) {
+    if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text")) { //if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) {
       //set formula line 0
       setFractionLinesArray([
         [
@@ -160,7 +160,7 @@ export const FractionUnitController = ({
         ]
       ]);
       setBracketArray([[]]);
-    } else if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) {
+    } else if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Formula")) { //} else if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) {
       console.log(typeAndFormulaAnswerArrayForAnyStage[1][0])
       let tmpArray = [];
       let i;
@@ -459,10 +459,10 @@ export const FractionUnitController = ({
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     let isNewStepTmp = false;
-    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) {
+    if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) { //if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) {
       return false;
     }
-    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && formulaFocusedIndex > 0) {
+    if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Decimal") && formulaFocusedIndex > 0) { //if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && formulaFocusedIndex > 0) {
       let checkDecimalDictionary = lastLineWithDecimalCheck();
       console.log("checkDecimalDictionary.correctStep:" + checkDecimalDictionary.correctStep) //correctStep, withDecimal: withDecimal, decimalPositionArray:
       console.log("checkDecimalDictionary.withDecimal:" + checkDecimalDictionary.withDecimal)
@@ -480,7 +480,7 @@ export const FractionUnitController = ({
       }
     }
 
-    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") && formulaFocusedIndex === 0) {//if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText" && formulaFocusedIndex === 0) {
+    if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text") && formulaFocusedIndex === 0) {//typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") && formulaFocusedIndex === 0) {//if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText" && formulaFocusedIndex === 0) {
       if (!textQuestionFormulaCheck()) {
         return;
       }
@@ -659,17 +659,17 @@ export const FractionUnitController = ({
     if (
       formulaFocusedIndex == fractionLinesArray.length - 1 &&
       (stageOrder.stage === -1 ||
-        ((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) || //((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") ||
+        ((stageOrder.stage === -2 || stageOrder.stage > -1) && includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text")) || //typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) || //((stageOrder.stage === -2 || stageOrder.stage > -1) && typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") ||
         formulaFocusedIndex > 0 ||
-        ([2, 5].includes(fractionPartIndex) && (okButtonStage === 2)))
+        (includes([2, 5], fractionPartIndex) && (okButtonStage === 2))) //([2, 5].includes(fractionPartIndex) && (okButtonStage === 2)))
     ) {
       if (
-        (["+", "-", "×", "÷"].includes(key) &&
-          fractionPartIndex == 0 &&
+        (includes(["+", "-", "×", "÷"], key) && //(["+", "-", "×", "÷"].includes(key) &&
+        fractionPartIndex == 0 &&
           fractionLinesArray[formulaFocusedIndex][fractionPositionIndex][
           fractionPartIndex
           ] == "") ||
-        (!["+", "-", "×", "÷"].includes(key) &&
+        (!includes(["+", "-", "×", "÷"], key) && //(!["+", "-", "×", "÷"].includes(key) &&
           fractionPartIndex != 0 &&
           (fractionLinesArray[formulaFocusedIndex][fractionPositionIndex][
             fractionPartIndex
@@ -678,7 +678,7 @@ export const FractionUnitController = ({
         key == "<-"
       ) {
         if (
-          ["+", "-", "×", "÷"].includes(key) &&
+          includes(["+", "-", "×", "÷"], key) && //["+", "-", "×", "÷"].includes(key) &&
           fractionPositionIndex ==
           fractionLinesArray[formulaFocusedIndex].length - 1
         ) {
@@ -700,10 +700,10 @@ export const FractionUnitController = ({
               }
             }
           }
-        } else if ((key === "." && formulaFocusedIndex === 0 && fractionPartIndex === 1 && !prevValue.toString().includes(".")) || key != ".") {
+        } else if ((key === "." && formulaFocusedIndex === 0 && fractionPartIndex === 1 && !includes(prevValue.toString(), ".") /*prevValue.toString().includes(".")*/) || key != ".") {
           prevValue += key;
         }
-        if (fractionPartIndex != 0 && typeof prevValue === "string" && !prevValue.includes(".")) { //if (fractionPartIndex != 0) {
+        if (fractionPartIndex != 0 && typeof prevValue === "string" && !includes(prevValue.toString(), ".") /*prevValue.toString().includes(".")*/) { //if (fractionPartIndex != 0) {
           //
           prevValue = parseFloat(prevValue); //revValue = parseInt(prevValue);
         }

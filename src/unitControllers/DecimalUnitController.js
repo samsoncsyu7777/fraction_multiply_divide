@@ -10,6 +10,7 @@ import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";
 import { pagesStyles } from "../themes/styles";
 import { theme as myTheme } from "../themes/theme";//a,b
 import constants from "../constants/MixedOperationsConstants";
+import { findIndex, includes } from "../functions/CommonFunctions";
 //import questions from "../questions/Questions";
 
 //×÷👍👍🏻
@@ -44,7 +45,7 @@ export const DecimalUnitController = ({
     topicIndex + 3
   );
   const [acceptDecimal, setAcceptDecimal] = useState(
-    typeAndFormulaAnswerArrayForAnyStage[0].includes("decimal") ? true : false
+    includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? true : false
   );
   const [numberOfDecimal, setNumberOfDecimal] = useState(7);
 
@@ -71,7 +72,7 @@ export const DecimalUnitController = ({
   } = constants;
 
   useEffect(() => {
-    setAcceptDecimal(typeAndFormulaAnswerArrayForAnyStage[0].includes("decimal") ? true : false);
+    setAcceptDecimal(includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? true : false);
     setMaximumOperators(topicIndex + 3);
   }, [topicIndex, learningToolIndex]);
 
@@ -107,11 +108,11 @@ export const DecimalUnitController = ({
   }, [clearFirstLineForSelfLearning]);
 
   useEffect(() => {//resetQuestionC
-    if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) {
+    if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text")) {
       //set formula line 0
       console.log("text type clear first line")
       setFormulaLinesArray([""]);
-    } else if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Formula")) {
+    } else if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Formula")) {
       console.log(typeAndFormulaAnswerArrayForAnyStage[1][0])
       console.log(typeAndFormulaAnswerArrayForAnyStage[1][0][0][0])
       let tmpString = typeAndFormulaAnswerArrayForAnyStage[1][0][0][0];
@@ -121,10 +122,15 @@ export const DecimalUnitController = ({
   }, [typeAndFormulaAnswerArrayForAnyStage]);
 
   const okClick = () => {
+    console.log("call okclick")
+    setDecimalFractionStage(0);
     //check last character is an operator
-    let tmpString = formulaLinesArray[formulaFocusedIndex];
+    let tmpFormulaLinesArray = [...formulaLinesArray];
+    let tmpString = tmpFormulaLinesArray[formulaFocusedIndex];
+    let updatedString = tmpString.replace("|", "");
+    tmpFormulaLinesArray[formulaFocusedIndex] = updatedString;
     let lastChar = tmpString.slice(tmpString.length - 1);
-    if (["+", "-", "×", "÷"].includes(lastChar)) {
+    if (includes(["+", "-", "×", "÷"], lastChar)) {
       return;
     }
     //replace last formula hints
@@ -132,19 +138,42 @@ export const DecimalUnitController = ({
     replacedHint = replacedHint.replace(/\//g, "÷");
     setErrorMessage(replacedHint);
     //replace this formula
-    let replacedString = formulaLinesArray[formulaFocusedIndex].replace(/×/g, "*");
+    let replacedString = updatedString.replace(/×/g, "*");
     replacedString = replacedString.replace(/÷/g, "/");
 
     //first formula
     if (formulaFocusedIndex == 0) {
       //check answer is a positive integer
-      let removeFractionString = replacedString.replace("^\\frac{", "(");
-      removeFractionString = removeFractionString.replace("}{", ")/(");
-      removeFractionString = removeFractionString.replace("}^", ")");
+      let removeFractionString = replacedString;//.replace("0^\\frac{", "0+(");      
+      let lastOperatorIndex = -1;
+      for (let i = 0; i < removeFractionString.length; i++) {
+        if (includes(["+", "-", "*", "/", "("], removeFractionString[i])) {
+          lastOperatorIndex = i;
+        } else if (removeFractionString[i] === "^" && removeFractionString[i + 1] === "\\") {
+          if (i - 1 === lastOperatorIndex) {
+            //no whole number before fraction
+            let startString = removeFractionString.slice(0, i);
+            let endString = removeFractionString.slice(i + 7);
+            removeFractionString = startString + "(" + endString;
+          } else {
+            //with whole number before fraction
+            let startString = removeFractionString.slice(0, lastOperatorIndex + 1);
+            let wholeNumberString = "(" + removeFractionString.slice(lastOperatorIndex + 1, i) + "+(";
+            let endString = removeFractionString.slice(i + 7);
+            let fractionString = endString.slice(0, endString.indexOf("}^")) + "))";
+            endString = endString.slice(endString.indexOf("}^") + 2);
+            removeFractionString = startString + wholeNumberString + fractionString + endString;
+          }
+        }
+      }
+      removeFractionString = removeFractionString.replace(/\}{/g, ")/(");
+      removeFractionString = removeFractionString.replace(/\}\^/g, ")");
+      removeFractionString = removeFractionString.replace(/\%/g, "*0.01");
       console.log(removeFractionString)
       let tmpValue =
         Math.round(eval(removeFractionString) * 10 ** (numberOfDecimal + 2)) /
         10 ** (numberOfDecimal + 2);
+      console.log("calculated value: "+ tmpValue)
       if (
         ((Number.isInteger(tmpValue) && !acceptDecimal) ||
           (Number(tmpValue.toFixed(numberOfDecimal)) == tmpValue &&
@@ -154,7 +183,7 @@ export const DecimalUnitController = ({
         nextStepPreparation(replacedString);
       } else {
         //not a positive integer
-        let acceptDecimalIndex = (typeAndFormulaAnswerArrayForAnyStage[0].includes("decimal") ? 1 : 0);
+        let acceptDecimalIndex = (includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? 1 : 0);
         handleSetError(resultBeValidHint[acceptDecimalIndex * 4 + languageIndex]);
       }
     } else {
@@ -169,14 +198,10 @@ export const DecimalUnitController = ({
         }
       }
       if (correctStep) {
-        if (
-          replacedString.includes("+") ||
-          replacedString.includes("-") ||
-          replacedString.includes("*") ||
-          replacedString.includes("/")
-        ) {
+        if (checkStringContainsElement(replacedString, ["+", "-", "*", "/"])) {
           nextStepPreparation(replacedString);
         } else {
+          setFormulaLinesArray(tmpFormulaLinesArray);
           completeFunction();
         }
       } else {
@@ -217,6 +242,8 @@ export const DecimalUnitController = ({
       //formula can generate next step
       setAnswersArray(tmpAnswersArray);
       let tmpFormulaLinesArray = [...formulaLinesArray];
+      let tmpString = tmpFormulaLinesArray[formulaFocusedIndex].replace("|", "");
+      tmpFormulaLinesArray[formulaFocusedIndex] = tmpString;
       tmpFormulaLinesArray.push("");
       console.log("call next step prep")
       setFormulaLinesArray(tmpFormulaLinesArray);
@@ -227,7 +254,7 @@ export const DecimalUnitController = ({
   function checkStringContainsElement(thisString, thisArray) {
     let isContain = false;
     thisArray.forEach(element => {
-      if (thisString.includes(element)) {
+      if (includes(thisString, element)) {
         isContain = true;
       }
     })
@@ -256,28 +283,19 @@ export const DecimalUnitController = ({
     if (!checkExcceedMaxOperators(replacedStringOriginal, maximumOperators)) {
       return ["false"];
     }
-
-    //if with () //at last add () if answer string with operators
     let endString = "";
     let startString = "";
     let replacedString = replacedStringOriginal;
     let withParentheses = false;
-    if (replacedStringOriginal.includes("(")) {
-      withParentheses = true;
-      endString = replacedStringOriginal.slice(replacedStringOriginal.indexOf(")") + 1, replacedStringOriginal.length);
-      let replacedStringWithStart = replacedStringOriginal.slice(0, replacedStringOriginal.indexOf(")"));
-      startString = replacedStringWithStart.slice(0, replacedStringWithStart.lastIndexOf("("));
-      replacedString = replacedStringWithStart.slice(replacedStringWithStart.lastIndexOf("(") + 1, replacedStringWithStart.length);
-      console.log("startString: " + startString)
-      console.log("replacedString: " + replacedString)
-      console.log("endString: " + endString)
-    }
-
     let thisAnswersArray = []; //["3+4*2", "4*2+3"]
-
+    //create operatorsStringArray and operatorsIndexArray
+    const {
+      operatorsStringArray,
+      operatorsIndexArray,
+    } = createIndexArrays(replacedString);
     //check with fraction
     if (
-      replacedString.includes("^")
+      includes(replacedString, "^")
     ) {
       let stringArray = replacedString.split("^");
       //check any operators in denom or numer
@@ -306,16 +324,30 @@ export const DecimalUnitController = ({
           thisEndString += "^" + stringArray[i];
         }
       }
-      console.log("thisStartString"+thisStartString)
-      console.log("thisEndString"+ thisEndString)
-      console.log("thisAnswersArray"+thisAnswersArray)
+      console.log("thisStartString" + thisStartString)
+      console.log("thisEndString" + thisEndString)
+      console.log("thisAnswersArray" + thisAnswersArray)
       if (noOperatorInFraction) {
         thisStartString = replacedString.slice(0, replacedString.indexOf("^"));
         let numerString = replacedString.slice(replacedString.indexOf("{") + 1, replacedString.indexOf("}"));
         let denomString = replacedString.slice(replacedString.indexOf("}{") + 2, replacedString.indexOf("}^"));
         let value = parseInt(eval(numerString + "/" + denomString) * 100) / 100;
+        let digitOfWholeNumber = 0;
+        for (let i = 0; i < thisStartString.length; i++) {
+          if (includes(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], thisStartString.charAt(thisStartString.length - 1 - i))) {
+            digitOfWholeNumber = i + 1
+          } else {
+            i = thisStartString.length
+          }
+        }
+        let wholeNumber = 0;
+        if (digitOfWholeNumber > 0) {
+          wholeNumber = parseInt(thisStartString.slice(thisStartString.length - digitOfWholeNumber, thisStartString.length));
+        }
+        value = wholeNumber + value;
         let valueString = value.toString();
         thisAnswersArray = [valueString];
+        thisStartString = thisStartString.slice(0, thisStartString.length - digitOfWholeNumber);
         thisEndString = replacedString.slice(replacedString.indexOf("}^") + 2);
       }
       if (withParentheses) {
@@ -325,27 +357,62 @@ export const DecimalUnitController = ({
         startString += thisStartString;
         endString = thisEndString + endString;
       }
-      console.log("startString"+startString)
-      console.log("endString"+endString)
-    } else {
-      //without fraction
+      console.log("startString" + startString)
+      console.log("endString" + endString)
+    } else if (includes(replacedString, "%") && includes(typeAndFormulaAnswerArrayForAnyStage[0], "%.")) {
+      //with % needed to convert to decimal
+      let firstIndex = replacedString.indexOf("%");
+      if (replacedString.charAt(firstIndex - 1) === ")") {
+        //calculate () part before % first
+        withParentheses = true;
+        startString = replacedString.slice(0, firstIndex);
+        let valueStartIndex = startString.lastIndexOf("(") + 1;
+        endString = replacedString.slice(valueStartIndex);
+        let valueEndIndex = endString.indexOf(")");
+        startString = startString.slice(0, valueStartIndex - 1);
+        let valueString = endString.slice(0, valueEndIndex);
+        endString = endString.slice(valueEndIndex + 1);
+        console.log("startString: "+ startString)
+        console.log("valueString: "+valueString)
+        console.log("endString: "+endString)
+        thisAnswersArray = generateAnswersArray(valueString);
 
-      //create operatorsStringArray and operatorsIndexArray
-      const {
-        operatorsStringArray,
-        operatorsIndexArray,
-      } = createIndexArrays(replacedString);
+      } else {
+        //no parentheses before %, just convert xxx% to decimal
+        let endFirstOperatorIndexInArray = findIndex(operatorsIndexArray, (index) => { return index > firstIndex }); //operatorsIndexArray.findIndex((index) => {return index > firstIndex});
+        let startLastOperatorIndex = operatorsIndexArray[endFirstOperatorIndexInArray - 1];
+        startString = replacedString.slice(0, startLastOperatorIndex + 1);
+        endString = replacedString.slice(firstIndex + 1);
+        let value = parseFloat(replacedString.slice(startLastOperatorIndex + 1, firstIndex)) * 0.01;
+        let valueString = value.toString();
+        thisAnswersArray = [valueString];
+      }
+
+    } else {
+      //without fraction or %
+
+      //if with () //at last add () if answer string with operators
+      if (includes(replacedStringOriginal, "(")) {
+        withParentheses = true;
+        endString = replacedStringOriginal.slice(replacedStringOriginal.indexOf(")") + 1, replacedStringOriginal.length);
+        let replacedStringWithStart = replacedStringOriginal.slice(0, replacedStringOriginal.indexOf(")"));
+        startString = replacedStringWithStart.slice(0, replacedStringWithStart.lastIndexOf("("));
+        replacedString = replacedStringWithStart.slice(replacedStringWithStart.lastIndexOf("(") + 1, replacedStringWithStart.length);
+        console.log("startString: " + startString)
+        console.log("replacedString: " + replacedString)
+        console.log("endString: " + endString)
+      }
 
       //go to generate answers array
       //check it has + or -
       if (
-        operatorsStringArray.includes("+") ||
-        operatorsStringArray.includes("-")
+        includes(operatorsStringArray, "+") ||
+        includes(operatorsStringArray, "-")
       ) {
         //check it is mixed
         if (
-          operatorsStringArray.includes("*") ||
-          operatorsStringArray.includes("/")
+          includes(operatorsStringArray, "*") ||
+          includes(operatorsStringArray, "/")
         ) {
           thisAnswersArray = fourMixedFunction(
             replacedString,
@@ -372,7 +439,7 @@ export const DecimalUnitController = ({
     //combine string outside () and add () when needed
     let updatedArray = []
     thisAnswersArray.forEach(element => {
-      if ((element.includes("+") || element.includes("-") || element.includes("*") || element.includes("/")) && withParentheses && !replacedString.includes("^")) {
+      if (checkStringContainsElement(element, ["+", "-", "*", "/"]) && withParentheses && !includes(replacedString, "^")) {
         updatedArray.push(startString + "(" + element + ")" + endString);
       } else {
         updatedArray.push(startString + element + endString);
@@ -396,7 +463,7 @@ export const DecimalUnitController = ({
     let firstHint = true;
     let firstHintText = "";
     for (i = 0; i < pushedOperatorsStringArray.length; i++) {
-      if (["+", "-"].includes(pushedOperatorsStringArray[i])) {
+      if (includes(["+", "-"], pushedOperatorsStringArray[i])) {
         //check there is chain * and /
         if (i - previousIndex > 2) {
           firstHint = false;
@@ -478,7 +545,7 @@ export const DecimalUnitController = ({
     let thisHints = "";
     if (operatorsStringArray[0] == "-") {
       //check first "-" gets negative number
-      if (eval(replacedString.substring(0, operatorsIndexArray[1 + 1])) < 0) {
+      if (replacedString.indexOf("%") === -1 && eval(replacedString.substring(0, operatorsIndexArray[1 + 1])) < 0) {
         //one exchange
         let i;
         let firstHint = true;
@@ -778,11 +845,16 @@ export const DecimalUnitController = ({
   ) {
     let tmpAnswer = "";
     let tmpHint = "";
+    let percentString = "";
     //value from this operator
     let operationString = replacedString.substring(
       operatorsIndexArray[startIndex + 1 - 1] + 1,
       operatorsIndexArray[endIndex + 1 + 1]
     );
+    if (operationString.indexOf("%") > -1) {
+      percentString = "%";
+      operationString = operationString.replace(/\%/g, "");
+    }
     let value =
       Math.round(eval(operationString) * 10 ** (numberOfDecimal + 2)) /
       10 ** (numberOfDecimal + 2);
@@ -802,11 +874,11 @@ export const DecimalUnitController = ({
       let endString = replacedString.substring(
         operatorsIndexArray[endIndex + 1 + 1]
       );
-      tmpAnswer = startString + valueString + endString;
+      tmpAnswer = startString + valueString + percentString + endString;
       return { tmpAnswer, tmpHint };
     } else {
       //this step is not a positive integer
-      let acceptDecimalIndex = (typeAndFormulaAnswerArrayForAnyStage[0].includes("decimal") ? 1 : 0);
+      let acceptDecimalIndex = (includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? 1 : 0);
       tmpHint = resultBeValidHint[acceptDecimalIndex * 4 + languageIndex];
       tmpAnswer = "false";
       return { tmpAnswer, tmpHint };
@@ -822,7 +894,7 @@ export const DecimalUnitController = ({
     //create operatorsStringArray and operatorsIndexArray
     let i;
     for (i = 0; i < replacedString.length; i++) {
-      if (["+", "-", "*", "/"].includes(replacedString.slice(i, i + 1))) {
+      if (includes(["+", "-", "*", "/"], replacedString.slice(i, i + 1))) {
         operatorsStringArray.push(replacedString.slice(i, i + 1));
         operatorsIndexArray.push(i);
       }
@@ -831,48 +903,68 @@ export const DecimalUnitController = ({
     return { operatorsStringArray, operatorsIndexArray };
   }
 
-  useEffect(() => {
-    if (callKeypadClick[0] > 0 && !["1/?", "OK"].includes(callKeypadClick[1])) {
-      let key = callKeypadClick[1];
-      if (key === "?/2") {
-        key = "^\\frac{|}{|}^";
+  function getLastOperatorIndex(thisString) {
+    console.log("thisString:"+ thisString)
+    let thisIndex = -1;
+    for(let i = 0; i < thisString.length; i++) {
+      console.log("thisString[thisString.length - 1 - i]: "+thisString[thisString.length - 1 - i])
+      if (includes(["+", "-", "*", "/", "×", "÷"], thisString[thisString.length - 1 - i])) {
+        thisIndex = thisString.length - 1 - i;
+        console.log("thisIndex: "+thisIndex)
+        i = thisString.length;
       }
+    }
+    return thisIndex;
+  }
+
+  useEffect(() => {
+    if (callKeypadClick[0] > 0) {
+      let key = callKeypadClick[1];
       if (formulaFocusedIndex == formulaLinesArray.length - 1) {
         let tmpFormulaLinesArray = [...formulaLinesArray];
         let tmpString = tmpFormulaLinesArray[formulaFocusedIndex];
-        if (key == "<-") {
-          if (tmpString.slice(-1) === "^") {
-            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, tmpString.lastIndexOf("^\\frac"));
+        let lastCharIndex = tmpString.indexOf("|") - 1;
+        let lastChar = tmpString.substr(lastCharIndex, 1);
+        if (tmpString === "" || tmpString === "|") {
+          //setup for the beginning with no character
+          tmpString = "|";
+          lastChar = "";
+        }
+        //move cursor when fraction button is clicked
+        if (key === "?/2") {
+          if (!includes([")", "^", "%", "."], lastChar) && tmpString.lastIndexOf(".") <= getLastOperatorIndex(tmpString) ) {
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.replace("|", "^\\frac{|}{}^");
+            setDecimalFractionStage((prev) => prev + 1);
+          }
+        } else if (key === "1/?") {
+          tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.replace("|}{}^", "}{|}^");
+        } else if (key === "OK") {
+          tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.replace("|}^", "}^|");
+        } else if (key === "<-") {
+          if (includes(["^|", "{|"], tmpString.substr(tmpString.indexOf("|") - 1, 2))) {
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, tmpString.lastIndexOf("^\\frac")) + "|";
             setDecimalFractionStage(0);
           } else {
-            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, -1);
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, tmpString.indexOf("|") - 1) + tmpString.slice(tmpString.indexOf("|"));
           }
-        } else {          
-          let lastCharIndex = tmpString.length - 1;
-          switch(decimalFractionStage) {
-            case 1: lastCharIndex = tmpString.lastIndexOf("}{") - 1; break;
-            case 2: lastCharIndex = tmpString.lastIndexOf("}") - 1; break;
-            default: lastCharIndex = tmpString.length - 1; break;
-          }
-          let lastChar = tmpString.substr(lastCharIndex, 1);
+        } else {
+          console.log("tmpString.lastIndexOf(.):" +tmpString.lastIndexOf("."))
+          console.log("getLastOperatorIndex(tmpString):"+getLastOperatorIndex(tmpString))
           if (
             !(
-              (["+", "-", "×", "÷", ".", "(", ""].includes(lastChar) &&
-                ["+", "-", "×", "÷", ".", ")"].includes(key)) ||
-              (!["+", "-", "×", "÷", "(", ""].includes(lastChar) &&
+              (includes(["+", "-", "×", "÷", ".", "(", ""], lastChar) &&
+                includes(["+", "-", "×", "÷", ".", ")", "%"], key)) ||
+              (!includes(["+", "-", "×", "÷", "(", ""], lastChar) &&
                 key === "(") ||
-              ((lastChar === ")" || lastChar === "^") &&
-                ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "^\\frac{|}{|}^"].includes(key)) ||
-              (lastChar === "^" &&
-                ["^\\frac{|}{|}^", "."].includes(key))
+              (includes([")", "^", "%"], lastChar) &&
+                includes(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], key)) ||
+              ((includes(["^", "%", "{"], lastChar) || tmpString.lastIndexOf(".") > getLastOperatorIndex(tmpString)) &&
+                includes(["."], key)) ||
+              ((lastChar === "%" || tmpString.slice(-1) === "^") &&
+                includes(["%"], key))
             )
           ) {
-            if (key === "^\\frac{|}{|}^") {
-              setDecimalFractionStage((prev) => prev + 1);
-            }
-            let removeCursor = 0;
-            if (lastChar === "|") { removeCursor = 1; }
-            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.slice(0, lastCharIndex - removeCursor + 1) + key + tmpString.slice(lastCharIndex + 1, tmpString.length);
+            tmpFormulaLinesArray[formulaFocusedIndex] = tmpString.replace("|", key + "|");
           }
         }
         console.log("call keypad click" + callKeypadClick[0])

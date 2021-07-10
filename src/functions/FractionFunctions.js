@@ -1,4 +1,5 @@
 import constants from "../constants/FractionConstants";
+import { includes } from "./CommonFunctions";
 
 const {
   noOperator,
@@ -425,7 +426,7 @@ export function noNegativeNumeratorResultCheck2(
         return false;
       }
       if (
-        (["", "+"].includes(fractionLinesArray[index - 1][i][0]) || bracketArray[index - 1].indexOf(i) % 2 === 0) &&//*** */
+        (includes(["", "+"], fractionLinesArray[index - 1][i][0]) || bracketArray[index - 1].indexOf(i) % 2 === 0) &&//*** */
         fractionLinesArray[index - 1][i][1] > 0
       ) {
         var wholeDiff =
@@ -1198,8 +1199,8 @@ export function noMultiplicationCheck2(
     noImproperFractionCheck(index, false, startIndex, startIndex);*/
     if (//*** */
       fractionLinesArray[index].length > 2 &&
-      (["×", "÷"].includes(fractionLinesArray[index][startIndex][0]) ||
-        ["×", "÷"].includes(fractionLinesArray[index][startIndex + 1][0]))
+      (includes(["×", "÷"], fractionLinesArray[index][startIndex][0]) ||
+      includes(["×", "÷"], fractionLinesArray[index][startIndex + 1][0]))
     ) {
       nextNewStep(index);
     } else {
@@ -1470,7 +1471,7 @@ export async function noMixedCalCheck2(
     let M_D_endIndex = 0;
     let i = 0;
     for (i = startIndex + 1; i < endIndex + 1; i++) {
-      if (["+", "-"].includes(fractionLinesArray[index][i][0])) {
+      if (includes(["+", "-"], fractionLinesArray[index][i][0])) {
         A_S = true;
       } else {
         //it is M or D
@@ -1827,8 +1828,8 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
     //*** */
     if (
       fractionLinesArray[index].length > 2 &&
-      (["×", "÷"].includes(fractionLinesArray[index][startIndex][0]) ||
-        ["×", "÷"].includes(fractionLinesArray[index][startIndex + 1][0]))
+      (includes(["×", "÷"], fractionLinesArray[index][startIndex][0]) ||
+      includes(["×", "÷"], fractionLinesArray[index][startIndex + 1][0]))
     ) {
       nextNewStep(index);
     } else {

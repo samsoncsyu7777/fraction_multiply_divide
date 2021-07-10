@@ -17,6 +17,7 @@ import {
   getValues2LayerArray,
   getValues3LayerArray,
   calculateTotalScoreForUnit,
+  includes,
 
 } from "../functions/CommonFunctions";
 import { questionsFilesArray, answersFilesArray, responsesFilesArray, typesFilesArray, wrongAnswersFilesArray } from "../questionData/ArrayForAllQuestionFiles";
@@ -295,7 +296,7 @@ export const MainController = ({
       checkMCAnswer(key);
       return;
     }
-    if (["1/?", "OK"].includes(key)) {
+    if (includes(["1/?", "OK"], key)) {
       setDecimalFractionStage((prev) => (prev + 1) % 3);
     }
     setCallKeypadClick((prev) => [prev[0] + 1, key]);
@@ -316,7 +317,7 @@ export const MainController = ({
     let marksFromNumberOfHints = (10 - errorMessageTimes) * 2;
     let marksFromThisQuestion = 20 + marksFromTime + marksFromNumberOfHints;
     if (isLogined && stageOrder.stage === -2) {
-      if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text")) {//if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") {
+      if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text")) {//if (typeAndFormulaAnswerArrayForAnyStage[0] === "fractionText") {
         marksFromThisQuestion *= 3;
       } else {
         marksFromThisQuestion *= 2;
@@ -382,8 +383,8 @@ export const MainController = ({
         </Button>
       </Grid>}
       <Grid className={classes.spaceGrid} />
-      {typeAndFormulaAnswerArrayForAnyStage[0] != undefined && (typeAndFormulaAnswerArrayForAnyStage[0].includes("Text") || typeAndFormulaAnswerArrayForAnyStage[0] === "MC") && //{["fractionText", "integerText", "decimalText", "decimalTextFraction", "fractionTextDecimal", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
-        !((stageOrder.stage === -2 & !isLogined) || [-3, -4].includes(stageOrder.stage)) && (
+      {typeAndFormulaAnswerArrayForAnyStage[0] != undefined && (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text") || typeAndFormulaAnswerArrayForAnyStage[0] === "MC") && //{["fractionText", "integerText", "decimalText", "decimalTextFraction", "fractionTextDecimal", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
+        !((stageOrder.stage === -2 & !isLogined) || includes([-3, -4], stageOrder.stage)) && (
           <TextQuestion
             textQuestion={questionTextForAnyStage[languageIndex]}
             setIsLogined={setIsLogined}
@@ -406,8 +407,8 @@ export const MainController = ({
         </Grid>
       }
       {
-        typeAndFormulaAnswerArrayForAnyStage[0] != undefined && typeAndFormulaAnswerArrayForAnyStage[0].includes("fraction") && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
-        ![-3, -4].includes(stageOrder.stage) &&
+        typeAndFormulaAnswerArrayForAnyStage[0] != undefined && includes(typeAndFormulaAnswerArrayForAnyStage[0], "fraction") && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
+        !includes([-3, -4],stageOrder.stage) &&
         !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
         <FractionUnitController
           languageIndex={languageIndex}
@@ -431,8 +432,8 @@ export const MainController = ({
       }
       {
         typeAndFormulaAnswerArrayForAnyStage[0] != undefined && 
-        (typeAndFormulaAnswerArrayForAnyStage[0].includes("integer") || typeAndFormulaAnswerArrayForAnyStage[0].includes("decimal")) && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
-        ![-3, -4].includes(stageOrder.stage) &&
+        (includes(typeAndFormulaAnswerArrayForAnyStage[0], "integer") || includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal")) && //        ["fractionFormula", "fractionText", "fractionFormulaDecimal", "fractionTextDecimal", "fraction%", "fraction%End"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
+        !includes([-3, -4], stageOrder.stage) &&
         !(stageOrder.stage === -2 && (examCompleted || !isLogined)) &&
         <DecimalUnitController
           languageIndex={languageIndex}

@@ -67,3 +67,28 @@ export function calculateTotalScoreForUnit(tmpObject, setScoreTotalForUnit) {//a
   console.log(Math.round(scoreTotal));
   setScoreTotalForUnit(Math.round(scoreTotal));
 }
+
+export function findIndex(thisArray, thisfunction) {
+  let index = -1;
+  for(let i = 0; i < thisArray.length; i++) {
+    if (thisfunction(thisArray[i])) {
+      index = i;
+      i = thisArray.length;
+    }
+  }
+  return index;
+}
+
+export function includes(thisArray, thisElement) {
+  let isIncludes = false;
+  if (thisArray.indexOf(thisElement) > -1) {
+    isIncludes = true;
+  }
+  /*for(let i = 0; i < thisArray.length; i++) {
+    if (thisArray[i] === thisElement) {
+      isIncludes = true;
+      i = thisArray.length;
+    }
+  }*/
+  return isIncludes;
+}

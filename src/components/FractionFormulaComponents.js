@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { findIndex, includes} from "../functions/CommonFunctions";
 import { theme as myTheme } from "../themes/theme";
 
 const fractionFormulaStyles = makeStyles((theme) => ({    
@@ -141,12 +141,12 @@ export const FractionFormula = ({
 }) => {
   const handleBracketClick = (index, bracketOrder) => {
     if (isFocusedLine && okButtonStage === 0) {
-      if (bracketArray[lineIndex].includes(index)) {
+      if (includes(bracketArray[lineIndex], index)) {
         //remove all the brackets in this formula
         let bracketFormula = [...bracketArray];
         bracketFormula[lineIndex] = [];
         setBracketArray(bracketFormula);
-      } else if (bracketArray[lineIndex].length % 2 === bracketOrder && bracketArray[lineIndex].findIndex((indexValue) => {return indexValue >= index }) === -1) {
+      } else if (bracketArray[lineIndex].length % 2 === bracketOrder && findIndex(bracketArray[lineIndex], (indexValue) => {return indexValue >= index }) === -1) { //bracketArray[lineIndex].findIndex((indexValue) => {return indexValue >= index }) === -1) {
         //add bracket here
         let bracketFormula = [...bracketArray];
         let bracket = [...bracketFormula[lineIndex]];

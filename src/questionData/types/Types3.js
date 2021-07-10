@@ -5,7 +5,7 @@ const types3 = [
     [
       //stage 0
       [
-        "decimalFormulaFraction",
+        "decimalFraction%%Formula",
 
         //"integerFormula",//q0
         "integerFormula",
