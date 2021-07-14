@@ -86,6 +86,7 @@ export const MainController = ({
     logoutText,
     sureText,//a
     timeDelay,//a
+    typeHint,
   } = constants;
 
   //both versions equal
@@ -162,14 +163,16 @@ export const MainController = ({
   };
 
   function handleSetError(errorMsg) {//a->b
+    let replacedErrorMsg = errorMsg.replace(/\*/g, "×");
+    replacedErrorMsg = replacedErrorMsg.replace(/\//g, "÷");
     setSeverity("error");
-    setErrorMessage(errorMsg);
+    setErrorMessage(replacedErrorMsg);
     setTimeout(() => {
       setOpenAlert(true);
     }, timeDelay);
     if (examIndex === 1 && stageOrder.stage === -2 && isLogined) {
       let tmpErrorArray = [...errorMessageArray];
-      tmpErrorArray.push(errorMsg);
+      tmpErrorArray.push(replacedErrorMsg);
       setErrorMessageArray(tmpErrorArray);
       setErrorMessageTimes((prev) => prev + 1);
     }
@@ -460,6 +463,7 @@ export const MainController = ({
         />
       }
       {
+        typeAndFormulaAnswerArrayForAnyStage[0] != undefined &&
         typeAndFormulaAnswerArrayForAnyStage[0] === "MC" && completed && !examCompleted &&
         <Grid className={classes.centerRow}>
           <Button
@@ -507,11 +511,14 @@ export const MainController = ({
         type={typeAndFormulaAnswerArrayForAnyStage[0]}
         decimalFractionStage={decimalFractionStage}
       />
-      <Grid className={classes.centerRow}>
-        <Typography style={{ whiteSpace: 'pre-line' }} className={classes.typeHint}>
-          {"aaa\nbbb"}
-        </Typography>
-      </Grid>
+      {
+        typeAndFormulaAnswerArrayForAnyStage[0] != undefined &&
+        <Grid className={classes.centerRow}>
+          <Typography style={{ whiteSpace: 'pre-line' }} className={classes.typeHint}>
+            {typeHint[typeAndFormulaAnswerArrayForAnyStage[0]][languageIndex]}
+          </Typography>
+        </Grid>
+      }
       <AlertSnackbar
         open={openAlert}
         closeAlert={closeAlert}

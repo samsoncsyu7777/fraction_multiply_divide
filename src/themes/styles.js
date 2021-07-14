@@ -99,8 +99,10 @@ export const pagesStyles = makeStyles((theme) => ({
   typeHint: {
     color: myTheme.color.myDarkGreen,
     fontSize: "1.7vw",
+    width: "80vw",
     [theme.breakpoints.down("xs")]: {
       fontSize: "3.4vw",
+      width: "94vw",
     },
   },
 }));
