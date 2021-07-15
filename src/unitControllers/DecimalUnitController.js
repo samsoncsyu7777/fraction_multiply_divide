@@ -37,7 +37,7 @@ export const DecimalUnitController = ({
   decimalFractionStage,
   setDecimalFractionStage
 }) => {
-  const { topicIndex, learningToolIndex } = topicToolIndex;//a, b
+  const { topicIndex, learningToolIndex } = topicToolIndex;//kept only for maximum number of operators
   const [formulaLinesArray, setFormulaLinesArray] = useState([""]);
   const [formulaFocusedIndex, setFormulaFocusedIndex] = useState(0);
   const [answersArray, setAnswersArray] = useState([]);

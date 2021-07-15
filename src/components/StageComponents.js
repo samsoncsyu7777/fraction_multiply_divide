@@ -109,7 +109,7 @@ export const StageButtons = ({
         >
           {exam}
         </Button>}
-        {examIndex === 1 && <Button
+        <Button
           size="small"
           variant="outlined"
           className={classes.buttonText}
@@ -122,8 +122,8 @@ export const StageButtons = ({
           onClick={() => handleStageClick(-3)}
         >
           {leaderboard}
-        </Button>}
-        {examIndex === 1 && <Button
+        </Button>
+        <Button
           size="small"
           variant="outlined"
           className={classes.buttonText}
@@ -136,7 +136,7 @@ export const StageButtons = ({
           onClick={() => handleStageClick(-4)}
         >
           {uploadTotalScore}
-        </Button>}
+        </Button>
       </Grid>
     </Grid>
   );

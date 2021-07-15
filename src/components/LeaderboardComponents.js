@@ -14,7 +14,7 @@ const leaderboardStyles = makeStyles((theme) =>
       alignItems: "center",
     },
     centerColumn: {
-      
+
     },
     leftRow: {
       display: "flex",
@@ -24,7 +24,7 @@ const leaderboardStyles = makeStyles((theme) =>
         alignItems: "flex-start",
       }
     },
-    marginLeft: {      
+    marginLeft: {
       width: "66vw",
       marginLeft: "14vw",
       [theme.breakpoints.down("xs")]: {
@@ -83,7 +83,8 @@ const leaderboardStyles = makeStyles((theme) =>
 export const Leaderboard = ({
   languageIndex,
   handleSetError,
-  unitTitle
+  unitTitle,
+  examIndex
 }) => {
   const date = new Date();
   const year = date.getFullYear();
@@ -99,10 +100,18 @@ export const Leaderboard = ({
   const submitText = ["遞交", "递交", "Submit", "Soumettre"];
   const failGetMsg = ["網絡繁忙，未能成功讀取資料，請再嘗試。", "网络繁忙，未能成功读取资料，请再尝试。", "The network is busy and the data cannot be read successfully. Please try again.", "Le réseau est occupé et les données ne peuvent pas être lues avec succès. Veuillez réessayer."]
   const leaderboardIntroA = [
-    "計分方法：每答對一題得20分；在150秒內答對加4分，在120秒內答對加8分，如此類推；顯示9次提示加2分，顯示8次提示加4分，如此類推；模擬試卷內的題目會有雙倍分數，當中的列式應用題更有三倍分數。",
-    "计分方法：每答对一题得20分；在150秒内答对加4分，在120秒内答对加8分，如此类推；显示9次提示加2分，显示8次提示加4分，如此类推；模拟试卷内的题目会有双倍分数，当中的列式应用题更有三倍分数。",
-    "Scoring method: 20 points for each correct answer. Get 4 more points for correct answers within 150 seconds, get 8 more points for correct answers within 120 seconds, and so on. Get 2 more points with 9 prompts displayed, get 4 more points with 8 prompts displayed, and so on. The questions in the mock exam papers will have double scores, and the word problems in the mock exam papers will have triple scores.",
-    "Méthode de notation : 20 points pour chaque bonne réponse. Obtenez 4 points de plus pour des réponses correctes dans les 150 secondes, obtenez 8 points de plus pour des réponses correctes dans les 120 secondes, et ainsi de suite. Obtenez 2 points de plus avec 9 invites affichées, obtenez 4 points de plus avec 8 invites affichées, et ainsi de suite. Les questions des copies d'examen simulé auront des scores doubles, et les problèmes de mots dans les copies d'examen simulé auront des scores triples."
+    [
+      "計分方法：每答對一題得20分；在150秒內答對加4分，在120秒內答對加8分，如此類推；顯示9次提示加2分，顯示8次提示加4分，如此類推。",
+      "计分方法：每答对一题得20分；在150秒内答对加4分，在120秒内答对加8分，如此类推；显示9次提示加2分，显示8次提示加4分，如此类推。",
+      "Scoring method: 20 points for each correct answer. Get 4 more points for correct answers within 150 seconds, get 8 more points for correct answers within 120 seconds, and so on. Get 2 more points with 9 prompts displayed, get 4 more points with 8 prompts displayed, and so on. ",
+      "Méthode de notation : 20 points pour chaque bonne réponse. Obtenez 4 points de plus pour des réponses correctes dans les 150 secondes, obtenez 8 points de plus pour des réponses correctes dans les 120 secondes, et ainsi de suite. Obtenez 2 points de plus avec 9 invites affichées, obtenez 4 points de plus avec 8 invites affichées, et ainsi de suite. "
+    ],
+    [
+      "計分方法：每答對一題得20分；在150秒內答對加4分，在120秒內答對加8分，如此類推；顯示9次提示加2分，顯示8次提示加4分，如此類推；模擬試卷內的題目會有雙倍分數，當中的列式應用題更有三倍分數。",
+      "计分方法：每答对一题得20分；在150秒内答对加4分，在120秒内答对加8分，如此类推；显示9次提示加2分，显示8次提示加4分，如此类推；模拟试卷内的题目会有双倍分数，当中的列式应用题更有三倍分数。",
+      "Scoring method: 20 points for each correct answer. Get 4 more points for correct answers within 150 seconds, get 8 more points for correct answers within 120 seconds, and so on. Get 2 more points with 9 prompts displayed, get 4 more points with 8 prompts displayed, and so on. The questions in the mock exam papers will have double scores, and the word problems in the mock exam papers will have triple scores.",
+      "Méthode de notation : 20 points pour chaque bonne réponse. Obtenez 4 points de plus pour des réponses correctes dans les 150 secondes, obtenez 8 points de plus pour des réponses correctes dans les 120 secondes, et ainsi de suite. Obtenez 2 points de plus avec 9 invites affichées, obtenez 4 points de plus avec 8 invites affichées, et ainsi de suite. Les questions des copies d'examen simulé auront des scores doubles, et les problèmes de mots dans les copies d'examen simulé auront des scores triples."
+    ]
   ];
   const leaderboardIntroB = [
     "龍虎榜分類：我們於每個月每個學習單元皆設立一個環球龍虎榜。辦學團體或教師也可為同學們設定學習群組名稱，我們也為各群組於每個月每個單元設立一個組別龍虎榜。",
@@ -251,7 +260,7 @@ export const Leaderboard = ({
             </Button>
           </Grid>
           <Grid>
-            <Typography className={classes.introduction}>{leaderboardIntroA[languageIndex]}</Typography>
+            <Typography className={classes.introduction}>{leaderboardIntroA[examIndex][languageIndex]}</Typography>
             <Typography className={classes.introduction}>{leaderboardIntroB[languageIndex]}</Typography>
             <Typography className={classes.introduction}>{leaderboardIntroC[languageIndex]}</Typography>
           </Grid>

@@ -179,7 +179,7 @@ export const MainController = ({
   }
 
   function pushScoreInArray(newScore) {//a
-    if (examIndex === 1) {
+    if (examIndex === 1 || examIndex === 0) {
       let tmpObject = scoreArray;
       if (stageOrder.stage === -2) {
         tmpObject["exam"] = newScore;
@@ -484,6 +484,7 @@ export const MainController = ({
           languageIndex={languageIndex}
           handleSetError={handleSetError}
           unitTitle={unitTitle[unitIndex]}
+          examIndex={examIndex}
         />
       }
       {stageOrder.stage === -4 &&
@@ -512,7 +513,7 @@ export const MainController = ({
         decimalFractionStage={decimalFractionStage}
       />
       {
-        typeAndFormulaAnswerArrayForAnyStage[0] != undefined &&
+        typeAndFormulaAnswerArrayForAnyStage[0] != undefined && ((stageOrder.stage === -2 && isLogined) || stageOrder.stage > -1) &&
         <Grid className={classes.centerRow}>
           <Typography style={{ whiteSpace: 'pre-line' }} className={classes.typeHint}>
             {typeHint[typeAndFormulaAnswerArrayForAnyStage[0]][languageIndex]}

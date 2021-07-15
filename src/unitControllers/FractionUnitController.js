@@ -62,7 +62,7 @@ export const FractionUnitController = ({
   const [okButtonStage, setOkButtonStage] = useState(0);//b //"Enter", "Reduce?", "Completed"
   const [calculationStage, setCalculationStage] = useState(0);//b //0:with mixed number, 1:with division, 2:need simplify, 3:with multiplication, 4:improper number, 5:completed
   const [calculatedLcm, setCalculatedLcm] = useState(1);//b
-  const { topicIndex, learningToolIndex } = topicToolIndex;//a, b
+  const { topicIndex, learningToolIndex } = topicToolIndex;//can be removed in Unit Controllers
   const primeNumbers = getPrimeNumbers();//b
   const [startEndIndexLastLine, setStartEndIndexLastLine] = useState([0, 0]); //b
   const [indexDecreasedByLastStage, setIndexDecreasedByLastStage] = useState(0);//b
@@ -928,7 +928,6 @@ export const FractionUnitController = ({
                           isFocusedLine={formulaFocusedIndex == index}
                           positionIndex={fractionPositionIndex}
                           partIndex={fractionPartIndex}
-                          learningToolIndex={(isLogined && stageOrder.stage === -2) ? 1 : learningToolIndex}
                           showSmallInput={
                             okButtonStage == 2 && index == formulaFocusedIndex
                           }

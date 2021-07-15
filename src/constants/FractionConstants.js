@@ -62,11 +62,18 @@ const constants = {
     "la conversion de la fraction impropre en une fraction mixte ou un entier"
   ],
 
-  oneFractionOnly: [
-    "這個乘法步驟，應只得到一個分數。未計算的分數則保持不變。如果這是最後一個計算步驟，則只得這個分數。",
-    "这个乘法步骤，应只得到一个分数。未计算的分数则保持不变。如果这是最后一个计算步骤，则只得这个分数。",
-    "In this multiplication step, only one fraction should be obtained. Uncalculated fractions should remain unchanged. If this is the last calculation step, there is only one fraction.",
-    "Dans cette étape de multiplication, une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
+  oneFractionOnly1: [
+    "這個乘法步驟: ",
+    "这个乘法步骤: ",
+    "In this multiplication step: ",
+    "Dans cette étape de multiplication: "
+  ],
+
+  oneFractionOnly2: [
+    " 應只得到一個分數。未計算的分數則保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    " 应只得到一个分数。未计算的分数则保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    " only one fraction should be obtained. Uncalculated fractions should remain unchanged. If this is the last calculation step, there is only one fraction.",
+    " une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
 
   oneFractionOnlyForImproperToMix1: [
@@ -400,19 +407,33 @@ const constants = {
     "la multiplication des fractions "
   ],
 
-  sameMultipliers: [
-    "在分數乘除的部份中，第一個分數和乘數需保持不變，只有除數需上下倒轉。",
-    "在分数乘除的部份中，第一个分数和乘数需保持不变，只有除数需上下倒转。",
-    "In the part of fraction multiplication and division, the first fraction and the multipliers must remain unchanged, and only the divisors must be turned upside down.",
-    "Dans la partie multiplication et division des fractions, la première fraction et les multiplicateurs doivent rester inchangés, et seuls les diviseurs doivent être inversés."
+  sameMultipliers1: [
+    "在分數乘除的部份中，第一個分數和乘數需保持不變，只有除數需上下倒轉，所以 ",
+    "在分数乘除的部份中，第一个分数和乘数需保持不变，只有除数需上下倒转，所以 ",
+    "In the part of fraction multiplication and division, the first fraction and the multipliers must remain unchanged, and only the divisors must be turned upside down. So ",
+    "Dans la partie multiplication et division des fractions, la première fraction et les multiplicateurs doivent rester inchangés, et seuls les diviseurs doivent être inversés. "
   ],
 
-  divisorsUpDown: [
-    "在分數乘除的部份中，需把所有除數，即÷後的分數上下倒轉。",
-    "在分数乘除的部份中，需把所有除数，即÷后的分数上下倒转。",
-    "In the fraction multiplication and division part, all divisors, that are, the fractions after ÷, must be reversed up and down.",
-    "Dans la partie multiplication et division des fractions, tous les diviseurs, c'est-à-dire les fractions après , doivent être inversés de haut en bas."
+  sameMultipliers2: [
+    " 需保持不變。",
+    " 需保持不变。",
+    " should remain unchanged.",
+    " devrait donc rester inchangé."
   ],
+
+  divisorsUpDown1: [
+    "在分數乘除的部份中，需把所有除數，即÷後的分數上下倒轉，所以 ",
+    "在分数乘除的部份中，需把所有除数，即÷后的分数上下倒转，所以 ",
+    "In the fraction multiplication and division part, all divisors, that are, the fractions after ÷, must be reversed up and down. So, ",
+    "Dans la partie multiplication et division des fractions, tous les diviseurs, c'est-à-dire les fractions après , doivent être inversés de haut en bas. "
+  ],
+
+  /*divisorsUpDown2: [
+    " 需上下倒轉。",
+    " 需上下倒转。",
+    " should be reversed up and down.",
+    " faut donc l'inverser de haut en bas."
+  ],*/
 
   simplifyIt: [
     "這步計算得到的分數，當中的分子和分母有相同的因數，請把它們約簡。",
@@ -421,32 +442,74 @@ const constants = {
     "Dans la ou les fractions calculées à cette étape, le(s) numérateur(s) et dénominateur(s) ont le(s) même(s) facteur(s). Merci de les réduire."
   ],
 
-  productOfFractions: [
-    "這步分數乘法所得到的分數，分子應是上一步分子相乘的積，而分母則是上一步分母相乘的積。",
-    "这步分数乘法所得到的分数，分子应是上一步分子相乘的积，而分母则是上一步分母相乘的积。",
-    "The numerator of the fraction obtained by this step of fraction multiplication should be the product of the previous step's numerators, and the denominator should be the product of the previous step's denominators.",
-    "Le numérateur de la fraction obtenue par cette étape de multiplication fractionnaire doit être le produit des numérateurs de l'étape précédente et le dénominateur doit être le produit des dénominateurs de l'étape précédente."
+  productOfFractions1: [
+    "這步分數乘法: ",
+    "这步分数乘法: ",
+    "The numerator of the fraction obtained by this step of fraction multiplication: ",
+    "Le numérateur de la fraction obtenue par cette étape de multiplication fractionnaire: "
   ],
 
-  beAFactorOfNumerator: [
-    "在約簡的過程中，新分子應是原本分子的因數。",
-    "在约简的过程中，新分子应是原本分子的因数。",
-    "The new numerator should be a factor of the original numerator in the process of reduction.",
-    "Le nouveau numérateur doit être un facteur du numérateur d'origine dans le processus de réduction."
+  productOfFractions2: [
+    " 所得到的分數，分子應是上一步分子相乘的積: ",
+    " 所得到的分数，分子应是上一步分子相乘的积: ",
+    " should be the product of the previous step's numerators: ",
+    " doit être le produit des numérateurs de l'étape précédente: "
   ],
 
-  beAFactorOfDenominator: [
-    "在約簡的過程中，新分母應是原本分母的因數。",
-    "在约简的过程中，新分母应是原本分母的因数。",
-    "The new denominator should be a factor of the original denominator in the process of reduction.",
-    "Le nouveau dénominateur devrait être un facteur du dénominateur d'origine dans le processus de réduction."
+  productOfFractions3: [
+    " ，^^而分母則是上一步分母相乘的積: ",
+    " ，^^而分母则是上一步分母相乘的积: ",
+    " , ^^and the denominator should be the product of the previous step's denominators: ",
+    " ^^et le dénominateur doit être le produit des dénominateurs de l'étape précédente: "
   ],
 
-  sameFactorInReduction: [
-    "約簡不正確，分子和分母需以相同的因數進行約簡。",
-    "约简不正确，分子和分母需以相同的因数进行约简。",
-    "The reduction is incorrect. The numerator and denominator must be reduced by the same factor.",
-    "La réduction est incorrecte. Le numérateur et le dénominateur doivent être réduits du même facteur."
+  beAFactorOfNumerator1: [
+    "在約簡的過程中，新分子應是原本分子: ",
+    "在约简的过程中，新分子应是原本分子: ",
+    "The new numerator should be a factor of the original numerator: ",
+    "Le nouveau numérateur doit être un facteur du numérateur d'origine: "
+  ],
+
+  beAFactorOfNumerator2: [
+    " 的因數。",
+    " 的因数。",
+    " in the process of reduction.",
+    " dans le processus de réduction."
+  ],
+
+  beAFactorOfDenominator1: [
+    "在約簡的過程中，新分母應是原本分母: ",
+    "在约简的过程中，新分母应是原本分母: ",
+    "The new denominator should be a factor of the original denominator: ",
+    "Le nouveau dénominateur devrait être un facteur du dénominateur d'origine: "
+  ],
+
+  beAFactorOfDenominator2: [
+    " 的因數。",
+    " 的因数。",
+    " in the process of reduction.",
+    " dans le processus de réduction."
+  ],
+
+  sameFactorInReduction1: [
+    "約簡不正確，分子: ",
+    "约简不正确，分子: ",
+    "The reduction is incorrect. The numerator: ",
+    "La réduction est incorrecte. Le numérateur: "
+  ],
+
+  sameFactorInReduction2: [
+    "和分母: ",
+    "和分母: ",
+    " and denominator: ",
+    " et le dénominateur: "
+  ],
+
+  sameFactorInReduction3: [
+    " 需以相同的因數進行約簡。",
+    " 需以相同的因数进行约简。",
+    " must be reduced by the same factor.",
+    " doivent être réduits du même facteur."
   ],
 
   furtherReduceFactorLeft: [
@@ -745,11 +808,22 @@ const constants = {
     "This calculation step should obtain a fraction. ",//, and all the fractions and operators on the left and right sides of the calculation area in this step must remain unchanged. If this is the last calculation step, there is only one fraction.",
     "Cette étape de calcul doit obtenir une fraction. "//, et toutes les fractions et opérateurs sur les côtés gauche et droit de la zone de calcul dans cette étape doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
-  operatorBeforeStep: [
-    "這一步計算範圍的左方有一個運算符號，並不包含在這步計算中，所以需保持不變。",
-    "这一步计算范围的左方有一个运算符号，并不包含在这步计算中，所以需保持不变。",
-    "There is an operator on the left side of the calculation area of this step, which is not included in the calculation of this step, so it needs to remain unchanged.",
-    "Il y a un opérateur sur le côté gauche de la zone de calcul de cette étape, qui n'est pas inclus dans le calcul de cette étape, il doit donc rester inchangé."
+  operatorBeforeStep1: [
+    "這一步計算範圍: ",
+    "这一步计算范围: ",
+    "In the calculation area of this step: ",
+    "Dans la zone de calcul de cette étape: "
+  ],
+  operatorBeforeStep2: [
+    " 的左方有一個運算符號: ",
+    " 的左方有一个运算符号: ",
+    " , ^^there is an operator on the left side: ",
+    " , ^^il y a un opérateur sur le côté gauche: "
+  ],operatorBeforeStep3: [
+    " ，^^並不包含在這步計算中，所以需保持不變。",
+    " ，^^并不包含在这步计算中，所以需保持不变。",
+    " , ^^which is not included in the calculation of this step, so it needs to remain unchanged.",
+    " , ^^qui n'est pas inclus dans le calcul de cette étape, il doit donc rester inchangé."
   ],
   keepOthers1: [
     "計算法則是有括號的範圍比沒有括號的範圍先計算，然後先計算乘除法，再計算加減法。",//，所以現在正計算分數",
@@ -769,11 +843,29 @@ const constants = {
     ". In this step, all the fractions and operators on the left and right of the calculation area must remain unchanged. If this is the last calculation step, there is no other fraction.",
     ". Dans cette étape, toutes les fractions et opérateurs à gauche et à droite de la zone de calcul doivent rester inchangés. S'il s'agit de la dernière étape de calcul, il n'y a pas d'autre fraction."
   ],
-  noIntegerAfterMulti: [
-    "這一步要得到分數相乘的結果，即分子是上一步相關分子相乘的積，分母也是上一步相關分母相乘的積，所以這個分數沒有整數部份。",
-    "这一步要得到分数相乘的结果，即分子是上一步相关分子相乘的积，分母也是上一步相关分母相乘的积，所以这个分数没有整数部份。",
-    "In this step, the result of the multiplication of the fractions is obtained, that is, the numerator is the product of the related numerators of the previous step, and the denominator is also the product of the related denominators of the previous step. So, this fraction has no whole number.",
-    "Dans cette étape, le résultat de la multiplication des fractions est obtenu, c'est-à-dire que le numérateur est le produit des numérateurs liés de l'étape précédente, et le dénominateur est également le produit des dénominateurs liés de l'étape précédente. Donc, cette fraction n'a pas de nombre entier."
+  noIntegerAfterMulti1: [
+    "這一步要得到分數相乘: ",
+    "这一步要得到分数相乘: ",
+    "In this step, the result of the multiplication of the fractions: ",
+    "Dans cette étape, le résultat de la multiplication des fractions: "
+  ],
+  noIntegerAfterMulti2: [
+    " 的結果，即分子是上一步相關分子相乘的積: ",
+    " 的结果，即分子是上一步相关分子相乘的积: ",
+    " is obtained, that is, the numerator is the product of the related numerators of the previous step: ",
+    " est obtenu, c'est-à-dire que le numérateur est le produit des numérateurs liés de l'étape précédente: "
+  ],
+  noIntegerAfterMulti3: [
+    " ，^^分母也是上一步相關分母相乘的積: ",
+    " ，^^分母也是上一步相关分母相乘的积: ",
+    " , ^^and the denominator is also the product of the related denominators of the previous step: ",
+    " , ^^et le dénominateur est également le produit des dénominateurs liés de l'étape précédente: "
+  ],
+  noIntegerAfterMulti4: [
+    " ，^^所以這個分數沒有整數部份。",
+    " ，^^所以这个分数没有整数部份。",
+    " . ^^So, this fraction has no whole number.",
+    " . ^^Donc, cette fraction n'a pas de nombre entier."
   ],
   oddBrackets: [
     "當算式有左括號時，也要有右括號。",

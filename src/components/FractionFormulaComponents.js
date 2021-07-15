@@ -127,7 +127,6 @@ const fractionFormulaStyles = makeStyles((theme) => ({
 export const FractionFormula = ({
   handlePartClick,
   formula,
-  learningToolIndex,
   positionIndex,
   partIndex,
   showSmallInput,
