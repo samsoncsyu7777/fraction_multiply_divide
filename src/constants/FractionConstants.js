@@ -27,18 +27,32 @@ const constants = {
     "Une fraction doit à la fois un numérateur et un dénominateur."
   ],
 
-  noImproper: [
-    "不要在題目中輸入假分數，這兒請輸入帶分數。",
-    "不要在题目中输入假分数，这儿请输入带分数。",
-    "Do not enter improper fractions in the question, please enter mixed fractions instead.",
-    "N'entrez pas de fractions impropres dans la question, veuillez plutôt saisir des fractions mixtes."
+  noImproper1: [
+    "不要在題目中輸入假分數 ^^",
+    "不要在题目中输入假分数 ^^",
+    "Do not enter improper fractions in the question ^^",
+    "N'entrez pas de fractions impropres dans la question ^^"
   ],
 
-  noImproperAfterA_S: [
-    "計算上一步得到的是一個假分數，請把它化成帶分數。",
-    "计算上一步得到的是一个假分数，请把它化成带分数。",
-    "The calculation obtained in the previous step is an improper fraction, please turn it into a mixed fraction.",
-    "Le calcul obtenu à l'étape précédente est une fraction impropre, veuillez le transformer en fraction mixte."
+  noImproper2: [
+    " ，^^這兒請輸入帶分數。",
+    " ，^^这儿请输入带分数。",
+    " , ^^please enter mixed fractions instead.",
+    " , ^^veuillez plutôt saisir des fractions mixtes."
+  ],
+
+  noImproperAfterA_S1: [
+    "計算上一步得到的是一個假分數: ^^",
+    "计算上一步得到的是一个假分数: ^^",
+    "The calculation obtained in the previous step is an improper fraction: ^^",
+    "Le calcul obtenu à l'étape précédente est une fraction impropre: ^^"
+  ],
+
+  noImproperAfterA_S2: [
+    " ，^^請把它化成帶分數。",
+    " ，^^请把它化成带分数。",
+    " , ^^please turn it into a mixed fraction.",
+    " , ^^veuillez le transformer en fraction mixte."
   ],
 
   improperToMix: [
@@ -55,18 +69,67 @@ const constants = {
     "Dans cette étape de multiplication, une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
   ],
 
-  incorrectWhole: [
-    "整數不正確，這應是分子除以分母得到的整數商+原有整數(如果有)。若果這數原是一個整數或帶分數，則保持不變。",
-    "整数不正确，这应是分子除以分母得到的整数商+原有整数(如果有)。若果这数原是一个整数或带分数，则保持不变。",
-    "The whole number is incorrect. This should be the integer quotient obtained by dividing the numerator by the denominator + the original whole number (if any). If the number was originally an integer or a mixed fraction, there is no need to change it.",
-    "Le nombre entier est incorrect. Cela devrait être le quotient entier obtenu en divisant le numérateur par le dénominateur + le nombre entier d'origine (le cas échéant). Si le nombre était à l'origine un nombre entier ou une fraction mixte, il n'est pas nécessaire de le modifier."
+  oneFractionOnlyForImproperToMix1: [
+    "這個把假分數: ",
+    "这个把假分数: ",
+    "In the conversion of the improper fraction: ",
+    "Dans la conversion de la fraction impropre: "
   ],
 
-  wholeNoFraction: [
-    "應從上一步的假分數中，以分子除以分母，並以商作為整數部份，當除法沒有餘數時，這一步的結果就沒有分數部份。",
-    "应从上一步的假分数中，以分子除以分母，并以商作为整数部份，当除法没有余数时，这一步的结果就没有分数部份。",
-    "From the improper fraction in the previous step, divide the numerator by the denominator, and use the quotient as the whole number part. When the division has no remainder, the result of this step has no fractional part.",
-    "À partir de la fraction impropre de l'étape précédente, divisez le numérateur par le dénominateur et utilisez le quotient comme partie entière. Lorsque la division n'a pas de reste, le résultat de cette étape n'a pas de partie fractionnaire."
+  oneFractionOnlyForImproperToMix2: [
+    " 化為帶分數的步驟，應只得到一個分數。未計算的分數則保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    " 化为带分数的步骤，应只得到一个分数。未计算的分数则保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    " to a mixed fraction, only one fraction should be obtained. Uncalculated fractions should remain unchanged. If this is the last calculation step, there is only one fraction.",
+    " en une fraction mixte, une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
+  ],
+
+  oneFractionOnlyForAddSubtract1: [
+    "這個加減法步驟: ",
+    "这个加减法步骤: ",
+    "In this addition and subtraction step: ",
+    "Dans cette étape d'addition et de soustraction: "
+  ],
+
+  oneFractionOnlyForAddSubtract2: [
+    " ，應只得到一個分數。未計算的分數則保持不變。如果這是最後一個計算步驟，則只得這個分數。",
+    " ，应只得到一个分数。未计算的分数则保持不变。如果这是最后一个计算步骤，则只得这个分数。",
+    " , only one fraction should be obtained. Uncalculated fractions should remain unchanged. If this is the last calculation step, there is only one fraction.",
+    " , une seule fraction doit être obtenue. Les fractions non calculées doivent rester inchangées. S'il s'agit de la dernière étape de calcul, il n'y a qu'une fraction."
+  ],
+
+  incorrectWhole1: [
+    "整數不正確，這應是分子除以分母得到的整數商+原有整數(如果有): ",
+    "整数不正确，这应是分子除以分母得到的整数商+原有整数(如果有): ",
+    "The whole number is incorrect. This should be the integer quotient obtained by dividing the numerator by the denominator + the original whole number (if any): ",
+    "Le nombre entier est incorrect. Cela devrait être le quotient entier obtenu en divisant le numérateur par le dénominateur + le nombre entier d'origine (le cas échéant): "
+  ],
+
+  incorrectWhole2: [
+    " 。^^若果這數原是一個整數或帶分數，則保持不變。",
+    " 。^^若果这数原是一个整数或带分数，则保持不变。",
+    " . ^^If the number was originally an integer or a mixed fraction, there is no need to change it.",
+    " . ^^Si le nombre était à l'origine un nombre entier ou une fraction mixte, il n'est pas nécessaire de le modifier."
+  ],
+
+  wholeNoFraction1: [
+    "應從上一步的假分數: ",
+    "应从上一步的假分数: ",
+    "From the improper fraction in the previous step: ",
+    "À partir de la fraction impropre de l'étape précédente: "
+  ],
+
+  wholeNoFraction2: [
+    " 中，^^以分子除以分母: ",
+    " 中，^^以分子除以分母: ",
+    " , ^^divide the numerator by the denominator: ",
+    " , ^^divisez le numérateur par le dénominateur: "
+  ],
+
+  wholeNoFraction3: [
+    " ，^^並以商作為整數部份，當除法沒有餘數時，這一步的結果就沒有分數部份。",
+    " ，^^并以商作为整数部份，当除法没有余数时，这一步的结果就没有分数部份。",
+    " , ^^and use the quotient as the whole number part. When the division has no remainder, the result of this step has no fractional part.",
+    " , ^^et utilisez le quotient comme partie entière. Lorsque la division n'a pas de reste, le résultat de cette étape n'a pas de partie fractionnaire."
   ],
 
   sameDenominator: [
@@ -76,11 +139,25 @@ const constants = {
     "Dans cette étape de calcul, le dénominateur doit rester inchangé."
   ],
 
-  sameDenominatorInNoMixFract: [
-    "把帶分數化成假分數時，分母應保持不變。",
-    "把带分数化成假分数时，分母应保持不变。",
-    "When turning mixed fractions into improper fractions, the denominator should remain unchanged.",
-    "Lors de la transformation de fractions mixtes en fractions impropres, le dénominateur doit rester inchangé."
+  sameDenominatorInNoMixFract1: [
+    "把帶分數: ",
+    "把带分数: ",
+    "When turning mixed fractions: ",
+    "Lors de la transformation de fractions mixtes: "
+  ],
+
+  sameDenominatorInNoMixFract2: [
+    " 化成假分數時，分母: ",
+    " 化成假分数时，分母: ",
+    " into improper fractions, the denominator: ",
+    " en fractions impropres, le dénominateur: "
+  ],
+
+  sameDenominatorInNoMixFract3: [
+    " 應保持不變。",
+    " 应保持不变。",
+    " should remain unchanged.",
+    " doit rester inchangé."
   ],
 
   noMixedIssue: [
@@ -90,18 +167,46 @@ const constants = {
     "la conversion de fractions mixtes ou d'entiers en fractions impropres "
   ],
 
-  sameDenominatorInNoImproper: [
-    "把假分數化為帶分數時，分母應保持不變。",
-    "把假分数化为带分数时，分母应保持不变。",
-    "When turning an improper fraction into a mixed fraction, the denominator should remain unchanged.",
-    "Lors de la transformation d'une fraction impropre en fraction mixte, le dénominateur doit rester inchangé."
+  sameDenominatorInNoImproper1: [
+    "把假分數: ",
+    "把假分数: ",
+    "When turning an improper fraction: ",
+    "Lors de la transformation d'une fraction impropre: "
   ],
 
-  sameDenominatorInAddToOne: [
-    "在計算同分母分數加減中，分母應保持不變。",
-    "在计算同分母分数加减中，分母应保持不变。",
-    "In calculating the addition and subtraction of fractions with the same denominator, the denominator should remain unchanged.",
-    "En calculant l'addition et la soustraction de fractions ayant le même dénominateur, le dénominateur doit rester inchangé."
+  sameDenominatorInNoImproper2: [
+    " 化為帶分數時，分母: ",
+    " 化为带分数时，分母: ",
+    " into a mixed fraction, the denominator: ",
+    " en fraction mixte, le dénominateur: "
+  ],
+
+  sameDenominatorInNoImproper3: [
+    " 應保持不變。",
+    " 应保持不变。",
+    " should remain unchanged.",
+    " doit rester inchangé."
+  ],
+
+  sameDenominatorInAddToOne1: [
+    "在計算同分母分數加減中: ^^",
+    "在计算同分母分数加减中: ^^",
+    "In calculating the addition and subtraction of fractions with the same denominator: ^^",
+    "En calculant l'addition et la soustraction de fractions ayant le même dénominateur: ^^"
+  ],
+
+  sameDenominatorInAddToOne2: [
+    " ，分母 ",
+    " ，分母 ",
+    " , the denominator ",
+    " , le dénominateur "
+  ],
+
+  sameDenominatorInAddToOne3: [
+    " 應保持不變。",
+    " 应保持不变。",
+    " should remain unchanged.",
+    " doit rester inchangé."
   ],
 
   addToOne: [
@@ -111,18 +216,32 @@ const constants = {
     "l'addition et la soustraction de fractions ayant le même dénominateur "
   ],
 
-  numeratorFromImproper: [
-    "這步計算的分子不正確，若是假分數，這分子應是原來分子除以分母得到的餘數。若原是真分數，則應保持不變。",
-    "这步计算的分子不正确，若是假分数，这分子应是原来分子除以分母得到的余数。若原是真分数，则应保持不变。",
-    "The numerator calculated in this step is incorrect. If it was an improper fraction, this numerator should be the remainder obtained by dividing the original numerator by the denominator. If the original one is a proper fraction, it should remain unchanged.",
-    "Le numérateur calculé à cette étape est incorrect. S'il s'agissait d'une fraction impropre, ce numérateur devrait être le reste obtenu en divisant le numérateur original par le dénominateur. Si l'original est une fraction appropriée, il devrait rester inchangé."
+  numeratorFromImproper1: [
+    "這步計算的分子不正確，若是假分數，這分子應是原來分子除以分母得到的餘數: ",
+    "这步计算的分子不正确，若是假分数，这分子应是原来分子除以分母得到的余数: ",
+    "The numerator calculated in this step is incorrect. If it was an improper fraction, this numerator should be the remainder obtained by dividing the original numerator by the denominator: ",
+    "Le numérateur calculé à cette étape est incorrect. S'il s'agissait d'une fraction impropre, ce numérateur devrait être le reste obtenu en divisant le numérateur original par le dénominateur: "
   ],
 
-  noMixed: [
-    "在計算乘法或除法前，先將所有帶分數轉為假分數。",
-    "在计算乘法或除法前，先将所有带分数转为假分数。",
-    "All mixed fractions should be changed to improper fractions before multiplication or division.",
-    "Toutes les fractions mélangées doivent être changées en fractions impropres avant la multiplication ou la division."
+  numeratorFromImproper2: [
+    " 。^^若原是真分數，則應保持不變。",
+    " 。^^若原是真分数，则应保持不变。",
+    " . ^^If the original one is a proper fraction, it should remain unchanged.",
+    " . ^^Si l'original est une fraction appropriée, il devrait rester inchangé."
+  ],
+
+  noMixed1: [
+    "在計算乘法或除法前，先將所有帶分數(例如: ",
+    "在计算乘法或除法前，先将所有带分数(例如: ",
+    "All mixed fractions(eg. ",
+    "Toutes les fractions mélangées(par exemple: "
+  ],
+
+  noMixed2: [
+    " )^^轉為假分數。",
+    " )^^转为假分数。",
+    " ) ^^should be changed to improper fractions before multiplication or division.",
+    " ) ^^doivent être changées en fractions impropres avant la multiplication ou la division."
   ],
 
   sameNumberOfFractions1: [
@@ -134,11 +253,11 @@ const constants = {
   ],
 
   sameNumberOfFractions3: [
-    "進行", "进行", ", ", ", "
+    "進行^^", "进行^^", ", ^^", ", ^^"
   ],
 
   sameNumberOfFractions4: [
-    "，", "，", "is in progress. ", "sont en cours. "
+    "，^^", "，^^", "is in progress. ", "sont en cours. "
   ],
 
   sameNumberOfFractions5: [
@@ -210,7 +329,7 @@ const constants = {
     "the expansion of fractions to a common denominator ",
     "l'expansion des fractions à un dénominateur commun "
   ],
-  
+
   sameOperatorsInNoNegNum: [
     "在這退位的步驟中，運算符號需保持不變。",
     "在这退位的步骤中，运算符号需保持不变。",
@@ -225,25 +344,46 @@ const constants = {
     "l'abdication du nombre entier à la fraction "
   ],
 
-  wholeToNumerator: [
-    "在計算分數乘除前，要先把整數轉為假分數，即是分子=整數，分母=1。",
-    "在计算分数乘除前，要先把整数转为假分数，即是分子=整数，分母=1。",
-    "Before calculating the multiplication and division of  fractions, you must first convert the whole number to an improper fraction, that is, the numerator=integer and the denominator=1.",
-    "Avant de calculer la multiplication et la division de fractions, vous devez d'abord convertir le nombre entier en une fraction impropre, c'est-à-dire le numérateur=entier et le dénominateur=1."
+  wholeToNumerator1: [
+    "在計算分數乘除前，要先把整數: ",
+    "在计算分数乘除前，要先把整数: ",
+    "Before calculating the multiplication and division of  fractions, you must first convert the whole number: ",
+    "Avant de calculer la multiplication et la division de fractions, vous devez d'abord convertir le nombre entier: "
   ],
 
-  mixedToNumerator: [
-    "若是帶分數，化成假數後的分子應是 ( 整數×分母 + 分子 )。若是真分數，則保持不變。",
-    "若是带分数，化成假数后的分子应是 ( 整数×分母 + 分子 )。若是真分数，则保持不变。",
-    "If it is a mixed fraction, the numerator of the improper fraction should be (integer × denominator + numerator). If it is a proper fraction, it remains unchanged.",
-    "S'il s'agit d'une fraction mixte, le numérateur de la fraction impropre doit être (entier × dénominateur + numérateur). Si c'est une fraction propre, elle reste inchangée."
+  wholeToNumerator2: [
+    " 轉為假分數，即是分子=整數: ",
+    " 转为假分数，即是分子=整数: ",
+    " to an improper fraction, that is, the numerator=integer: ",
+    " en une fraction impropre, c'est-à-dire le numérateur=entier: "
+  ],
+
+  wholeToNumerator3: [
+    " ，^^分母=1。",
+    " ，^^分母=1。",
+    " and the denominator=1.",
+    " et le dénominateur=1."
+  ],
+
+  mixedToNumerator1: [
+    "若是帶分數，化成假數後的分子應是: ^^整數×分母 +分子 ^= ",
+    "若是带分数，化成假数后的分子应是: ^^整数×分母 +分子 ^= ",
+    "If it is a mixed fraction, the numerator of the improper fraction should be: ^^integer ^^×denominator ^^+numerator ^=",
+    "S'il s'agit d'une fraction mixte, le numérateur de la fraction impropre doit être: ^^entier ^^×dénominateur ^^+numérateur ^="
+  ],
+
+  mixedToNumerator2: [
+    " ^。^^若是真分數，則保持不變。",
+    " ^。^^若是真分数，则保持不变。",
+    " . ^If it is a proper fraction, it remains unchanged.",
+    " . ^Si c'est une fraction propre, elle reste inchangée."
   ],
 
   noDivision: [
-    "在計算分數乘除的部份前，要先把所有相關的除法轉為乘法。",
-    "在计算分数乘除的部份前，要先把所有相关的除法转为乘法。",
-    "Before calculating the fraction multiplication and division, all relevant divisions must be converted to multiplications.",
-    "Avant de calculer la multiplication et la division des fractions, toutes les divisions pertinentes doivent être converties en multiplications."
+    "在計算分數乘除的部份前，要先把所有相關的除法轉為乘法，例如: ",
+    "在计算分数乘除的部份前，要先把所有相关的除法转为乘法，例如: ",
+    "Before calculating the fraction multiplication and division, all relevant divisions must be converted to multiplications, eg. ",
+    "Avant de calculer la multiplication et la division des fractions, toutes les divisions pertinentes doivent être converties en multiplications, par exemple: "
   ],
 
   noDivisionIssue: [
@@ -358,11 +498,18 @@ const constants = {
     "La partie entière doit rester inchangée ici."
   ],
 
-  sameWholeNumbersInNoVarDenom: [
-    "在這通分母的步驟中，整數部份應保持不變。",
-    "在这通分母的步骤中，整数部份应保持不变。",
-    "In the step of expansion of fractions to a common denominator, the integer part should remain unchanged.",
-    "Dans l'étape d'expansion des fractions à un dénominateur commun, la partie entière doit rester inchangée."
+  sameWholeNumbersInNoVarDenom1: [
+    "在這通分母的步驟中，",
+    "在这通分母的步骤中，",
+    "In the step of expansion of fractions to a common denominator, the integer part of the fraction ",
+    "Dans l'étape d'expansion des fractions vers un dénominateur commun, la partie entière de la fraction "
+  ],
+
+  sameWholeNumbersInNoVarDenom2: [
+    " 的整數部份應保持不變。",
+    " 的整数部份应保持不变。",
+    " should remain unchanged.",
+    " doit rester inchangée."
   ],
 
   sameWholeNumbersInDecToFract: [
@@ -372,32 +519,60 @@ const constants = {
     "Lors de la conversion de nombres décimaux en fractions, la partie entière doit rester inchangée."
   ],
 
-  onlyWholeNumbers: [
-    "需在通分母後才可進行退位，即由整數部份退至分數部份，所以現在上一步的整數需保持不變。",
-    "需在通分母后才可进行退位，即由整数部份退至分数部份，所以现在上一步的整数需保持不变。",
-    "The abdication from whole number to fraction can only be performed after expansion of fractions to a common denominator, so the integer in the previous step must remain unchanged.",
-    "L'abdication du nombre entier à la fraction ne peut être effectuée qu'après expansion des fractions vers un dénominateur commun, de sorte que l'entier de l'étape précédente doit rester inchangé."
+  onlyWholeNumbers1: [
+    "需在通分母後才可進行退位，即由整數部份退至分數部份，所以現在上一步的整數: ",
+    "需在通分母后才可进行退位，即由整数部份退至分数部份，所以现在上一步的整数: ",
+    "The abdication from whole number to fraction can only be performed after expansion of fractions to a common denominator, so the integer in the previous step: ",
+    "L'abdication du nombre entier à la fraction ne peut être effectuée qu'après expansion des fractions vers un dénominateur commun, de sorte que l'entier de l'étape précédente: "
   ],
 
-  newDenominatorBeCM: [
-    "這計算步驟需通分母，即分母是上一步相關分數的分母的最小公倍數。",
-    "这计算步骤需通分母，即分母是上一步相关分数的分母的最小公倍数。",
-    "This calculation step needs to have a common denominator, that is, the denominator is the least common multiple of the related denominators of the previous step.",
-    "Cette étape de calcul doit avoir un dénominateur commun, c'est-à-dire que le dénominateur est le plus petit multiple commun des dénominateurs associés de l'étape précédente."
+  onlyWholeNumbers2: [
+    " 需保持不變。",
+    " 需保持不变。",
+    " must remain unchanged.",
+    " doit rester inchangé."
   ],
 
-  sameDenominatorHint: [
-    "在進行分數加減前，相關的分數需有相同的分母。",
-    "在进行分数加减前，相关的分数需有相同的分母。",
-    "Before adding or subtracting fractions, related fractions must have a common denominator.",
-    "Avant d'ajouter ou de soustraire des fractions, les fractions apparentées doivent avoir un dénominateur commun."
+  newDenominatorBeCM1: [
+    "這計算步驟需通分母，即分母是上一步相關分數的分母: ",
+    "这计算步骤需通分母，即分母是上一步相关分数的分母: ",
+    "This calculation step needs to have a common denominator, that is, the denominator is the least common multiple of the related denominators of the previous step: ",
+    "Cette étape de calcul doit avoir un dénominateur commun, c'est-à-dire que le dénominateur est le plus petit multiple commun des dénominateurs associés de l'étape précédente: "
   ],
 
-  multiplyWithSameInteger: [
-    "擴分時，分子和分母應乘以相同的整數。",
-    "扩分时，分子和分母应乘以相同的整数。",
-    "When expanding, the numerator and denominator should be multiplied by the same integer.",
-    "Lors de l'expansion, le numérateur et le dénominateur doivent être multipliés par le même entier."
+  newDenominatorBeCM2: [
+    " 的最小公倍數。",
+    " 的最小公倍数。",
+    " .",
+    " ."
+  ],
+
+  sameDenominatorHint1: [
+    "在進行分數加減前，相關的分數: ",
+    "在进行分数加减前，相关的分数: ",
+    "Before adding or subtracting fractions, related fractions: ",
+    "Avant d'ajouter ou de soustraire des fractions, les fractions apparentées: "
+  ],
+
+  sameDenominatorHint2: [
+    " 需擴分直至有相同的分母。",
+    " 需扩分直至有相同的分母。",
+    " need to be expanded until they have the same denominator.",
+    " doivent être étendus jusqu'à ce qu'ils aient le même dénominateur."
+  ],
+
+  multiplyWithSameInteger1: [
+    "當 ",
+    "当 ",
+    "When ",
+    "Lorsque "
+  ],
+
+  multiplyWithSameInteger2: [
+    " 進行擴分時，分子和分母應乘以相同的整數。",
+    " 进行扩分时，分子和分母应乘以相同的整数。",
+    " is expanded, the numerator and denominator should be multiplied by the same integer.",
+    " 1 est développé, le numérateur et le dénominateur doivent être multipliés par le même entier."
   ],
 
   CMToLCMHint: [
@@ -407,32 +582,53 @@ const constants = {
     "Sachez que vous pouvez trouver le multiple commun des dénominateurs précédents comme dénominateur dans cette étape, mais ce n'est pas le plus petit multiple commun. Essayez de trouver un multiple commun plus petit."
   ],
 
-  denominatorInvolvedBeLCM: [
-    "這步計算需從整數退位做出一個分子較大的假分數，而其分母應是相關分數的分母的L.C.M.。",
-    "这步计算需从整数退位做出一个分子较大的假分数，而其分母应是相关分数的分母的L.C.M.。",
-    "In this step of calculation, an improper fraction with a larger numerator must be abdicated from the whole number, and its denominator should be the L.C.M. of the denominators of the relevant fractions.",
-    "Dans cette étape de calcul, une fraction impropre avec un numérateur plus grand doit être abdiqué du nombre entier, et son dénominateur doit être le L.C.M. des dénominateurs des fractions concernées."
+  denominatorInvolvedBeLCM1: [
+    "這步計算需從整數 ",
+    "这步计算需从整数 ",
+    "In this step of calculation, an improper fraction with a larger numerator must be abdicated from the whole number ",
+    "Dans cette étape de calcul, une fraction impropre avec un numérateur plus grand doit être abdiqué du nombre entier "
   ],
 
-  wholeNotInvolvedKeepSame: [
-    "不需進行退位的整數應保持不變。",
-    "不需进行退位的整数应保持不变。",
-    "Integers that do not need to be abdicated should remain unchanged.",
-    "Les nombres entiers qui n'ont pas besoin d'être abdiqués doivent rester inchangés."
+  denominatorInvolvedBeLCM2: [
+    " 退位做出一個分子較大的假分數，而其分母應是相關分數的分母的L.C.M.: ",
+    " 退位做出一个分子较大的假分数，而其分母应是相关分数的分母的L.C.M.: ",
+    " , and its denominator should be the L.C.M. of the denominators of the relevant fractions: ",
+    " , et son dénominateur doit être le L.C.M. des dénominateurs des fractions concernées: "
   ],
 
-  fractionNotInvolvedKeepSame: [
-    "不進行退位的分數應保持不變。",
-    "不进行退位的分数应保持不变。",
-    "The fraction without abdication should remain unchanged.",
-    "La fraction sans abdication devrait rester inchangée."
+  wholeNotInvolvedKeepSame1: [
+    "不需進行退位的整數: ",
+    "不需进行退位的整数: ",
+    "Integers that do not need to be abdicated: ",
+    "Les nombres entiers qui n'ont pas besoin d'être abdiqués: "
+  ],
+
+  wholeNotInvolvedKeepSame2: [
+    " 應保持不變。",
+    " 应保持不变。",
+    " should remain unchanged.",
+    " doivent rester inchangés."
+  ],
+
+  fractionNotInvolvedKeepSame1: [
+    "不進行退位的分數: ",
+    "不进行退位的分数: ",
+    "The fraction without abdication: ",
+    "La fraction sans abdication: "
+  ],
+
+  fractionNotInvolvedKeepSame2: [
+    " 應保持不變。",
+    " 应保持不变。",
+    " should remain unchanged.",
+    " devrait rester inchangée."
   ],
 
   abdicatedNumerator: [
-    "新分子應是  原來分子+(整數退位×分母)。",
-    "新分子应是  原来分子+(整体退位×分母)。",
-    "The new numerator should be   the original numerator + (whole number abdicated × denominator).",
-    "Le nouveau numérateur doit être le numérateur d'origine + (nombre entier abdiqué × dénominateur)."
+    "新分子應是  原來分子+(整數退位×分母) ",
+    "新分子应是  原来分子+(整体退位×分母) ",
+    "The new numerator should be   the original numerator + (whole number abdicated × denominator) ",
+    "Le nouveau numérateur doit être le numérateur d'origine + (nombre entier abdiqué × dénominateur) "
   ],
 
   abdicateTooMuch: [
@@ -449,40 +645,76 @@ const constants = {
     "Le numérateur obtenu en ajoutant et en soustrayant des fractions est inférieur à 0, donc ici la fraction doit abdiquer davantage du nombre entier."
   ],
 
-  wholeWithoutFraction: [
-    "這步分數加減的計算應得到一個整數，並没有分數部份。",
-    "这步分数加减的计算应得到一个整数，并没有分数部份。",
-    "The calculation of the addition and subtraction of this step should get an integer, and there is no fractional part.",
-    "Le calcul de l'addition et de la soustraction de cette étape doit obtenir un nombre entier, et il n'y a pas de partie fractionnaire."
+  wholeWithoutFraction1: [
+    "這步分數加減的計算: ",
+    "这步分数加减的计算: ",
+    "The calculation of the addition and subtraction of this step: ",
+    "Le calcul de l'addition et de la soustraction de cette étape: "
   ],
 
-  numeratorAvoidNegative: [
-    "重新排列分子加減的計算，以避免在計算過程中得到負數。",
-    "重新排列分子加减的计算，以避免在计算过程中得到负数。",
-    "Rearrange the calculation of addition and subtraction of numerators to avoid getting negative numbers during the calculation.",
-    "Réorganisez le calcul de l'addition et de la soustraction de numérateurs pour éviter d'obtenir des nombres négatifs pendant le calcul."
+  wholeWithoutFraction2: [
+    " 應得到一個整數，並没有分數部份。",
+    " 应得到一个整数，并没有分数部份。",
+    " should get an integer, and there is no fractional part.",
+    " doit obtenir un nombre entier, et il n'y a pas de partie fractionnaire."
   ],
 
-  incorrectNumerator: [
-    "這步計算得到的分子不正確，請按照運算符來計算分子。",
-    "这步计算得到的分子不正确，请按照运算符来计算分子。",
-    "The numerator calculated in this step is incorrect. Please calculate the numerator according to the operator(s).",
-    "Le numérateur calculé à cette étape est incorrect. Veuillez calculer le numérateur en fonction du ou des opérateurs."
+  numeratorAvoidNegative1: [
+    "分子不正確。先把分子加減的計算: ",
+    "分子不正确。先把分子加减的计算: ",
+    "The numerator is incorrect. First, rearrange the calculation of numerator addition and subtraction: ",
+    "Le numérateur est incorrect. Tout d'abord, réorganisez le calcul de l'addition et de la soustraction des numérateurs: "
   ],
 
-  wholeAvoidNegative: [
-    "重新排列整數加減的計算，以避免在計算過程中得到負數。",
-    "重新排列整数加减的计算，以避免在计算过程中得到负数。",
-    "Rearrange the calculation of addition and subtraction of the whole numbers to avoid getting negative numbers during the calculation.",
-    "Réorganisez le calcul de l'addition et de la soustraction des nombres entiers pour éviter d'obtenir des nombres négatifs pendant le calcul."
+  numeratorAvoidNegative2: [
+    " 重新排列，以避免在計算過程中得到負數。",
+    " 重新排列，以避免在计算过程中得到负数。",
+    " to avoid getting negative numbers in the calculation process.",
+    " pour éviter d'obtenir des nombres négatifs dans le processus de calcul."
   ],
 
-  incorrectCalculatedWhole: [
-    "這步計算得到的整數不正確，請按照運算符來計算新整數。",
-    "这步计算得到的整数不正确，请按照运算符来计算新整数。",
-    "The integer calculated in this step is incorrect. Please calculate the new integer according to the operator(s).",
-    "L'entier calculé à cette étape est incorrect. Veuillez calculer le nouvel entier en fonction du ou des opérateurs."
+  incorrectNumerator1: [
+    "這步計算得到的分子不正確，請按照運算符號: ",
+    "这步计算得到的分子不正确，请按照运算符号: ",
+    "The numerator calculated in this step is incorrect. Please calculate the numerator according to the operator(s): ",
+    "Le numérateur calculé à cette étape est incorrect. Veuillez calculer le numérateur en fonction du ou des opérateurs: "
   ],
+
+  incorrectNumerator2: [
+    " 來計算分子。",
+    " 来计算分子。",
+    " .",
+    " ."
+  ],  
+
+  wholeAvoidNegative1: [
+    "整數不正確。先把整數加減的計算: ",
+    "整数不正确。先把整数加减的计算: ",
+    "The whole number is incorrect. First, rearrange the calculation of integer addition and subtraction: ",
+    "Le nombre entier est incorrect. Tout d'abord, réorganisez le calcul de l'addition et de la soustraction des nombres entiers: "
+  ],
+
+  wholeAvoidNegative2: [
+    " 重新排列，以避免在計算過程中得到負數。",
+    " 重新排列，以避免在计算过程中得到负数。",
+    " to avoid getting negative numbers in the calculation process.",
+    " pour éviter d'obtenir des nombres négatifs dans le processus de calcul."
+  ],
+
+  incorrectCalculatedWhole1: [
+    "這步計算得到的整數不正確，請按照運算符號: ",
+    "这步计算得到的整数不正确，请按照运算符号: ",
+    "The integer calculated in this step is incorrect. Please calculate the new integer according to the operator(s): ",
+    "L'entier calculé à cette étape est incorrect. Veuillez calculer le nouvel entier en fonction du ou des opérateurs: "
+  ],
+
+  incorrectCalculatedWhole2: [
+    " 來計算新整數。",
+    " 来计算新整数。",
+    " .",
+    " ."
+  ],
+
   parentheses: [
     /*"小心括號的數量和位置。*/"括號使用法則：當第一組括號的計算得到一個數時，這組括號即被移除，而其他括號則保持不變。",
     /*"小心括号的数量和位置。*/"括号使用法则：当第一组括号的计算得到一个数时，这组括号即被移除，而其他括号则保持不变。",

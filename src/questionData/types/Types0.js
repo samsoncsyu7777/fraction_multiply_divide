@@ -10,7 +10,7 @@ const types0 = [
 
         //order 0
         //"fractionTextDecimal",//
-        "fractionDecimalFormula",//
+        //"fractionDecimalFormula",//
         
         "fractionFormula",
         "fractionFormula",

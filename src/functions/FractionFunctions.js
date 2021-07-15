@@ -6,17 +6,34 @@ const {
   singleNumber,
   noNumber,
   fractionHasBoth,
-  noImproper,
-  noImproperAfterA_S,
+  noImproper1,
+  noImproper2,
+  noImproperAfterA_S1,
+  noImproperAfterA_S2,
   oneFractionOnly,
-  incorrectWhole,
-  wholeNoFraction,
+  oneFractionOnlyForImproperToMix1,
+  oneFractionOnlyForImproperToMix2,
+  oneFractionOnlyForAddSubtract1,
+  oneFractionOnlyForAddSubtract2,
+  incorrectWhole1,
+  incorrectWhole2,
+  wholeNoFraction1,
+  wholeNoFraction2,
+  wholeNoFraction3,
   sameDenominator,
-  sameDenominatorInNoMixFract,
-  sameDenominatorInNoImproper,
-  sameDenominatorInAddToOne,
-  numeratorFromImproper,
-  noMixed,
+  sameDenominatorInNoMixFract1,
+  sameDenominatorInNoMixFract2,
+  sameDenominatorInNoMixFract3,
+  sameDenominatorInNoImproper1,
+  sameDenominatorInNoImproper2,
+  sameDenominatorInNoImproper3,
+  sameDenominatorInAddToOne1,
+  sameDenominatorInAddToOne2,
+  sameDenominatorInAddToOne3,
+  numeratorFromImproper1,
+  numeratorFromImproper2,
+  noMixed1,
+  noMixed2,
   sameNumberOfFractions1,
   sameNumberOfFractions2,
   sameNumberOfFractions3,
@@ -30,8 +47,11 @@ const {
   sameOperatorsInNoMixFract,
   sameOperatorsInNoVarDenom,
   sameOperatorsInNoNegNum,
-  wholeToNumerator,
-  mixedToNumerator,
+  wholeToNumerator1,
+  wholeToNumerator2,
+  wholeToNumerator3,
+  mixedToNumerator1,
+  mixedToNumerator2,
   noDivision,
   sameMultipliers,
   divisorsUpDown,
@@ -46,23 +66,36 @@ const {
   atLeastOneFraction,
   negativeResult,
   sameWholeNumbers,
-  sameWholeNumbersInNoVarDenom,
-  onlyWholeNumbers,
-  newDenominatorBeCM,
-  sameDenominatorHint,
-  multiplyWithSameInteger,
+  sameWholeNumbersInNoVarDenom1,
+  sameWholeNumbersInNoVarDenom2,
+  onlyWholeNumbers1,
+  onlyWholeNumbers2,
+  newDenominatorBeCM1,
+  newDenominatorBeCM2,
+  sameDenominatorHint1,
+  sameDenominatorHint2,
+  multiplyWithSameInteger1,
+  multiplyWithSameInteger2,
   CMToLCMHint,
-  denominatorInvolvedBeLCM,
-  wholeNotInvolvedKeepSame,
-  fractionNotInvolvedKeepSame,
+  denominatorInvolvedBeLCM1,
+  denominatorInvolvedBeLCM2,
+  wholeNotInvolvedKeepSame1,
+  wholeNotInvolvedKeepSame2,
+  fractionNotInvolvedKeepSame1,
+  fractionNotInvolvedKeepSame2,
   abdicatedNumerator,
   abdicateTooMuch,
   abdicateTooLittle,
-  wholeWithoutFraction,
-  numeratorAvoidNegative,
-  incorrectNumerator,
-  wholeAvoidNegative,
-  incorrectCalculatedWhole,
+  wholeWithoutFraction1,
+  wholeWithoutFraction2,
+  numeratorAvoidNegative1,
+  numeratorAvoidNegative2,
+  incorrectNumerator1,
+  incorrectNumerator2,
+  wholeAvoidNegative1,
+  wholeAvoidNegative2,
+  incorrectCalculatedWhole1,
+  incorrectCalculatedWhole2,
   parentheses,
   parenthesesExtra,
   parenthesesLack,
@@ -81,6 +114,7 @@ const {
   noMixedIssue,
   noDivisionIssue,
   noMultipleIssue,
+  fullStop,
 } = constants;
 
 export const timeDelay = 200;
@@ -134,7 +168,7 @@ export function positiveResultCheck2(index, startIndex, endIndex, bracketArray, 
       fractionLinesArray[index][i][3] >= fractionLinesArray[index][i][4] &&
       fractionLinesArray[index][i][4] > 0
     ) {
-      handleSetError(noImproper[languageIndex]);
+      handleSetError(noImproper1[languageIndex] + "^\\frac{" + fractionLinesArray[index][i][3] + "}{" + fractionLinesArray[index][i][4] + "}^" + noImproper2[languageIndex]);
       return false;
     }
   }
@@ -175,10 +209,20 @@ export const parenthesesMessage2 = (newLength, lastLength, languageIndex) => {
 export const stepMessage2 = (startIndex, endIndex, issue, decrease, languageIndex, fractionLinesArray, formulaFocusedIndex) => {
   console.log("decrease in stepMessage:" + decrease)
   let stepHint = "";
+
+  /*let endWholeNumber = fractionLinesArray[formulaFocusedIndex - 1][endIndex + decrease][1].toString();
+  if (endWholeNumber === "0") { endWholeNumber = ""; }
+  let endNumer = fractionLinesArray[formulaFocusedIndex - 1][endIndex + decrease][3].toString();
+  let endDenom = fractionLinesArray[formulaFocusedIndex - 1][endIndex + decrease][4].toString();
+  let endFractionPart = "^\\frac{" + endNumer + "}{" + endDenom + "}^";
+  if (endDenom === "0") { endFractionPart = ""; }
+  let endFractionString = endWholeNumber + endFractionPart;*/
+  let endFractionString = makeFractionString(fractionLinesArray[formulaFocusedIndex - 1][endIndex + decrease]);
   let middleMessage =
     startIndex === endIndex + decrease
       ? ""
-      : sameNumberOfFractions2[languageIndex] + (endIndex + decrease + 1);
+      //: sameNumberOfFractions2[languageIndex] + (endIndex + decrease + 1);
+      : sameNumberOfFractions2[languageIndex] + endFractionString;
   let sameNumberOfFractions6 = "";
   if (startIndex === 0) {//no left fractions
     if (fractionLinesArray[formulaFocusedIndex - 1].length - 1 > endIndex + decrease + 1) {//with right fractions
@@ -192,8 +236,29 @@ export const stepMessage2 = (startIndex, endIndex, issue, decrease, languageInde
   } else {//no right fractions
     sameNumberOfFractions6 = sameNumberOfFractions6Left[languageIndex];
   }
-  stepHint = sameNumberOfFractions1[languageIndex] + (startIndex + 1) + middleMessage + sameNumberOfFractions3[languageIndex] + issue + sameNumberOfFractions4[languageIndex] + sameNumberOfFractions5[languageIndex] + sameNumberOfFractions6;
+
+  /*let startWholeNumber = fractionLinesArray[formulaFocusedIndex - 1][startIndex][1].toString();
+  if (startWholeNumber === "0") { startWholeNumber = ""; }
+  let startNumer = fractionLinesArray[formulaFocusedIndex - 1][startIndex][3].toString();
+  let startDenom = fractionLinesArray[formulaFocusedIndex - 1][startIndex][4].toString();
+  let startFractionPart = "^\\frac{" + startNumer + "}{" + startDenom + "}^";
+  if (startDenom === "0") { startFractionPart = ""; }
+  let startFractionString = startWholeNumber + startFractionPart;*/
+  let startFractionString = makeFractionString(fractionLinesArray[formulaFocusedIndex - 1][startIndex]);
+
+  stepHint = sameNumberOfFractions1[languageIndex] + /*(startIndex + 1)*/ startFractionString + middleMessage + sameNumberOfFractions3[languageIndex] + issue + sameNumberOfFractions4[languageIndex] + sameNumberOfFractions5[languageIndex] + sameNumberOfFractions6;
   return stepHint;
+}
+
+export function makeFractionString(thisFractionArray) {
+  let wholeNumber = thisFractionArray[1].toString();
+  if (wholeNumber === "0") { wholeNumber = ""; }
+  let numer = thisFractionArray[3].toString();
+  let denom = thisFractionArray[4].toString();
+  let fractionPart = "\\frac{" + numer + "}{" + denom + "}^";
+  if (denom === "0") { fractionPart = ""; }
+  let fractionString = "^" + wholeNumber + fractionPart;
+  return fractionString;
 }
 
 //A&S only
@@ -262,6 +327,16 @@ export function noVariousDenominatorCheck2(
     }
     console.log("startIndex:" + startIndex);
     console.log("endIndex:" + endIndex);
+    //create all denom string and all fraction string for hint
+    let allDenomString = ""
+    let allFractionString = ""
+    for (i = startIndex; i < endIndex + 1; i++) {
+      allDenomString += ", " + fractionLinesArray[index - 1][i][4]
+      allFractionString += ", " + makeFractionString(fractionLinesArray[index - 1][i]);
+    }
+    //remove ", "
+    allDenomString = allDenomString.slice(2);
+    allFractionString = allFractionString.slice(2);
     for (i = startIndex; i < endIndex + 1; i++) {
       //for (i = 0; i < fractionLinesArray[index - 1].length - 1; i++) {
       if (
@@ -273,7 +348,8 @@ export function noVariousDenominatorCheck2(
       if (
         fractionLinesArray[index][i][1] != fractionLinesArray[index - 1][i][1]
       ) {
-        handleSetError(sameWholeNumbersInNoVarDenom[languageIndex]);
+        let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+        handleSetError(sameWholeNumbersInNoVarDenom1[languageIndex] + thisFractionString + sameWholeNumbersInNoVarDenom2[languageIndex]);
         return false;
       }
       console.log("index in noVarious:" + index);
@@ -285,14 +361,14 @@ export function noVariousDenominatorCheck2(
           0 ||
           fractionLinesArray[index][i][4] == 0
         ) {
-          handleSetError(newDenominatorBeCM[languageIndex]);
+          handleSetError(newDenominatorBeCM1[languageIndex] + "^" + allDenomString + "^" + newDenominatorBeCM2[languageIndex]);
           return false;
         }
         if (lcm == 0) {
           lcm = fractionLinesArray[index][i][4];
         } else {
           if (fractionLinesArray[index][i][4] != lcm) {
-            handleSetError(sameDenominatorHint[languageIndex]);
+            handleSetError(sameDenominatorHint1[languageIndex] + allFractionString + sameDenominatorHint2[languageIndex]);
             return false;
           }
         }
@@ -305,7 +381,8 @@ export function noVariousDenominatorCheck2(
           fractionLinesArray[index - 1][i][3] !=
           denominatorMultiple
         ) {
-          handleSetError(multiplyWithSameInteger[languageIndex]);
+          let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+          handleSetError(multiplyWithSameInteger1[languageIndex] + thisFractionString + multiplyWithSameInteger2[languageIndex]);
           return false;
         }
         //whole number only
@@ -314,7 +391,8 @@ export function noVariousDenominatorCheck2(
           fractionLinesArray[index][i][3] > 0 ||
           fractionLinesArray[index][i][4] > 0
         ) {
-          handleSetError(onlyWholeNumbers[languageIndex]);
+          let wholeNumberString = fractionLinesArray[index][i][1].toString();
+          handleSetError(onlyWholeNumbers1[languageIndex] + wholeNumberString + onlyWholeNumbers2[languageIndex]);
           return false;
         }
       }
@@ -435,12 +513,14 @@ export function noNegativeNumeratorResultCheck2(
         //denominator should be the lcm
         if (wholeDiff > 0 || fractionLinesArray[index - 1][i][4] > 0) {
           if (fractionLinesArray[index][i][4] != calculatedLcm) {
-            handleSetError(denominatorInvolvedBeLCM[languageIndex]);
+            let thisWholeNumber = fractionLinesArray[index - 1][i][1].toString();
+            handleSetError(denominatorInvolvedBeLCM1[languageIndex] + "^" + thisWholeNumber + "^" + denominatorInvolvedBeLCM2[languageIndex] + "^" + calculatedLcm + "^" + fullStop[languageIndex]);
             return false;
           }
         } else {
           if (fractionLinesArray[index][i][4] != 0) {
-            handleSetError(wholeNotInvolvedKeepSame[languageIndex]);
+            let wholeNumberString = fractionLinesArray[index - 1][i][1].toString();
+            handleSetError(wholeNotInvolvedKeepSame1[languageIndex] + "^" + wholeNumberString + "^" + wholeNotInvolvedKeepSame2[languageIndex]);
             return false;
           }
         }
@@ -448,7 +528,8 @@ export function noNegativeNumeratorResultCheck2(
           fractionLinesArray[index][i][3] !=
           fractionLinesArray[index - 1][i][3] + wholeDiff * calculatedLcm
         ) {
-          handleSetError(abdicatedNumerator[languageIndex]);
+          let numerFormula = "= " + fractionLinesArray[index - 1][i][3] + " + (" + wholeDiff + " × " + calculatedLcm + ") ";
+          handleSetError(abdicatedNumerator[languageIndex] + "^" + numerFormula + "^" + fullStop[languageIndex]);
           return false;
         }
       } else {
@@ -460,7 +541,8 @@ export function noNegativeNumeratorResultCheck2(
           fractionLinesArray[index][i][4] !=
           fractionLinesArray[index - 1][i][4]
         ) {
-          handleSetError(fractionNotInvolvedKeepSame[languageIndex]);
+          let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+          handleSetError(fractionNotInvolvedKeepSame1[languageIndex] + thisFractionString + fractionNotInvolvedKeepSame2[languageIndex]);
           return false;
         }
       }
@@ -493,6 +575,15 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
   console.log("fractionIndexInProcess:" + fractionIndexInProcess);
   console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
   //check other fractions
+  //make operation string for hints
+  let operationString = "";
+  let numerOperationString = "";
+  let wholeOperationString = "";
+  for (let i = startEndIndexLastLine[0]; i < startEndIndexLastLine[1] + 1; i++) {
+    operationString += fractionLinesArray[index - 1][i][0] + makeFractionString(fractionLinesArray[index - 1][i]);
+    numerOperationString += fractionLinesArray[index - 1][i][0] + fractionLinesArray[index - 1][i][3].toString();
+    wholeOperationString += fractionLinesArray[index - 1][i][0] + fractionLinesArray[index - 1][i][1].toString();
+  }
   if (
     !otherFractionsCheck(
       index,
@@ -508,8 +599,8 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
     fractionLinesArray[index].length !==
     fractionLinesArray[index - 1].length - indexDecreasedByLastStage
   ) {
-    //>2
-    handleSetError(oneFractionOnly[languageIndex]);
+    //>2    
+    handleSetError(oneFractionOnlyForAddSubtract1[languageIndex] + operationString + oneFractionOnlyForAddSubtract2[languageIndex]);
     return false;
   }
   let allBracketArray = [...bracketArray];
@@ -575,13 +666,13 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
       fractionLinesArray[index][startEndIndexLastLine[0]][4] != calculatedLcm
     ) {
       //position: [0]
-      handleSetError(sameDenominatorInAddToOne[languageIndex]);
+      handleSetError(sameDenominatorInAddToOne1[languageIndex] + operationString + sameDenominatorInAddToOne2[languageIndex] + calculatedLcm + sameDenominatorInAddToOne3[languageIndex]);
       return false;
     }
   } else {
     if (fractionLinesArray[index][startEndIndexLastLine[0]][4] != 0) {
       //position: [0]
-      handleSetError(wholeWithoutFraction[languageIndex]);
+      handleSetError(wholeWithoutFraction1[languageIndex] + operationString + wholeWithoutFraction2[languageIndex]);
       return false;
     }
   }
@@ -590,9 +681,9 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
   ) {
     //position: [0]
     if (negativeInNumeratorProcess) {
-      handleSetError(numeratorAvoidNegative[languageIndex]);
+      handleSetError(numeratorAvoidNegative1[languageIndex] + "^" + numerOperationString + "^" + numeratorAvoidNegative2[languageIndex]);
     } else {
-      handleSetError(incorrectNumerator[languageIndex]);
+      handleSetError(incorrectNumerator1[languageIndex] + "^" + numerOperationString + "^" + incorrectNumerator2[languageIndex]);
     }
     return false;
   }
@@ -601,9 +692,9 @@ export function addToOneFractionCheck2(index, startIndex, endIndex, setCalculati
   ) {
     //position: [0]
     if (negativeInWholeProcess) {
-      handleSetError(wholeAvoidNegative[languageIndex]);
+      handleSetError(wholeAvoidNegative1[languageIndex] + "^" + wholeOperationString + "^" + wholeAvoidNegative2[languageIndex]);
     } else {
-      handleSetError(incorrectCalculatedWhole[languageIndex]);
+      handleSetError(incorrectCalculatedWhole1[languageIndex] + "^" + wholeOperationString + "^" + incorrectCalculatedWhole2[languageIndex]);
     }
     return false;
   }
@@ -688,7 +779,8 @@ export function noImproperFractionCheck2(
         return false;
       } else {
         //*** */setErrorMessage(noImproper[languageIndex]);
-        handleSetError(noImproperAfterA_S[languageIndex]);
+        let thisFractionString = makeFractionString(fractionLinesArray[index - 1][startIndex])
+        handleSetError(noImproperAfterA_S1[languageIndex] + thisFractionString + noImproperAfterA_S2[languageIndex]);
         return false;
       }
     }
@@ -713,7 +805,8 @@ export function noImproperFractionCheck2(
       fractionLinesArray[index].length !==
       fractionLinesArray[index - 1].length
     ) {
-      handleSetError(oneFractionOnly[languageIndex]);
+      let thisFractionString = makeFractionString(fractionLinesArray[index - 1][startIndex]);
+      handleSetError(oneFractionOnlyForImproperToMix1[languageIndex] + thisFractionString + oneFractionOnlyForImproperToMix2[languageIndex]);
       return false;
     }
     for (i = startIndex; i < startIndex + 1; i++) {
@@ -737,7 +830,8 @@ export function noImproperFractionCheck2(
             fractionLinesArray[index - 1][i][4]
         )
       ) {*/
-        handleSetError(incorrectWhole[languageIndex]);
+        let thisNumerFormula = "^" + fractionLinesArray[index - 1][i][3] + " ÷ " + fractionLinesArray[index - 1][i][4] + "+" + fractionLinesArray[index - 1][i][1] + "^";
+        handleSetError(incorrectWhole1[languageIndex] + thisNumerFormula + incorrectWhole2[languageIndex]);
         return false;
       }
       if (fractionLinesArray[index - 1][i][4] == 1) {
@@ -745,7 +839,9 @@ export function noImproperFractionCheck2(
           fractionLinesArray[index][i][3] > 0 ||
           fractionLinesArray[index][i][4] > 0
         ) {
-          handleSetError(wholeNoFraction[languageIndex]);
+          let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+          let wholeFormula = "^" + fractionLinesArray[index - 1][i][3] + " ÷ " + fractionLinesArray[index - 1][i][4] + "^";
+          handleSetError(wholeNoFraction1[languageIndex] + thisFractionString + wholeNoFraction2[languageIndex] + wholeFormula + wholeNoFraction3[languageIndex]);
           return false;
         }
       } else {
@@ -753,15 +849,18 @@ export function noImproperFractionCheck2(
           fractionLinesArray[index][i][4] !=
           fractionLinesArray[index - 1][i][4]
         ) {
-          handleSetError(sameDenominatorInNoImproper[languageIndex]);
+          let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+          let thisDenomString = "^" + fractionLinesArray[index - 1][i][4].toString() + "^";
+          handleSetError(sameDenominatorInNoImproper1[languageIndex] + thisFractionString + sameDenominatorInNoImproper2[languageIndex] + thisDenomString + sameDenominatorInNoImproper3[languageIndex]);
           return false;
         }
-        if (
-          fractionLinesArray[index][i][3] !=
-          fractionLinesArray[index - 1][i][3] %
-          fractionLinesArray[index - 1][i][4]
-        ) {
-          handleSetError(numeratorFromImproper[languageIndex]);
+        let thisQuotient = parseInt(fractionLinesArray[index - 1][i][3] / fractionLinesArray[index - 1][i][4]);
+        let thisRemainder = fractionLinesArray[index - 1][i][3] % fractionLinesArray[index - 1][i][4];
+        if (fractionLinesArray[index][i][3] != thisRemainder) {
+          let thisDividend = fractionLinesArray[index - 1][i][3];
+          let thisDivisor = fractionLinesArray[index - 1][i][4];
+          let operationString = "^" + thisDividend + " ÷ " + thisDivisor + " = " + thisQuotient + "..." + thisRemainder + "^";
+          handleSetError(numeratorFromImproper1[languageIndex] + operationString + numeratorFromImproper2[languageIndex]);
           return false;
         }
       }
@@ -868,10 +967,12 @@ export function noMixedFractionCheck2(
             fractionLinesArray[index - 1][i][1] ||
             fractionLinesArray[index][i][4] != 1
           ) {
-            handleSetError(wholeToNumerator[languageIndex]);
+            let thisWhole = "^" + fractionLinesArray[index - 1][i][1] + "^";
+            handleSetError(wholeToNumerator1[languageIndex] + thisWhole + wholeToNumerator2[languageIndex] + thisWhole + wholeToNumerator3[languageIndex]);
           }
         } else {
-          handleSetError(noMixed[languageIndex]);
+          let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+          handleSetError(noMixed1[languageIndex] + thisFractionString + noMixed2[languageIndex]);
         }
       } else {
         console.log(
@@ -943,19 +1044,23 @@ export function noMixedFractionCheck2(
           fractionLinesArray[index - 1][i][1] ||
           fractionLinesArray[index][i][4] != 1
         ) {
-          handleSetError(wholeToNumerator[languageIndex]);
+          let thisWhole = "^" + fractionLinesArray[index - 1][i][1] + "^";
+          handleSetError(wholeToNumerator1[languageIndex] + thisWhole + wholeToNumerator2[languageIndex] + thisWhole + wholeToNumerator3[languageIndex]);
           return false;
         }
       } else {
         if (fractionLinesArray[index][i][3] != calculatedNumerator) {
-          handleSetError(mixedToNumerator[languageIndex]);
+          let thisNumerFormula = fractionLinesArray[index - 1][i][1].toString() + "×" + fractionLinesArray[index - 1][i][4] + " + " + fractionLinesArray[index - 1][i][3];
+          handleSetError(mixedToNumerator1[languageIndex] + thisNumerFormula + mixedToNumerator2[languageIndex]);
           return false;
         }
         if (
           fractionLinesArray[index][i][4] !=
           fractionLinesArray[index - 1][i][4]
         ) {
-          handleSetError(sameDenominatorInNoMixFract[languageIndex]);
+          let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+          let thisDenomString = fractionLinesArray[index - 1][i][4].toString();
+          handleSetError(sameDenominatorInNoMixFract1[languageIndex] + thisFractionString + sameDenominatorInNoMixFract2[languageIndex] + thisDenomString + sameDenominatorInNoMixFract3[languageIndex]);
           return false;
         }
       }
@@ -995,7 +1100,11 @@ export function noDivisionCheck2(
     if (fractionLinesArray[index][i][0] == "÷") {
       if (index !== 0 && !isNewStepTmp && calculationStage === 1) {
         //newStep
-        handleSetError(noDivision[languageIndex]);
+        let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]).replace(/\^/g, "");
+        let newMultiFractionArray = ["", 0, 0, fractionLinesArray[index - 1][i][4], fractionLinesArray[index - 1][i][3], 0];
+        let newMultifractionString = makeFractionString(newMultiFractionArray).replace(/\^/g, "");;
+        let thisOperationString = "^÷ " + thisFractionString + " >>> × " + newMultifractionString + "^";
+        handleSetError(noDivision[languageIndex] + thisOperationString + fullStop[languageIndex]);
       } else {
         console.log(
           "setFractionIndexInProcess with: " + startIndex + endIndex
@@ -1050,7 +1159,8 @@ export function noDivisionCheck2(
     }
     for (i = startIndex; i < endIndex + 1; i++) {
       if (fractionLinesArray[index][i][1] > 0) {
-        handleSetError(noMixed[languageIndex]);
+        let thisFractionString = makeFractionString(fractionLinesArray[index - 1][i]);
+        handleSetError(noMixed1[languageIndex] + thisFractionString + noMixed2[languageIndex]);
         return false;
       }
       if (i == startIndex || fractionLinesArray[index - 1][i][0] == "×") {
@@ -1200,7 +1310,7 @@ export function noMultiplicationCheck2(
     if (//*** */
       fractionLinesArray[index].length > 2 &&
       (includes(["×", "÷"], fractionLinesArray[index][startIndex][0]) ||
-      includes(["×", "÷"], fractionLinesArray[index][startIndex + 1][0]))
+        includes(["×", "÷"], fractionLinesArray[index][startIndex + 1][0]))
     ) {
       nextNewStep(index);
     } else {
@@ -1789,13 +1899,13 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
   setIndexDecreasedByLastStage(endIndex - startIndex);
   console.log("endIndex:" + endIndex); //bad
   console.log("startIndex:" + startIndex);
-  if (!reduceDecimalInProcess) {setOkButtonStage(0);}
+  if (!reduceDecimalInProcess) { setOkButtonStage(0); }
   if (checkValue) {
     //noMultiplicationCheck(index, false);
   }
   console.log("typeOfCalculation:" + typeOfCalculation);
-  console.log("reduceDecimalInProcess"+reduceDecimalInProcess)
-  console.log("reduceDecimalPositionArray.length"+reduceDecimalPositionArray.length)
+  console.log("reduceDecimalInProcess" + reduceDecimalInProcess)
+  console.log("reduceDecimalPositionArray.length" + reduceDecimalPositionArray.length)
   if (reduceDecimalInProcess) {
     if (reduceDecimalPositionArray.length > 2) {
       let reduceIndex = reduceDecimalPositionArray[2];
@@ -1803,10 +1913,10 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
       let oldReduceArray = [...reduceDecimalPositionArray];
       let newReduceArray = oldReduceArray.slice(1, oldReduceArray.length - 1);
       setReduceDecimalPositionArray(newReduceArray);
-      return true;      
+      return true;
     } else {
       setReduceDecimalInProcess(false);
-      nextNewStep(index);      
+      nextNewStep(index);
       return true;
     }
   }
@@ -1829,7 +1939,7 @@ export function checkSimplifyValue2(index, checkValue, startIndex, endIndex, fra
     if (
       fractionLinesArray[index].length > 2 &&
       (includes(["×", "÷"], fractionLinesArray[index][startIndex][0]) ||
-      includes(["×", "÷"], fractionLinesArray[index][startIndex + 1][0]))
+        includes(["×", "÷"], fractionLinesArray[index][startIndex + 1][0]))
     ) {
       nextNewStep(index);
     } else {
