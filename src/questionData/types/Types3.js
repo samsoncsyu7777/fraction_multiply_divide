@@ -6,6 +6,7 @@ const types3 = [
       //stage 0
       [
         //"decimalFraction%%NegativeFormula",
+        "integerNegativeFormula",//
 
         "integerFormula",//q0
         "integerFormula",

@@ -330,6 +330,7 @@ export const DecimalUnitController = ({
     let replacedString = replacedStringOriginal;
     let withParentheses = false;
     let thisAnswersArray = []; //["3+4*2", "4*2+3"]
+    console.log("replacedString: "+replacedString)
     //create operatorsStringArray and operatorsIndexArray
     const {
       operatorsStringArray,
@@ -448,24 +449,79 @@ export const DecimalUnitController = ({
     } else {
       //without fraction or %
 
+      //check with (-(-3)) at the 1st innermost parentheses
+      if (includes(replacedStringOriginal, "(-(-") && includes(replacedStringOriginal, "))")) {
+        let rightIndex = replacedStringOriginal.indexOf("))") + 1;
+        let startWithOperation = replacedStringOriginal.slice(0, rightIndex + 1);
+        let leftIndex = startWithOperation.lastIndexOf("(-(-");
+        let operationString = startWithOperation.slice(leftIndex);
+        let withOperator = checkStringContainsElement(operationString, ["+", "-", "*", "/"]);
+        if (!withOperator) {
+          console.log("operationString: " + operationString)
+          let newValueString = eval(operationString).toString();
+          startString = startWithOperation.slice(0, leftIndex);
+          endString = replacedStringOriginal.slice(rightIndex + 1);
+          let newAnswerString = startString + newValueString + endString;
+          let updatedArray = []
+          console.log("newAnswerString: " + newAnswerString)
+          updatedArray.push(newAnswerString);
+          console.log("updatedArray: " + updatedArray)
+          completeHintString += firstConvert[languageIndex] + negativeInParentheses[languageIndex] + operationString + toPositiveNumber[languageIndex];
+          setErrorMessage(completeHintString);
+          return updatedArray;
+        }
+      }
+      console.log("replacedString: "+ replacedString)
+      //change all (-3) -> <3>
+      let tmpString = replacedString;
+      let revisedString = ""
+      for(let i = 0; i < replacedString.length; i++) {
+        let leftIndex = tmpString.indexOf("(-");
+        console.log('tmpString + tmpString.indexOf("(-")' + tmpString + tmpString.indexOf("(-"))
+        if (leftIndex === -1) {
+          revisedString += tmpString;
+          i = replacedString.length;
+        } else {
+          revisedString += tmpString.slice(0, leftIndex);
+          tmpString = tmpString.slice(leftIndex);
+          let rightIndex = tmpString.indexOf(")");
+          let operationString = tmpString.slice(0, rightIndex + 1);
+          let withOperator = checkStringContainsElement(operationString, ["+", "-", "*", "/"]);
+          if (!withOperator) {
+            tmpString = tmpString.slice(rightIndex + 1);
+            operationString = operationString.replace("(-", "<");
+            operationString = operationString.replace(")", ">");
+            revisedString += operationString;
+          } else {
+            revisedString += tmpString.slice(0, 2);
+            tmpString = tmpString.slice(2);
+          }
+        }
+      }
+      console.log("revisedString: "+revisedString)
+      //replacedStringOriginal --> revisedString
       //if with () //at last add () if answer string with operators
-      if (includes(replacedStringOriginal, "(")) {
+      if (includes(revisedString, "(")) {
         withParentheses = true;
-        endString = replacedStringOriginal.slice(replacedStringOriginal.indexOf(")") + 1, replacedStringOriginal.length);
-        let replacedStringWithStart = replacedStringOriginal.slice(0, replacedStringOriginal.indexOf(")"));
-        startString = replacedStringWithStart.slice(0, replacedStringWithStart.lastIndexOf("("));
-        replacedString = replacedStringWithStart.slice(replacedStringWithStart.lastIndexOf("(") + 1, replacedStringWithStart.length);
+        endString = revisedString.slice(revisedString.indexOf(")") + 1, revisedString.length).replace(/\</g, "(-").replace(/\>/g, ")");
+        let replacedStringWithStart = revisedString.slice(0, revisedString.indexOf(")"));
+        startString = replacedStringWithStart.slice(0, replacedStringWithStart.lastIndexOf("(")).replace(/\</g, "(-").replace(/\>/g, ")");
+        replacedString = replacedStringWithStart.slice(replacedStringWithStart.lastIndexOf("(") + 1, replacedStringWithStart.length).replace(/\</g, "(-").replace(/\>/g, ")");
         completeHintString += innerParenthesesFirst1[languageIndex] + "(" + replacedString + ")" + innerParenthesesFirst2[languageIndex];
         console.log("completeHintString: "+completeHintString)
         console.log("startString: " + startString)
         console.log("replacedString: " + replacedString)
         console.log("endString: " + endString)
       }
+      console.log("replacedString: "+replacedString)
+      replacedString = replacedString.replace(/\</g, "(-");
+      replacedString = replacedString.replace(/\>/g, ")");
+      console.log("replacedString: "+replacedString)
 
-      let withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
+      //let withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
       //check no operator, eg just a negative number inside parentheses
-      if (!withOperator) {
-        if (startString.lastIndexOf("(") > -1) {
+      //if (!withOperator) {
+        /*if (startString.lastIndexOf("(") > -1) {
           //find 2nd parentheses outside this negative number
           replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString;
           startString = startString.slice(0, startString.lastIndexOf("("));
@@ -483,11 +539,11 @@ export const DecimalUnitController = ({
           //without 2nd parentheses, take the whole string to consider the next step
           replacedString = replacedString + endString;
           endString = "";
-        }
+        }*/
         /*replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString + ")" + endString.slice(0, endString.indexOf(")"));
         startString = startString.slice(0, startString.lastIndexOf("("));
         endString = endString.slice(endString.indexOf(")") + 1);*/
-        withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
+        /* withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
         if (!withOperator) {
           //convert (-(-3)) to 3
           console.log("replacedString: " + replacedString)
@@ -500,7 +556,7 @@ export const DecimalUnitController = ({
           completeHintString += firstConvert[languageIndex] + negativeInParentheses[languageIndex] + "(" + replacedString + ")" + toPositiveNumber[languageIndex];
           setErrorMessage(completeHintString);
           return updatedArray;
-        }
+        }*/
         /*
         for (let i = 0; i > -1; i++) {
           console.log("startString: "+ startString)
@@ -519,8 +575,9 @@ export const DecimalUnitController = ({
             }
           }
         }*/
-      }
+      //}
       console.log("cannot return")
+      console.log("replacedString: "+replacedString)
       const {
         operatorsStringArray,
         operatorsIndexArray
@@ -994,6 +1051,11 @@ export const DecimalUnitController = ({
       operatorsIndexArray[startIndex + 1 - 1] + 1,
       operatorsIndexArray[endIndex + 1 + 1]
     );
+    console.log("operatorsIndexArray[startIndex + 1 - 1] + 1: " + (operatorsIndexArray[startIndex + 1 - 1] + 1))
+    console.log("operatorsIndexArray[endIndex + 1 + 1]: "+operatorsIndexArray[endIndex + 1 + 1])
+    console.log("operationString: "+operationString)
+    console.log("operatorsIndexArray: "+operatorsIndexArray)
+    console.log("replacedString: "+ replacedString);
     let startString = replacedString.substring(
       0,
       operatorsIndexArray[startIndex + 1 - 1] + 1
@@ -1042,6 +1104,7 @@ export const DecimalUnitController = ({
       }
     }
     console.log("not break")
+    console.log(operationString)
     /*if (operationString.indexOf("%") > -1) {
       percentString = "%";
       operationString = operationString.replace(/\%/g, "");
@@ -1087,6 +1150,7 @@ export const DecimalUnitController = ({
       }
     }
     operatorsIndexArray.push(replacedString.length);
+    console.log("replacedString: "+replacedString)
     console.log(operatorsStringArray);
     return { operatorsStringArray, operatorsIndexArray };
   }

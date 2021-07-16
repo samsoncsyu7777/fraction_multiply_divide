@@ -197,13 +197,13 @@ const constants = {
       fractionToDecimalHint[2] + "\n" + keepPercentHint[2] + "\n" + mixedCalculationPrinciple[2] + "\n" + decimalCalculationPrinciple[2],
       fractionToDecimalHint[3] + "\n" + keepPercentHint[3] + "\n" + mixedCalculationPrinciple[3] + "\n" + decimalCalculationPrinciple[3]
     ],
-    "decimalFraction%.NegativeFormula": [
+    "integerNegativeText": [
       "",
       "",
       "",
       ""
     ],
-    "decimalFraction%%NegativeFormula": [
+    "integerNegativeFormula": [
       "",
       "",
       "",
