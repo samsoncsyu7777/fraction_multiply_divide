@@ -460,6 +460,7 @@ export const MainController = ({
           setErrorMessage={setErrorMessage}
           decimalFractionStage={decimalFractionStage}
           setDecimalFractionStage={setDecimalFractionStage}
+          unitIndex={unitIndex}
         />
       }
       {

@@ -56,7 +56,7 @@ const constants = {
     ],
   ],
   learningToolsQuestion: [
-    "分數類型", "分数类型", "Fraction Type", "Type de Fraction"
+    "副主題", "副主题", "Subtopic", "Sous-thème"
   ],
   scriptureVerses: [//Genesis28:21-22, Leviticus27:30, Luke10:27, (next:Gen 41:34), 
     //traditional chinese

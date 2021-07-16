@@ -14,14 +14,18 @@ const constants = {
     "Quatre Opérations Mixtes",
   ],
   resultBeValidHint: [
-    "這計算結果不是一個正整數。",
-    "这计算结果不是一个正整数。",
-    "The result of this calculation is not a positive integer.",
-    "Le résultat de ce calcul n'est pas un entier positif.",
-    "這計算結果是一個循環小數或負數。",
-    "这计算结果是一个循环小数或负数。",
-    "The result of this calculation is a circulating decimal or a negative number.",
-    "Le résultat de ce calcul est un nombre décimal en circulation ou un nombre négatif.",
+    [
+      "這計算結果不是一個正整數。",
+      "这计算结果不是一个正整数。",
+      "The result of this calculation is not a positive integer.",
+      "Le résultat de ce calcul n'est pas un entier positif.",
+    ],
+    [
+      "這計算結果是一個負數。",
+      "这计算结果是一个负数。",
+      "The result of this calculation is a negative number.",
+      "Le résultat de ce calcul est un nombre négatif.",
+    ]
   ],
   wellDone: [
     "你做得到﹗你完成了這題混合計算﹗",
@@ -113,13 +117,13 @@ const constants = {
   ],
   toDecimal: [
     "化為小數。", "化为小数", " to a decimal. ", " en un nombre décimal. "
-  ],    
+  ],
   parenthesesBeforePercent: [
     "百分號前的括號部份 ", "百分号前的括号部份 ", "the parentheses part before the percent sign ", "les parenthèses se trouvent avant le signe de pourcentage "
   ],
   percentText: [
     "百分數", "百分数", "the percentage ", "le pourcentage "
-  ],  
+  ],
   innerParenthesesFirst1: [
     "最內層的括號部份 ", "最内层的括号部份 ", "The innermost parentheses part ", "La partie entre parenthèses la plus à l'intérieur "
   ],
@@ -133,7 +137,7 @@ const constants = {
     "括號內的負數 ", "括号内的负数 ", "the negative number in parentheses ", "le nombre négatif entre parenthèses "
   ],
   toPositiveNumber: [
-    " 簡化為一個正數或負數。" ," 简化为一个正数或负数", " simplify to a positive or negative number. ", " simplifier en un nombre positif ou négatif. "
+    " 簡化為一個正數或負數。", " 简化为一个正数或负数", " simplify to a positive or negative number. ", " simplifier en un nombre positif ou négatif. "
   ],
   beforeAddSubtractPercent: [
     "在計算百分數加減前，", "在计算百分数加减前，", "Before calculating the percentage addition and subtraction, ", "Avant de calculer le pourcentage d'addition et de soustraction, "

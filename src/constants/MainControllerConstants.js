@@ -79,10 +79,18 @@ const constants = {
     "遞交單元總分", "递交单元总分", "Submit unit total score", "Soumettre le score total de l'unité"
   ],
   unitTitle: [//a
-    ["分數乘法和除法", "分数乘法和除法", "Fraction Multiplication and Division", "Multiplication et Division de Fractions"],
-    ["分數加法和減法", "分数加法和减法", "Fraction Addition and Subtraction", "Addition et Soustraction de Fractions"],
-    ["分數四則混合計算", "分数四则混合计算", "Four Mixed Calculations for Fractions", "Quatre Calculs Mixtes pour les Fractions"],
-    ["整數四則混合計算", "整数四则混合计算", "Four Mixed Calculations for Integers", "Quatre Calculs Mixtes pour les Nombres Entiers"]
+    /*0*/["分數乘法和除法", "分数乘法和除法", "Fraction Multiplication and Division", "Multiplication et Division de Fractions"],
+    /*1*/["分數加法和減法", "分数加法和减法", "Fraction Addition and Subtraction", "Addition et Soustraction de Fractions"],
+    /*2*/["分數四則混合計算", "分数四则混合计算", "Four Mixed Calculations for Fractions", "Quatre Calculs Mixtes pour les Fractions"],
+    /*3*/["整數加法和減法", "整数加法和减法", "Integer Addition and Subtraction", "Addition et Soustraction d'Entiers"],
+    /*4*/["整數乘法和除法", "整数乘法和除法", "Integer Multiplication and Division", "Multiplication et Division d'Entiers"],
+    /*5*/["整數四則混合計算", "整数四则混合计算", "Four Mixed Calculations for Integers", "Quatre Calculs Mixtes pour les Nombres Entiers"],
+    /*6*/["小數加法和減法", "小数加法和减法", "Decimal Addition and Subtraction", "Addition et Soustraction Décimales"],
+    /*7*/["小數乘法和除法", "小数乘法和除法", "Decimal Multiplication and Division", "Multiplication et Division Décimales"],
+    /*8*/["小數四則混合計算", "小数四则混合计算", "Four Mixed Calculations for Decimals", "Quatre Calculs Mixtes pour les Décimales"],
+    /*9*/["負數四則混合計算", "负数四则混合计算", "Four Mixed Calculations for Negative Numbers", "Quatre Calculs Mixtes pour les Nombres Négatifs"],
+
+
   ],
   logoutText: ["登出", "登出", "Logout", "Logout"],//a
   sureText: ["確定?", "确定?", "Sure?", "Sûre?"],//a
@@ -208,6 +216,12 @@ const constants = {
       "",
       "",
       ""
+    ],
+    "decimalNegativeFormula": [
+
+    ],
+    "decimalFractionNegativeFormula": [
+
     ],
   }
 

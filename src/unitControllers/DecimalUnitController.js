@@ -35,7 +35,8 @@ export const DecimalUnitController = ({
   errorMessage,
   setErrorMessage,
   decimalFractionStage,
-  setDecimalFractionStage
+  setDecimalFractionStage,
+  unitIndex,
 }) => {
   const { topicIndex, learningToolIndex } = topicToolIndex;//kept only for maximum number of operators
   const [formulaLinesArray, setFormulaLinesArray] = useState([""]);
@@ -201,16 +202,22 @@ export const DecimalUnitController = ({
         10 ** (numberOfDecimal + 2);
       console.log("calculated value: " + tmpValue)
       if (
-        ((Number.isInteger(tmpValue) && !acceptDecimal) ||
-          (Number(tmpValue.toFixed(numberOfDecimal)) == tmpValue &&
-            acceptDecimal)) &&
-        (tmpValue >= 0 || includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative"))
+        ((Number.isInteger(tmpValue) && tmpValue >= 0 && includes([3, 4, 5], unitIndex)) || //need +ve integer
+          (tmpValue >= 0 && includes([6, 7, 8], unitIndex))) || //need +ve number
+          //(Number(tmpValue.toFixed(numberOfDecimal)) == tmpValue && acceptDecimal)) &&
+        //(tmpValue >= 0 || includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative"))) ||
+        stageOrder.stage != -1
       ) {
         nextStepPreparation(replacedString);
       } else {
+        let needIntegerIndex = 1;        
         //not a positive integer
-        let acceptDecimalIndex = (includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? 1 : 0);
-        handleSetError(resultBeValidHint[acceptDecimalIndex * 4 + languageIndex]);
+        if (includes([3, 4, 5], unitIndex)) {
+          needIntegerIndex = 0;
+        }
+        //let acceptDecimalIndex = (includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? 1 : 0);
+        //handleSetError(resultBeValidHint[acceptDecimalIndex * 4 + languageIndex]);
+        handleSetError(resultBeValidHint[needIntegerIndex][languageIndex]);
       }
     } else {
       //other steps or answer
