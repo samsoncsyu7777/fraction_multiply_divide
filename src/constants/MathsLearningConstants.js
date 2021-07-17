@@ -268,7 +268,7 @@ const constants = {
       "Mode d'emploi : saisissez les chiffres et les opérateurs."
     ],
   ],
-  applicationHintIndex: [0, 0, 0, 1],
+  applicationHintIndex: [0, 0, 0, 1, 1, 1, 1],
   topicIntroduction: [
     "請選擇不同的主題和類型，各主題和類型皆有不同的階段練習。",
     "请选择不同的主题和类型，各主题和类型皆有不同的阶段练习。",

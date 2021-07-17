@@ -97,9 +97,19 @@ const types3 = [
         "integerFormula",
         "integerFormula",
       ],
-     
+      //stage 9
+      [
+        "integerFormula",
+        "integerFormula",
+        "integerFormula",
+        "integerFormula",
+        "integerFormula",
+        "integerFormula",
+        "integerFormula",
+        "integerFormula",
+      ],
     ],
-    //learningToolIndex 1: 2 operators
+    //learningToolIndex 1: decimal
     [
       //stage 0
       [
@@ -132,48 +142,9 @@ const types3 = [
         "decimalFormula",
         "decimalFormula",
       ],
-      //stage 4
-      [
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-      ],
-      //stage 5
-      [
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-      ],
-      //stage 6
-      [
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-      ],
-      //stage 7
-      [
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-      ],
-      //stage 8
-      [
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-        "decimalFormula",
-      ],
     ],
   ],
-  //topicIndex 1: -
+  //topicIndex 1: 4 operators
   [
     //learningToolIndex 0: integer
     [

@@ -19,9 +19,9 @@ import wrongAnswers1 from "../questionData/wrongAnswers/WrongAnswers1";
 import wrongAnswers2 from "../questionData/wrongAnswers/WrongAnswers2";
 import wrongAnswers3 from "../questionData/wrongAnswers/WrongAnswers3";
 
-export const questionsFilesArray = [[...questions0], [...questions1], [...questions2], [...questions3]];
-export const answersFilesArray = [[...answers0], [...answers1], [...answers2], [...answers3]];
-export const responsesFilesArray = [[...responses0], [...responses1], [...responses2], [...responses3]];
-export const typesFilesArray = [[...types0], [...types1], [...types2], [...types3]];
-export const wrongAnswersFilesArray = [[...wrongAnswers0], [...wrongAnswers1], [...wrongAnswers2], [...wrongAnswers3]];
+export const questionsFilesArray = [[...questions0], [...questions1], [...questions2], [...questions3], [...questions3], [...questions3], [...questions3]];
+export const answersFilesArray = [[...answers0], [...answers1], [...answers2], [...answers3], [...answers3], [...answers3], [...answers3]];
+export const responsesFilesArray = [[...responses0], [...responses1], [...responses2], [...responses3], [...responses3], [...responses3], [...responses3]];
+export const typesFilesArray = [[...types0], [...types1], [...types2], [...types3], [...types3], [...types3], [...types3]];
+export const wrongAnswersFilesArray = [[...wrongAnswers0], [...wrongAnswers1], [...wrongAnswers2], [...wrongAnswers3], [...wrongAnswers3], [...wrongAnswers3], [...wrongAnswers3]];
 

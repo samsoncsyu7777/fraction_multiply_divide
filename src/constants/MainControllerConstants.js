@@ -220,12 +220,37 @@ const constants = {
       "",
       ""
     ],
+    "decimalNegativeText": [
+      "",
+      "",
+      "",
+      ""
+    ],
     "decimalNegativeFormula": [
-
+      "",
+      "",
+      "",
+      ""
     ],
     "decimalFractionNegativeFormula": [
-
+      "",
+      "",
+      "",
+      ""
     ],
+    "decimalFractionNegativeText": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "decimalShortText": [
+      "",
+      "",
+      "",
+      ""
+    ],
+
   }
 
 };

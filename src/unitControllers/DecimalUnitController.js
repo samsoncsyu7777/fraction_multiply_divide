@@ -10,6 +10,7 @@ import ForwardRoundedIcon from "@material-ui/icons/ForwardRounded";
 import { pagesStyles } from "../themes/styles";
 import { theme as myTheme } from "../themes/theme";//a,b
 import constants from "../constants/MixedOperationsConstants";
+import mainControllerConstants from "../constants/MainControllerConstants";
 import { findIndex, includes } from "../functions/CommonFunctions";
 //import questions from "../questions/Questions";
 
@@ -89,8 +90,10 @@ export const DecimalUnitController = ({
     beforeDecimalDivision1,
     beforeDecimalDivision2,
     operationWithPercent,
-    
+
   } = constants;
+
+  const { unitTitle } = mainControllerConstants;
 
   let completeHintString = "";
 
@@ -103,7 +106,8 @@ export const DecimalUnitController = ({
     if (
       stageOrder.stage > -1 &&
       formulaFocusedIndex === 0 &&
-      formulaLinesArray[0] != ""
+      formulaLinesArray[0] != "" &&
+      !includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text")
     ) {
       okClick();
     }
@@ -166,59 +170,106 @@ export const DecimalUnitController = ({
 
     //first formula
     if (formulaFocusedIndex == 0) {
-      //check answer is a positive integer
-      let removeFractionString = replacedString;//.replace("0^\\frac{", "0+(");      
-      let lastOperatorIndex = -1;
-      for (let i = 0; i < removeFractionString.length; i++) {
-        if (includes(["+", "-", "*", "/", "("], removeFractionString[i])) {
-          lastOperatorIndex = i;
-        } else if (removeFractionString[i] === "^" && removeFractionString[i + 1] === "\\") {
-          if (i - 1 === lastOperatorIndex) {
-            //no whole number before fraction
-            let startString = removeFractionString.slice(0, i);
-            let endString = removeFractionString.slice(i);
-            endString = endString.slice(endString.indexOf("{") + 1);
-            //let endString = removeFractionString.slice(i + 8);
-            removeFractionString = startString + "(" + endString;
-          } else {
-            //with whole number before fraction
-            let startString = removeFractionString.slice(0, lastOperatorIndex + 1);
-            let wholeNumberString = "(" + removeFractionString.slice(lastOperatorIndex + 1, i) + "+(";
-            //let endString = removeFractionString.slice(i + 7);
-            let endString = removeFractionString.slice(i);
-            endString = endString.slice(endString.indexOf("{") + 1);
-            let fractionString = endString.slice(0, endString.indexOf("}^")) + "))";
-            endString = endString.slice(endString.indexOf("}^") + 2);
-            removeFractionString = startString + wholeNumberString + fractionString + endString;
+      //text question check answer
+      if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text") && stageOrder.stage != -1) {
+        console.log("check formula")
+        //check formula
+        let isCorrect = false;
+        for (let i = 0; i < typeAndFormulaAnswerArrayForAnyStage[1].length; i++) {
+          if (updatedString === typeAndFormulaAnswerArrayForAnyStage[1][i][0][0]) {
+            isCorrect = true;
+            i = typeAndFormulaAnswerArrayForAnyStage[1].length;
           }
         }
-      }
-      removeFractionString = removeFractionString.replace(/\}{/g, ")/(");
-      removeFractionString = removeFractionString.replace(/\}\^/g, ")");
-      removeFractionString = removeFractionString.replace(/\%/g, "*0.01");
-      console.log(removeFractionString)
-      let tmpValue =
-        Math.round(eval(removeFractionString) * 10 ** (numberOfDecimal + 2)) /
-        10 ** (numberOfDecimal + 2);
-      console.log("calculated value: " + tmpValue)
-      if (
-        ((Number.isInteger(tmpValue) && tmpValue >= 0 && includes([3, 4, 5], unitIndex)) || //need +ve integer
-          (tmpValue >= 0 && includes([6, 7, 8], unitIndex))) || //need +ve number
-          //(Number(tmpValue.toFixed(numberOfDecimal)) == tmpValue && acceptDecimal)) &&
-        //(tmpValue >= 0 || includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative"))) ||
-        stageOrder.stage != -1
-      ) {
-        nextStepPreparation(replacedString);
-      } else {
-        let needIntegerIndex = 1;        
-        //not a positive integer
-        if (includes([3, 4, 5], unitIndex)) {
-          needIntegerIndex = 0;
+        console.log("isCorrect: " + isCorrect)
+        //when correct
+        if (isCorrect) {
+          if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Short")) {
+            //completed
+            setFormulaLinesArray(tmpFormulaLinesArray);
+            completeFunction();
+          } else {
+            console.log("call nextStepPreparation after Text question formula check")
+            //calculation steps
+            nextStepPreparation(replacedString);
+          }
+        } else {
+          //incorrect formula
+          let thisResponse = responseArrayForAnyStage[responseArrayForAnyStage.length - 1];
+          for (let i = 0; i < wrongFractionAnswerArrayForAnyStage.length; i++) {
+            if (updatedString === wrongFractionAnswerArrayForAnyStage[i][0][0]) {
+              thisResponse = responseArrayForAnyStage[i];
+            }
+          }
+          handleSetError(thisResponse[languageIndex]);
         }
-        //let acceptDecimalIndex = (includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? 1 : 0);
-        //handleSetError(resultBeValidHint[acceptDecimalIndex * 4 + languageIndex]);
-        handleSetError(resultBeValidHint[needIntegerIndex][languageIndex]);
+
+      } else {
+        //not a text question
+        //check answer is a positive integer
+        let removeFractionString = replacedString;//.replace("0^\\frac{", "0+(");      
+        let lastOperatorIndex = -1;
+        for (let i = 0; i < removeFractionString.length; i++) {
+          if (includes(["+", "-", "*", "/", "("], removeFractionString[i])) {
+            lastOperatorIndex = i;
+          } else if (removeFractionString[i] === "^" && removeFractionString[i + 1] === "\\") {
+            if (i - 1 === lastOperatorIndex) {
+              //no whole number before fraction
+              let startString = removeFractionString.slice(0, i);
+              let endString = removeFractionString.slice(i);
+              endString = endString.slice(endString.indexOf("{") + 1);
+              //let endString = removeFractionString.slice(i + 8);
+              removeFractionString = startString + "(" + endString;
+            } else {
+              //with whole number before fraction
+              let startString = removeFractionString.slice(0, lastOperatorIndex + 1);
+              let wholeNumberString = "(" + removeFractionString.slice(lastOperatorIndex + 1, i) + "+(";
+              //let endString = removeFractionString.slice(i + 7);
+              let endString = removeFractionString.slice(i);
+              endString = endString.slice(endString.indexOf("{") + 1);
+              let fractionString = endString.slice(0, endString.indexOf("}^")) + "))";
+              endString = endString.slice(endString.indexOf("}^") + 2);
+              removeFractionString = startString + wholeNumberString + fractionString + endString;
+            }
+          }
+        }
+        removeFractionString = removeFractionString.replace(/\}{/g, ")/(");
+        removeFractionString = removeFractionString.replace(/\}\^/g, ")");
+        removeFractionString = removeFractionString.replace(/\%/g, "*0.01");
+        console.log(removeFractionString)
+        let tmpValue = 0;
+        try {
+          tmpValue =
+            Math.round(eval(removeFractionString) * 10 ** (numberOfDecimal + 2)) /
+            10 ** (numberOfDecimal + 2);
+        }
+        catch (err) {
+          tmpValue = undefined;
+        }
+
+        console.log("calculated value: " + tmpValue)
+        if (
+          ((Number.isInteger(tmpValue) && tmpValue >= 0 && includes(unitTitle[unitIndex][2], "Integer")) || //need +ve integer
+            (tmpValue >= 0 && includes(unitTitle[unitIndex][2], "Decimal"))) || //need +ve number
+          (tmpValue != undefined && includes(unitTitle[unitIndex][2], "Negative")) ||
+          //(Number(tmpValue.toFixed(numberOfDecimal)) == tmpValue && acceptDecimal)) &&
+          //(tmpValue >= 0 || includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative"))) ||
+          stageOrder.stage != -1
+        ) {
+          nextStepPreparation(replacedString);
+        } else {
+          let needIntegerIndex = 1;
+          //not a positive integer
+          if (includes([3, 4, 5], unitIndex)) {
+            needIntegerIndex = 0;
+          }
+          //let acceptDecimalIndex = (includes(typeAndFormulaAnswerArrayForAnyStage[0], "decimal") ? 1 : 0);
+          //handleSetError(resultBeValidHint[acceptDecimalIndex * 4 + languageIndex]);
+          handleSetError(resultBeValidHint[needIntegerIndex][languageIndex]);
+        }
+
       }
+
     } else {
       //other steps or answer
       //correct steps
@@ -337,7 +388,7 @@ export const DecimalUnitController = ({
     let replacedString = replacedStringOriginal;
     let withParentheses = false;
     let thisAnswersArray = []; //["3+4*2", "4*2+3"]
-    console.log("replacedString: "+replacedString)
+    console.log("replacedString: " + replacedString)
     //create operatorsStringArray and operatorsIndexArray
     const {
       operatorsStringArray,
@@ -365,7 +416,7 @@ export const DecimalUnitController = ({
             thisAnswersArray = generateAnswersArray(numerString);
             thisStartString += "\\frac{";
             thisEndString = stringArray[i].slice(stringArray[i].indexOf("}"));
-            console.log("completeHintString: "+completeHintString)
+            console.log("completeHintString: " + completeHintString)
           } else {
             //then cope with denom with operator
             let denomString = stringArray[i].slice(stringArray[i].indexOf("}") + 2, -1);
@@ -373,7 +424,7 @@ export const DecimalUnitController = ({
             thisAnswersArray = generateAnswersArray(denomString);
             thisStartString += "\\frac{" + numerString + "}{";
             thisEndString = "}";
-            console.log("completeHintString: "+completeHintString)
+            console.log("completeHintString: " + completeHintString)
           }
           //targetFractionString = stringArray[i];
         } else if (noOperatorInFraction) {
@@ -390,7 +441,13 @@ export const DecimalUnitController = ({
         thisStartString = replacedString.slice(0, replacedString.indexOf("^"));
         let numerString = replacedString.slice(replacedString.indexOf("{") + 1, replacedString.indexOf("}"));
         let denomString = replacedString.slice(replacedString.indexOf("}{") + 2, replacedString.indexOf("}^"));
-        let value = parseInt(eval(numerString + "/" + denomString) * 100) / 100;
+        let value = 0;
+        try {
+          value = parseInt(eval(numerString + "/" + denomString) * 100) / 100;
+        }
+        catch (err) {
+          value = 0;
+        }
         let digitOfWholeNumber = 0;
         for (let i = 0; i < thisStartString.length; i++) {
           if (includes(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], thisStartString.charAt(thisStartString.length - 1 - i))) {
@@ -401,7 +458,12 @@ export const DecimalUnitController = ({
         }
         let wholeNumber = 0;
         if (digitOfWholeNumber > 0) {
-          wholeNumber = parseInt(thisStartString.slice(thisStartString.length - digitOfWholeNumber, thisStartString.length));
+          try {
+            wholeNumber = parseInt(thisStartString.slice(thisStartString.length - digitOfWholeNumber, thisStartString.length));
+          }
+          catch (err) {
+            wholeNumber = 0;
+          }
         }
         value = wholeNumber + value;
         let valueString = value.toString();
@@ -410,7 +472,7 @@ export const DecimalUnitController = ({
         thisEndString = replacedString.slice(replacedString.indexOf("}^") + 2);
         let wholeNumberString = (wholeNumber === 0 ? "" : wholeNumber.toString());
         completeHintString += firstConvert[languageIndex] + fractionText[languageIndex] + "^" + wholeNumberString + "\\frac{" + numerString + "}{" + denomString + "}^" + toDecimal[languageIndex];
-        console.log("completeHintString: "+completeHintString)
+        console.log("completeHintString: " + completeHintString)
       }
       if (withParentheses) {/* */
         startString += "(" + thisStartString;
@@ -439,18 +501,24 @@ export const DecimalUnitController = ({
         console.log("endString: " + endString)
         completeHintString += firstCalculate[languageIndex] + parenthesesBeforePercent[languageIndex] + "(" + valueString + ")%" + fullStop[languageIndex];
         thisAnswersArray = generateAnswersArray(valueString);
-        console.log("completeHintString: "+completeHintString)
+        console.log("completeHintString: " + completeHintString)
       } else {
         //no parentheses before %, just convert xxx% to decimal
         let endFirstOperatorIndexInArray = findIndex(operatorsIndexArray, (index) => { return index > firstIndex }); //operatorsIndexArray.findIndex((index) => {return index > firstIndex});
         let startLastOperatorIndex = operatorsIndexArray[endFirstOperatorIndexInArray - 1];
         startString = replacedString.slice(0, startLastOperatorIndex + 1);
         endString = replacedString.slice(firstIndex + 1);
-        let value = parseFloat(replacedString.slice(startLastOperatorIndex + 1, firstIndex)) * 0.01;
+        let value = 1;
+        try {
+          value = parseFloat(replacedString.slice(startLastOperatorIndex + 1, firstIndex)) * 0.01;
+        }
+        catch (err) {
+          value = 1.0;
+        }
         let valueString = value.toString();
         thisAnswersArray = [valueString];
         completeHintString += firstConvert[languageIndex] + percentText[languageIndex] + replacedString.slice(startLastOperatorIndex + 1, firstIndex) + "%" + toDecimal[languageIndex];
-        console.log("completeHintString: "+completeHintString)
+        console.log("completeHintString: " + completeHintString)
       }
 
     } else {
@@ -465,7 +533,13 @@ export const DecimalUnitController = ({
         let withOperator = checkStringContainsElement(operationString, ["+", "-", "*", "/"]);
         if (!withOperator) {
           console.log("operationString: " + operationString)
-          let newValueString = eval(operationString).toString();
+          let newValueString = "";
+          try {
+            newValueString = eval(operationString).toString();
+          }
+          catch {
+            newValueString = "0";
+          }
           startString = startWithOperation.slice(0, leftIndex);
           endString = replacedStringOriginal.slice(rightIndex + 1);
           let newAnswerString = startString + newValueString + endString;
@@ -478,11 +552,11 @@ export const DecimalUnitController = ({
           return updatedArray;
         }
       }
-      console.log("replacedString: "+ replacedString)
+      console.log("replacedString: " + replacedString)
       //change all (-3) -> <3>
       let tmpString = replacedString;
       let revisedString = ""
-      for(let i = 0; i < replacedString.length; i++) {
+      for (let i = 0; i < replacedString.length; i++) {
         let leftIndex = tmpString.indexOf("(-");
         console.log('tmpString + tmpString.indexOf("(-")' + tmpString + tmpString.indexOf("(-"))
         if (leftIndex === -1) {
@@ -505,7 +579,7 @@ export const DecimalUnitController = ({
           }
         }
       }
-      console.log("revisedString: "+revisedString)
+      console.log("revisedString: " + revisedString)
       //replacedStringOriginal --> revisedString
       //if with () //at last add () if answer string with operators
       if (includes(revisedString, "(")) {
@@ -515,76 +589,76 @@ export const DecimalUnitController = ({
         startString = replacedStringWithStart.slice(0, replacedStringWithStart.lastIndexOf("(")).replace(/\</g, "(-").replace(/\>/g, ")");
         replacedString = replacedStringWithStart.slice(replacedStringWithStart.lastIndexOf("(") + 1, replacedStringWithStart.length).replace(/\</g, "(-").replace(/\>/g, ")");
         completeHintString += innerParenthesesFirst1[languageIndex] + "(" + replacedString + ")" + innerParenthesesFirst2[languageIndex];
-        console.log("completeHintString: "+completeHintString)
+        console.log("completeHintString: " + completeHintString)
         console.log("startString: " + startString)
         console.log("replacedString: " + replacedString)
         console.log("endString: " + endString)
       }
-      console.log("replacedString: "+replacedString)
+      console.log("replacedString: " + replacedString)
       replacedString = replacedString.replace(/\</g, "(-");
       replacedString = replacedString.replace(/\>/g, ")");
-      console.log("replacedString: "+replacedString)
+      console.log("replacedString: " + replacedString)
 
       //let withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
       //check no operator, eg just a negative number inside parentheses
       //if (!withOperator) {
-        /*if (startString.lastIndexOf("(") > -1) {
-          //find 2nd parentheses outside this negative number
-          replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString;
-          startString = startString.slice(0, startString.lastIndexOf("("));
-        } else {
-          //without 2nd parentheses, take the whole string to consider the next step
-          replacedString = startString + "(" + replacedString;
-          startString = "";
-          withParentheses = false;
-        }
-        if (endString.indexOf(")" > -1)) {
-          //find 2nd parentheses outside this negative number
-          replacedString = replacedString + ")" + endString.slice(0, endString.indexOf(")"));
-          endString = endString.slice(endString.indexOf(")") + 1);
-        } else {
-          //without 2nd parentheses, take the whole string to consider the next step
-          replacedString = replacedString + endString;
-          endString = "";
-        }*/
-        /*replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString + ")" + endString.slice(0, endString.indexOf(")"));
+      /*if (startString.lastIndexOf("(") > -1) {
+        //find 2nd parentheses outside this negative number
+        replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString;
         startString = startString.slice(0, startString.lastIndexOf("("));
-        endString = endString.slice(endString.indexOf(")") + 1);*/
-        /* withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
-        if (!withOperator) {
-          //convert (-(-3)) to 3
-          console.log("replacedString: " + replacedString)
-          let newValueString = eval(replacedString).toString();
-          let newAnswerString = startString + newValueString + endString;
-          let updatedArray = []
-          console.log("newAnswerString: " + newAnswerString)
-          updatedArray.push(newAnswerString);
-          console.log("updatedArray: " + updatedArray)
-          completeHintString += firstConvert[languageIndex] + negativeInParentheses[languageIndex] + "(" + replacedString + ")" + toPositiveNumber[languageIndex];
-          setErrorMessage(completeHintString);
-          return updatedArray;
-        }*/
-        /*
-        for (let i = 0; i > -1; i++) {
-          console.log("startString: "+ startString)
-          if (!includes(startString, "(")) {
-            startString = "";
-            replacedString = replacedStringOriginal;
-            endString = "";
+      } else {
+        //without 2nd parentheses, take the whole string to consider the next step
+        replacedString = startString + "(" + replacedString;
+        startString = "";
+        withParentheses = false;
+      }
+      if (endString.indexOf(")" > -1)) {
+        //find 2nd parentheses outside this negative number
+        replacedString = replacedString + ")" + endString.slice(0, endString.indexOf(")"));
+        endString = endString.slice(endString.indexOf(")") + 1);
+      } else {
+        //without 2nd parentheses, take the whole string to consider the next step
+        replacedString = replacedString + endString;
+        endString = "";
+      }*/
+      /*replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString + ")" + endString.slice(0, endString.indexOf(")"));
+      startString = startString.slice(0, startString.lastIndexOf("("));
+      endString = endString.slice(endString.indexOf(")") + 1);*/
+      /* withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
+      if (!withOperator) {
+        //convert (-(-3)) to 3
+        console.log("replacedString: " + replacedString)
+        let newValueString = eval(replacedString).toString();
+        let newAnswerString = startString + newValueString + endString;
+        let updatedArray = []
+        console.log("newAnswerString: " + newAnswerString)
+        updatedArray.push(newAnswerString);
+        console.log("updatedArray: " + updatedArray)
+        completeHintString += firstConvert[languageIndex] + negativeInParentheses[languageIndex] + "(" + replacedString + ")" + toPositiveNumber[languageIndex];
+        setErrorMessage(completeHintString);
+        return updatedArray;
+      }*/
+      /*
+      for (let i = 0; i > -1; i++) {
+        console.log("startString: "+ startString)
+        if (!includes(startString, "(")) {
+          startString = "";
+          replacedString = replacedStringOriginal;
+          endString = "";
+          i = -3;
+        } else {
+          replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString + ")" + endString.slice(endString.indexOf(")"));
+          startString = startString.slice(0, startString.lastIndexOf("("));
+          endString = endString.slice(endString.indexOf(")"));
+          withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
+          if (withOperator) {
             i = -3;
-          } else {
-            replacedString = startString.slice(startString.lastIndexOf("(") + 1) + "(" + replacedString + ")" + endString.slice(endString.indexOf(")"));
-            startString = startString.slice(0, startString.lastIndexOf("("));
-            endString = endString.slice(endString.indexOf(")"));
-            withOperator = checkStringContainsElement(replacedString, ["+", "-", "*", "/"]);
-            if (withOperator) {
-              i = -3;
-            }
           }
-        }*/
+        }
+      }*/
       //}
       console.log("cannot return")
-      console.log("replacedString: "+replacedString)
+      console.log("replacedString: " + replacedString)
       const {
         operatorsStringArray,
         operatorsIndexArray
@@ -735,7 +809,14 @@ export const DecimalUnitController = ({
     let thisHints = "";
     if (operatorsStringArray[0] == "-") {
       //check first "-" gets negative number
-      if (replacedString.indexOf("%") === -1 && eval(replacedString.substring(0, operatorsIndexArray[1 + 1])) < 0 && !includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative")) {
+      let tmpValue = 0;
+      try {
+        tmpValue = eval(replacedString.substring(0, operatorsIndexArray[1 + 1]));
+      }
+      catch (err) {
+        tmpValue = 0;
+      }
+      if (replacedString.indexOf("%") === -1 && tmpValue < 0 && !includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative")) {
         //one exchange
         let i;
         let firstHint = true;
@@ -796,7 +877,13 @@ export const DecimalUnitController = ({
             0,
             tmpAnswer.indexOf("+")
           );
-          let tmpNumber = eval(tmpOperationString);
+          let tmpNumber = 0;
+          try {
+            tmpNumber = eval(tmpOperationString);
+          }
+          catch (err) {
+            tmpNumber = 0;
+          }
           //check result is tens or hundreds
           if (
             (tmpNumber >= 0 && tmpNumber < 100 && tmpNumber % 10 == 0) ||
@@ -852,15 +939,35 @@ export const DecimalUnitController = ({
     let thisHints = "";
     if (operatorsStringArray[0] == "/") {
       //check first "/" gets decimal number
-      let tmpValue =
-        Math.round(
-          eval(replacedString.substring(0, operatorsIndexArray[1 + 1])) *
-          10 ** (numberOfDecimal + 2)
-        ) /
-        10 ** (numberOfDecimal + 2);
+      let replacedStringValue = 1;
+      let tmpValue = 1;
+      try {
+        tmpValue =
+          Math.round(
+            eval(replacedString.substring(0, operatorsIndexArray[1 + 1])) *
+            10 ** (numberOfDecimal + 2)
+          ) /
+          10 ** (numberOfDecimal + 2);
+        replacedStringValue =
+          Math.round(
+            eval(replacedString) *
+            10 ** (numberOfDecimal + 2)
+          ) /
+          10 ** (numberOfDecimal + 2);
+      }
+      catch (err) {
+        replacedStringValue = 1;
+        tmpValue = 1;
+      }
+      let isLongDecimalAnswer = true;
+      if (Number(replacedStringValue.toFixed(numberOfDecimal)) === replacedStringValue) {
+        isLongDecimalAnswer = false;
+      }
+      console.log("isLongDecimalAnswer: " + isLongDecimalAnswer)
+      console.log("tmpValue: " + tmpValue)
       if (
         (!Number.isInteger(tmpValue) && !acceptDecimal) ||
-        (Number(tmpValue.toFixed(numberOfDecimal)) != tmpValue && acceptDecimal)
+        (Number(tmpValue.toFixed(numberOfDecimal)) != tmpValue && acceptDecimal && !isLongDecimalAnswer)
       ) {
         //one exchange
         let i;
@@ -877,18 +984,24 @@ export const DecimalUnitController = ({
               i
             );
             thisAnswersArray.push(tmpAnswer);
-            tmpValue =
-              Math.round(
-                eval(
-                  replacedString.substring(0, operatorsIndexArray[2]) +
-                  replacedString.substring(
-                    operatorsIndexArray[i + 1],
-                    operatorsIndexArray[i + 2]
-                  )
-                ) *
-                10 ** (numberOfDecimal + 2)
-              ) /
-              10 ** (numberOfDecimal + 2);
+            //tmpValue = 1;
+            try {
+              tmpValue =
+                Math.round(
+                  eval(
+                    replacedString.substring(0, operatorsIndexArray[2]) +
+                    replacedString.substring(
+                      operatorsIndexArray[i + 1],
+                      operatorsIndexArray[i + 2]
+                    )
+                  ) *
+                  10 ** (numberOfDecimal + 2)
+                ) /
+                10 ** (numberOfDecimal + 2);
+            }
+            catch (err) {
+              tmpValue = 1;
+            }
             console.log(tmpValue);
             if (
               firstHint == true ||
@@ -914,8 +1027,16 @@ export const DecimalUnitController = ({
           //divisor with decimal
           let numberOfDecimal = divisor.split(".")[1].length;
           let dividend = replacedString.slice(operatorsIndexArray[0] + 1, operatorsIndexArray[1]);
-          let newDivisor = (parseFloat(divisor) * Math.pow(10, numberOfDecimal)).toString();
-          let newDividend = (parseFloat(dividend) * Math.pow(10, numberOfDecimal)).toString();
+          let newDivisor = 1;
+          let newDividend = 1;
+          try {
+            newDivisor = (parseFloat(divisor) * Math.pow(10, numberOfDecimal)).toString();
+            newDividend = (parseFloat(dividend) * Math.pow(10, numberOfDecimal)).toString();
+          }
+          catch (err) {
+            newDivisor = 1;
+            newDividend = 1;
+          }
           let rightPart = replacedString.slice(operatorsIndexArray[2]);
           let tmpAnswer = newDividend + "/" + newDivisor + rightPart;
           //let tmpHint = "expand the division to an integer divisor first";
@@ -960,9 +1081,15 @@ export const DecimalUnitController = ({
             0,
             tmpAnswer.indexOf("*")
           );
-          let tmpNumber =
-            Math.round(eval(tmpOperationString) * 10 ** (numberOfDecimal + 2)) /
-            10 ** (numberOfDecimal + 2);
+          let tmpNumber = 1;
+          try {
+            tmpNumber =
+              Math.round(eval(tmpOperationString) * 10 ** (numberOfDecimal + 2)) /
+              10 ** (numberOfDecimal + 2);
+          }
+          catch (err) {
+            tmpNumber = 1;
+          }
           //check result is an integer
           if (
             (Number.isInteger(tmpNumber) && !acceptDecimal) ||
@@ -1059,10 +1186,10 @@ export const DecimalUnitController = ({
       operatorsIndexArray[endIndex + 1 + 1]
     );
     console.log("operatorsIndexArray[startIndex + 1 - 1] + 1: " + (operatorsIndexArray[startIndex + 1 - 1] + 1))
-    console.log("operatorsIndexArray[endIndex + 1 + 1]: "+operatorsIndexArray[endIndex + 1 + 1])
-    console.log("operationString: "+operationString)
-    console.log("operatorsIndexArray: "+operatorsIndexArray)
-    console.log("replacedString: "+ replacedString);
+    console.log("operatorsIndexArray[endIndex + 1 + 1]: " + operatorsIndexArray[endIndex + 1 + 1])
+    console.log("operationString: " + operationString)
+    console.log("operatorsIndexArray: " + operatorsIndexArray)
+    console.log("replacedString: " + replacedString);
     let startString = replacedString.substring(
       0,
       operatorsIndexArray[startIndex + 1 - 1] + 1
@@ -1084,7 +1211,13 @@ export const DecimalUnitController = ({
         }
         if (replacedString[indexBeforeOperator] != "%") {
           onlySomeNumberWithPercent = true;
-          let thisValue = parseFloat(replacedString.slice(operatorsIndexArray[i - 1] + 1, indexBeforeOperator + 1));
+          let thisValue = 1;
+          try {
+            thisValue = parseFloat(replacedString.slice(operatorsIndexArray[i - 1] + 1, indexBeforeOperator + 1));
+          }
+          catch (err) {
+            thisValue = 1;
+          }
           console.log("the number: " + replacedString.slice(operatorsIndexArray[i - 1] + 1, indexBeforeOperator + 1))
           let updatedValue = thisValue * 100;
           let updatedNumberString = updatedValue.toString() + "%";
@@ -1116,18 +1249,31 @@ export const DecimalUnitController = ({
       percentString = "%";
       operationString = operationString.replace(/\%/g, "");
     }*/
-    let value =
-      Math.round(eval(operationString) * 10 ** (numberOfDecimal + 2)) /
-      10 ** (numberOfDecimal + 2);
+    let value = 1;
+    try {
+      value =
+        Math.round(eval(operationString) * 10 ** (numberOfDecimal + 2)) /
+        10 ** (numberOfDecimal + 2);
+    }
+    catch (err) {
+      value = 1;
+    }
     if (
       ((Number.isInteger(value) && !acceptDecimal) ||
-        (Number(value.toFixed(numberOfDecimal)) == value && acceptDecimal)) &&
+        (/*Number(value.toFixed(numberOfDecimal)) == value && */ acceptDecimal)) &&
       (value >= 0 || includes(typeAndFormulaAnswerArrayForAnyStage[0], "Negative"))
     ) {
       //this step is a positive integer
       //set one of possible hints
       tmpHint = operationString;
 
+      //get approximate to 2 decimal places
+      if (value.toString().indexOf(".") > -1) {
+        let numberOfDecimal = value.toString().split(".")[1].length;
+        if (numberOfDecimal > 2) {
+          value = value.toFixed(2);
+        }
+      }
       let valueString = value.toString();
 
       tmpAnswer = startString + valueString + percentString + endString;
@@ -1157,7 +1303,7 @@ export const DecimalUnitController = ({
       }
     }
     operatorsIndexArray.push(replacedString.length);
-    console.log("replacedString: "+replacedString)
+    console.log("replacedString: " + replacedString)
     console.log(operatorsStringArray);
     return { operatorsStringArray, operatorsIndexArray };
   }

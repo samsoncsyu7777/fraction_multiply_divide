@@ -794,7 +794,10 @@ export const FractionUnitController = ({
 
   function decimalToFractionCheck(positionIndex) {
     let originalDecimal = fractionLinesArray[formulaFocusedIndex - 1][positionIndex][1]
-    let numberOfDecimal = originalDecimal.toString().split(".")[1].length;
+    let numberOfDecimal = 0;
+    if (originalDecimal.toString().indexOf(".") > -1) {
+      numberOfDecimal = originalDecimal.toString().split(".")[1].length;
+    }
     console.log("numberOfDecimal:" + numberOfDecimal)
     let newDenom = Math.pow(10, numberOfDecimal);
     let wholeNumber = parseInt(originalDecimal);

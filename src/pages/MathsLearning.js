@@ -169,7 +169,7 @@ function MathsLearning(props) {
     let topic = 0;
     let tool = 0;
     let unit = 0;
-    let exam = 0;
+    let exam = 1;
     if (
       urlParams.get("lang") != null &&
       urlParams.get("lang") != "" &&
@@ -177,7 +177,12 @@ function MathsLearning(props) {
       urlParams.get("lang") < 4
     ) {
       //*** */setLanguageIndex(parseInt(urlParams.get("lang")));
-      lang = parseInt(urlParams.get("lang"), 10);
+      try {
+        lang = parseInt(urlParams.get("lang"), 10);
+      }
+      catch(err) {
+        lang = 2;
+      }
     }
     if (
       urlParams.get("ver") != null &&
@@ -186,7 +191,12 @@ function MathsLearning(props) {
       urlParams.get("ver") < numberOfBibleVersions
     ) {
       //*** */setBibleVersionIndex(parseInt(urlParams.get("ver")));
-      ver = parseInt(urlParams.get("ver"), 10);
+      try {
+        ver = parseInt(urlParams.get("ver"), 10);
+      }
+      catch(err) {
+        ver = 0;
+      }
     }
     if (
       urlParams.get("unit") != null &&
@@ -195,7 +205,12 @@ function MathsLearning(props) {
       urlParams.get("unit") < numberOfUnits
     ) {
       //*** */setUnitIndex(parseInt(urlParams.get("unit")));
-      unit = parseInt(urlParams.get("unit"), 10);
+      try {
+        unit = parseInt(urlParams.get("unit"), 10);
+      }
+      catch(err) {
+        unit = 0;
+      }
     }
     if (
       urlParams.get("exam") != null &&
@@ -204,7 +219,12 @@ function MathsLearning(props) {
       urlParams.get("exam") < 2
     ) {
       //*** */setExamIndex(parseInt(urlParams.get("exam")));
-      exam = parseInt(urlParams.get("exam"), 10);
+      try {
+        exam = parseInt(urlParams.get("exam"), 10);
+      }
+      catch(err) {
+        exam = 1;
+      }
     }
     if (
       urlParams.get("topic") != null &&
@@ -213,7 +233,12 @@ function MathsLearning(props) {
       urlParams.get("topic") < numberOfTopics[unit]
     ) {
       //*** */setLanguageIndex(parseInt(urlParams.get("lang")));
-      topic = parseInt(urlParams.get("topic"), 10);
+      try {
+        topic = parseInt(urlParams.get("topic"), 10);
+      }
+      catch(err) {
+        topic = 0;
+      }
     }
     if (
       urlParams.get("tool") != null &&
@@ -222,7 +247,12 @@ function MathsLearning(props) {
       urlParams.get("tool") < numberOfLearningTools[unit]
     ) {
       //*** */setBibleVersionIndex(parseInt(urlParams.get("ver")));
-      tool = parseInt(urlParams.get("tool"), 10);
+      try {
+        tool = parseInt(urlParams.get("tool"), 10);
+      }
+      catch(err) {
+        tool = 0;
+      }
     }
     setIndexArray([lang, ver, topic, tool, unit, exam]);
     setScriptureVerseIndex(Math.floor(Math.random() * numberOfScriptureVerses));

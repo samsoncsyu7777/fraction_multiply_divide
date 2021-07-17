@@ -128,7 +128,14 @@ export const Leaderboard = ({
 
   const yearChange = (e) => {
     if (e.target.value > -1 && e.target.value < 3000) {
-      setTargetYear(parseInt(e.target.value, 10));
+      let thisYear = 2021;
+      try {
+        thisYear = parseInt(e.target.value, 10);
+      }
+      catch(err) {
+        thisYear = 2021;
+      }
+      setTargetYear(thisYear);
     }
   };
 

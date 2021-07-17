@@ -387,7 +387,7 @@ export const MainController = ({
       </Grid>}
       <Grid className={classes.spaceGrid} />
       {typeAndFormulaAnswerArrayForAnyStage[0] != undefined && (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Text") || typeAndFormulaAnswerArrayForAnyStage[0] === "MC") && //{["fractionText", "integerText", "decimalText", "decimalTextFraction", "fractionTextDecimal", "MC"].includes(typeAndFormulaAnswerArrayForAnyStage[0]) &&
-        !((stageOrder.stage === -2 & !isLogined) || includes([-3, -4], stageOrder.stage)) && (
+        !((stageOrder.stage === -2 & !isLogined) || includes([-1, -3, -4], stageOrder.stage)) && (
           <TextQuestion
             textQuestion={questionTextForAnyStage[languageIndex]}
             setIsLogined={setIsLogined}
