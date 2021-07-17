@@ -3,30 +3,91 @@ const constants = {
   bibleVersions: ["天主教", "基督教", "天主教", "基督教", "Catholic", "Christian", "Catholique", "Chrétienne"],
   bibleVersionsQuestion: ["經文版本", "经文版本", "Scripture version", "Version biblique"],
   topics: [
-    [
+    [//0
       "分數乘法", "分數除法", "分數乘除混合",
       "分数乘法", "分数除法", "分数乘除混合",
       "Fractional Multiplication", "Fractional Division", "Fractional Multiplication and Division Mixed",
-      "Multiplication fractionnaire", "Division fractionnaire", "Multiplication fractionnaire et division mixte"
+      "Multiplication Fractionnaire", "Division Fractionnaire", "Multiplication Fractionnaire et Division Mixte"
     ],
-    [
+    [//1
       "分數加法", "分數減法", "分數加減混合",
       "分数加法", "分数减法", "分数加减混合",
       "Addition of Fractions", "Subtraction of Fractions", "Mixed Addition and Subtraction of Fractions",
-      "Addition de fractions", "Soustraction de fractions", "Addition et soustraction mixtes de fractions"
+      "Addition de Fractions", "Soustraction de Fractions", "Addition et Soustraction Mixtes de Fractions"
     ],
-    [
+    [//2
       "分數四則混合計算", "帶括號的分數四則號混合計算",
       "分数四则混合计算", "带括号的分数四则号混合计算",
-      "Four mixed calculations for fractions", "Four mixed calculations for fractions with parentheses",
-      "Quatre calculs mixtes pour les fractions", "Quatre calculs mixtes pour les fractions avec parenthèses"
+      "Four Mixed Calculations for Fractions", "Four Mixed Calculations for Fractions with Parentheses",
+      "Quatre Calculs Mixtes pour les Fractions", "Quatre Calculs Mixtes pour les Fractions avec Parenthèses"
     ],
-    [
-      "三步計算", "四步計算", "五步計算", "六步計算", "七步計算",
-      "三步计算", "四步计算", "五步计算", "六步计算", "七步计算",
-      "Three-step calculation", "Four-step calculation", "Five-step calculation", "Six-step calculation", "Seven-step calculation",
-      "Calcul en trois étapes", "Calcul en quatre étapes", "Calcul en cinq étapes", "Calcul en six étapes", "Calcul en sept étapes",
+    [//3
+      "整數加法", "整數減法", "整數加減混合",
+      "整数加法", "整数减法", "整数加减混合",
+      "Addition of Integers", "Subtraction of Integers", "Mixed Addition and Subtraction of Integers",
+      "Addition d'Entiers", "Soustraction d'Entiers", "Addition et Soustraction Mixtes d'Entiers"
     ],
+    [//4
+      "整數乘法", "整數除法", "整數乘除混合",
+      "整数乘法", "整数除法", "整数乘除混合",
+      "Integer Multiplication", "Integer Division", "Integer Multiplication and Division Mixed",
+      "Multiplication d'Entiers", "Division d'Entiers", "Multiplication et Division d'Entiers Mixtes"
+    ],
+    [//5
+      "整數四則混合計算", "帶括號的整數四則號混合計算",
+      "整数四则混合计算", "带括号的整数四则号混合计算",
+      "Four Mixed Calculations for Integers", "Four Mixed Calculations for Integers with Parentheses",
+      "Quatre Calculs Mixtes pour les Nombres Entiers", "Quatre Calculs Mixtes pour les Nombres Entiers avec Parenthèses"
+    ],
+    [//6
+      "小數加法", "小數減法", "小數加減混合",
+      "小数加法", "小数减法", "小数加减混合",
+      "Decimal Addition", "Decimal Subtraction", "Decimal Addition and Subtraction Mixed",
+      "Addition Décimale", "Soustraction Décimale", "Addition et Soustraction Décimales Mixtes"
+    ],
+    [//7
+      "小數乘法", "小數除法", "小數乘除混合",
+      "小数乘法", "小数除法", "小数乘除混合",
+      "Decimal Multiplication", "Decimal Division", "Decimal Multiplication and Division Mixed",
+      "Multiplication Décimale", "Division Décimale", "Multiplication et Division Décimales Mixtes"
+    ],
+    [//8
+      "小數四則混合計算", "帶括號的小數四則號混合計算",
+      "小数四则混合计算", "带括号的小数四则号混合计算",
+      "Four Decimal Mixed Calculations", "Mixed Calculation of Four Decimal Numbers with Parentheses",
+      "Quatre Calculs Mixtes Décimaux", "Calcul Mixte de Quatre Nombres Décimaux avec Parenthèses"
+    ],
+    [//9
+      "負數加法", "負數減法", "負數加減混合",
+      "负数加法", "负数减法", "负数加减混合",
+      "Negative Number Addition", "Negative Number Subtraction", "Negative Number Addition and Subtraction Mixed",
+      "Addition de Nombres Négatifs", "Soustraction de Nombres Négatifs", "Addition et Soustraction de Nombres Négatifs Mixtes"
+    ],
+    [//10
+      "負數乘法", "負數除法", "負數乘除混合",
+      "负数乘法", "负数除法", "负数乘除混合",
+      "Negative Number Multiplication", "Negative Number Division", "Negative Number Multiplication and Division Mixed",
+      "Multiplication de Nombres Négatifs", "Division de Nombres Négatifs", "Multiplication et Division de Nombres Négatifs Mixtes"
+    ],
+    [//11
+      "負數四則混合計算", "帶括號的負數四則號混合計算",
+      "负数四则混合计算", "带括号的负数四则号混合计算",
+      "Four Mixed Calculations for Negative Numbers", "Four Mixed Calculations for Negative Numbers with Parentheses",
+      "Quatre Calculs Mixtes pour les Nombres Négatifs", "Quatre Calculs Mixtes pour les Nombres Négatifs avec Parenthèses"
+    ],
+    [//12
+      "化小數為分數", "化分數為小數", "分數和小數混合計算",
+      "化小数为分数", "化分数为小数", "分数和小数混合计算",
+      "Convert Decimals to Fractions", "Convert Fractions to Decimals", "Mixed Calculation of Fractions and Decimals",
+      "Convertir les Décimales en Fractions", "Convertir les Fractions en Décimales", "Calcul Mixte de Fractions et de Décimales"
+    ],
+    [//13
+      "化百分數為分數", "化分數為百分數", "化百分數為小數", "化小數為百分數", "分數、小數和百分數混合計算", "折扣",
+      "化百分数为分数", "化分数为百分数", "化百分数为小数", "化小数为百分数", "分数、小数和百分数混合计算", "折扣",
+      "Convert Percentages to Fractions", "Convert Fractions to Percentages", "Convert Percentages to Decimals", "Convert Decimals to Percentages", "Mixed Calculation of Fractions, Decimals, and Percentages", "Discounts",
+      "Convertir les Pourcentages en Fractions", "Convertir les Fractions en Pourcentages", "Convertir les Pourcentages en Nombres Décimaux", "Convertir les Nombres Décimaux en Pourcentages", "Calcul Mixte de Fractions, de Nombres Décimaux et de Pourcentages", "Remises"    
+    ],
+    
   ],
   topicsQuestion: ["主題", "主题", "Topic", "Sujet"],
   learningTools: [
@@ -48,12 +109,74 @@ const constants = {
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction",
       "Proper fraction", "Mixed fraction", "Proper fraction", "Mixed fraction"
     ],
-    [//unit 3
-      "整數計算", "小數計算", "整數計算", "小數計算", "整數計算", "小數計算", "整數計算", "小數計算", "整數計算", "小數計算",
-      "整数计算", "小数计算", "整数计算", "小数计算", "整数计算", "小数计算", "整数计算", "小数计算", "整数计算", "小数计算",
-      "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation", "Integer Calculation", "Decimal Calculation",
-      "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal", "Calcul d'entiers", "Calcul décimal",       
+    [//3
+      "一步計算", "二步計算", "一步計算", "二步計算", "一步計算", "二步計算", 
+      "一步计算", "二步计算", "一步计算", "二步计算", "一步计算", "二步计算", 
+      "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", 
+      "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", 
     ],
+    [//4
+      "一步計算", "二步計算", "一步計算", "二步計算", "一步計算", "二步計算", 
+      "一步计算", "二步计算", "一步计算", "二步计算", "一步计算", "二步计算", 
+      "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", 
+      "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", 
+    ],
+    [//5
+      "二步計算", "三步計算", "三步計算", "四步計算", 
+      "二步计算", "三步计算", "三步计算", "四步计算", 
+      "Two-step calculation", "Three-step calculation", "Three-step calculation", "Four-step calculation", 
+      "Calcul en deux étapes", "Calcul en trois étapes", "Calcul en trois étapes", "Calcul en quatre étapes",
+    ],
+    [//6
+      "一步計算", "二步計算", "一步計算", "二步計算", "一步計算", "二步計算", 
+      "一步计算", "二步计算", "一步计算", "二步计算", "一步计算", "二步计算", 
+      "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", 
+      "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", 
+    ],
+    [//7
+      "一步計算", "二步計算", "一步計算", "二步計算", "一步計算", "二步計算", 
+      "一步计算", "二步计算", "一步计算", "二步计算", "一步计算", "二步计算", 
+      "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", 
+      "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", 
+    ],
+    [//8
+      "二步計算", "三步計算", "三步計算", "四步計算", 
+      "二步计算", "三步计算", "三步计算", "四步计算", 
+      "Two-step calculation", "Three-step calculation", "Three-step calculation", "Four-step calculation", 
+      "Calcul en deux étapes", "Calcul en trois étapes", "Calcul en trois étapes", "Calcul en quatre étapes",
+    ],
+    [//9
+      "一步計算", "二步計算", "一步計算", "二步計算", "一步計算", "二步計算", 
+      "一步计算", "二步计算", "一步计算", "二步计算", "一步计算", "二步计算", 
+      "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", 
+      "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", 
+    ],
+    [//10
+      "一步計算", "二步計算", "一步計算", "二步計算", "一步計算", "二步計算", 
+      "一步计算", "二步计算", "一步计算", "二步计算", "一步计算", "二步计算", 
+      "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", "One-step calculation", "Two-step calculation", 
+      "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", "Calcul en une étape", "Calcul en deux étapes", 
+    ],
+    [//11
+      "二步計算", "三步計算", "三步計算", "四步計算", 
+      "二步计算", "三步计算", "三步计算", "四步计算", 
+      "Two-step calculation", "Three-step calculation", "Three-step calculation", "Four-step calculation", 
+      "Calcul en deux étapes", "Calcul en trois étapes", "Calcul en trois étapes", "Calcul en quatre étapes",
+    ],
+    [//12
+      "一位小數", "二位小數", "三位小數", "分母為10, 100或1000", "分母為2, 4, 5或25", "取近似值", "以分數作答", "以小數作答", "帶括號以小數作答",
+      "一位小数", "二位小数", "三位小数", "分母为10, 100或1000", "分母为2, 4, 5或25", "取近似值", "以分数作答", "以小数作答", "带括号以小数作答",
+      "One decimal place", "Two decimal places", "Three decimal places", "The denominator is 10, 100 or 1000", "The denominator is 2, 4, 5 or 25", "Approximate value", "Answer by fractions", " Answer with decimals", "Answer with decimals with parentheses",
+      "Une décimale", "Deux décimales", "Trois décimales", "Le dénominateur est 10, 100 ou 1000", "Le dénominateur est 2, 4, 5 ou 25", "Valeur approximative", "Répondez par fractions", "Répondre avec des décimales", "Répondre avec des décimales avec des parenthèses",
+    ],
+    [//13
+      "整數", "分數", "小數", "真分數", "假分數", "帶分數", "整數", "小數", "分數", "二位小數", "一位小數", "三位小數", "以小數作答", "以百分數作答", "帶括號以百分數作答", "求售價", "求折扣", "求原價",
+      "整数", "分数", "小数", "真分数", "假分数", "带分数", "整数", "小数", "分数", "二位小数", "一位小数", "三位小数", "以小数作答", "以百分数作答", "带括号以百分数作答", "求售价", "求折扣", "求原价",
+      "Integers", "Fractions", "Decimals", "Proper Fractions", "Improper Fractions", "Mixed Fractions", "Integers", "Decimals", "Fractions", "Two decimal places", "One decimal place" , "Three decimal places", "Answer in decimals", "Answer in percentages", "Answer in percentages with parentheses", "Selling prices", "Discounts", "Original prices",
+      "Entiers", "Fractions", "Décimales", "Fractions propres", "Fractions incorrectes", "Fractions mixtes", "Entiers", "Décimal", "Fractions", "Deux décimales", "Une décimale" , "Trois décimales", "Réponse en décimales", "Réponse en pourcentages", "Réponse en pourcentages avec parenthèses", "Prix de vente", "Remises", "Prix d'origine",
+    ],
+
+
   ],
   learningToolsQuestion: [
     "副主題", "副主题", "Subtopic", "Sous-thème"

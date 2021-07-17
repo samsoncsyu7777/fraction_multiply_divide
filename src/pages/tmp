@@ -32,3 +32,4 @@ types:
     "decimalNegativeFormula",
     "decimalFractionNegativeFormula",
     "decimalFractionNegativeText",
+    "decimalShortText",//short answer of decimal, integer, fraction, percentage or negative number

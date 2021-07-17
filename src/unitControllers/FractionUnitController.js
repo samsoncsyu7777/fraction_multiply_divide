@@ -459,7 +459,7 @@ export const FractionUnitController = ({
     console.log("fractionIndexInProcess:" + fractionIndexInProcess);
     console.log("indexDecreasedByLastStage:" + indexDecreasedByLastStage);
     let isNewStepTmp = false;
-    if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) { //if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) {
+    if (stageOrder.stage === -1 && includes(typeAndFormulaAnswerArrayForAnyStage[0], "Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) { //if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && !integerWithDotCheck(fractionLinesArray[formulaFocusedIndex])) {
       return false;
     }
     if (includes(typeAndFormulaAnswerArrayForAnyStage[0], "Decimal") && formulaFocusedIndex > 0) { //if (typeAndFormulaAnswerArrayForAnyStage[0].includes("Decimal") && formulaFocusedIndex > 0) {
@@ -485,14 +485,14 @@ export const FractionUnitController = ({
         return;
       }
     }
-    if (!fractionOrIntegerCheck(formulaFocusedIndex)) {
+    if (stageOrder.stage === -1 && !fractionOrIntegerCheck(formulaFocusedIndex)) {
       return;
     }
     if (formulaFocusedIndex == 0) {
-      if (!singleNumberCheck(formulaFocusedIndex)) {
+      if (stageOrder.stage === -1 && !singleNumberCheck(formulaFocusedIndex)) {
         return;
       }
-      if (
+      if (stageOrder.stage === -1 && 
         !positiveResultCheck(
           formulaFocusedIndex,
           0,
@@ -501,7 +501,7 @@ export const FractionUnitController = ({
       ) {
         return;
       }
-      if (
+      if (stageOrder.stage === -1 && 
         !noImproperFractionCheck(
           formulaFocusedIndex,
           false,

@@ -88,8 +88,11 @@ const constants = {
     /*6*/["小數加法和減法", "小数加法和减法", "Decimal Addition and Subtraction", "Addition et Soustraction Décimales"],
     /*7*/["小數乘法和除法", "小数乘法和除法", "Decimal Multiplication and Division", "Multiplication et Division Décimales"],
     /*8*/["小數四則混合計算", "小数四则混合计算", "Four Mixed Calculations for Decimals", "Quatre Calculs Mixtes pour les Décimales"],
-    /*9*/["負數四則混合計算", "负数四则混合计算", "Four Mixed Calculations for Negative Numbers", "Quatre Calculs Mixtes pour les Nombres Négatifs"],
-
+    /*9*/["負數加法和減法", "负数加法和减法", "Negative Number Addition and Subtraction", "Addition et Soustraction de Nombres Négatifs"],
+    /*10*/["負數乘法和除法", "负数乘法和除法", "Negative Number Multiplication and Division", "Multiplication et Division de Nombres Négatifs"],
+    /*11*/["負數四則混合計算", "负数四则混合计算", "Four Mixed Calculations for Negative Numbers", "Quatre Calculs Mixtes pour les Nombres Négatifs"],
+    /*12*/["分數和小數混合計算", "分数和小数混合计算", "Mixed Calculation of Fractions and Decimals", "Calcul Mixte de Fractions et de Décimales"],
+    /*13*/["百分數和折扣", "百分数和折扣", "Percentages and Discounts", "Pourcentages et Remises"],
 
   ],
   logoutText: ["登出", "登出", "Logout", "Logout"],//a
